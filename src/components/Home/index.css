@@ -1,0 +1,54 @@
+.carousel-main-container{
+    margin-top: 100px;
+}
+
+.events-list-container{
+    display: flex;
+}
+
+.donation-description{
+    line-height: 36px;
+    font-family: Jost;
+}
+
+.service-card-heading{
+    font-family: Jost;
+    line-height: 44px;
+}
+
+.service-card-description{
+    line-height: 28px;
+    font-family: Jost;
+}
+
+.services-card-main-heading{
+    font-family: Jost;
+    line-height: 36px;
+}
+
+.project-title-date{
+    font-family: Jost;
+}
+
+.project-title{
+    font-family: Jost;
+    line-height: 28px;
+}
+
+.call-to-action-heading{
+    font-family: Jost;
+    line-height: 44px;
+}
+.call-to-action-description{
+    line-height: 28px;
+    font-family: Jost;
+}
+
+.stat-text-font{
+    font-family: Jost;
+}
+
+.events-heading{
+    font-family: Jost;
+    
+}
