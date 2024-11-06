@@ -8,8 +8,7 @@ export function DonationSection() {
       <div className="max-w-2xl mx-auto text-center px-4">
         <h2 className="text-3xl font-bold text-gray-900 mb-4 font-jost leading-2">Donate Today</h2>
         <p className="text-gray-600 mb-8 donation-description">
-          Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur,
-        </p>
+        Support NAPA’s mission to uplift our community! Your donation funds cultural programs, scholarships, and welfare initiatives. Every gift makes a difference—join us in empowering our future!        </p>
         
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {['$10', '$25', '$50', '$100'].map((amount) => (
