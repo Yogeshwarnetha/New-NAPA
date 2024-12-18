@@ -25,6 +25,7 @@ import Registration from './components/Registration';
 import LoginPage from './components/Login';
 import UsersDashboard from './components/AdminDashboard/users';
 import AdminLogin from './components/AdminLogin';
+import Donations from './components/Donations';
 
 function App() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function App() {
         <Route path='/video-gallery' element={<VideoGallery/>} />
         <Route path='/register' element={<Registration/>} />
         <Route path='/login' element={<LoginPage/>} />
+        <Route path='/donations' element={<Donations/>} />
 
 
         <Route

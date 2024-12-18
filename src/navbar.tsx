@@ -262,9 +262,11 @@ const Navbar = () => {
 
             {/* Donate Button */}
             <div className="hidden lg:flex items-center justify-center w-1/6 lg:w-[15%]">
+            <a href='/donations'>
               <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                 Donate
               </button>
+              </a>
             </div>
 
             {/* Mobile Menu Button */}
