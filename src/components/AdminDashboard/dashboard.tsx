@@ -9,7 +9,6 @@ import {
   FaAddressBook,     
   FaDonate,          
   FaEnvelopeOpenText,
-  FaHandsHelping,    
   FaImages,          
   FaUsers,           
   FaUserTie,        

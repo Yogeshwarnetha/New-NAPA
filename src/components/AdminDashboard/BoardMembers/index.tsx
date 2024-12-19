@@ -62,7 +62,7 @@ const BoardMembersDashboard = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [count, setCount] = useState(dummyBoardMembers.length);
+  const [count] = useState(dummyBoardMembers.length);
   const [openImageModal, setOpenImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>("");
 

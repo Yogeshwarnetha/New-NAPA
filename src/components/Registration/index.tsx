@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Mail, Lock, Phone, Home, MapPin, Briefcase, Building2, Flag, ChevronLeft, ChevronRight, Upload, Users } from 'lucide-react';
+import { User, Mail, Lock, Phone, Home, MapPin, Briefcase, Building2, Flag, ChevronLeft, ChevronRight, Users } from 'lucide-react';
 import { signupUser } from '../../apirequest/auth';
 
 function Registration() {

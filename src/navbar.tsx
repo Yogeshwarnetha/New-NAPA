@@ -7,7 +7,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  ChevronRight,
   Home,
   Settings,
   Users,

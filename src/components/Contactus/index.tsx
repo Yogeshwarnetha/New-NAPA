@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Loader2, MapPin, Phone, Mail, Clock, Heart, Users, Globe, HandHeart } from 'lucide-react';
+import { Send, Loader2, MapPin, Phone, Mail, Clock, Heart, Users, Globe } from 'lucide-react';
 
 interface FormData {
     name: string;

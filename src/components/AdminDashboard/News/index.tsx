@@ -61,7 +61,7 @@ const NewsDashboard = () => {
   const [loading, setLoading] = useState<boolean>(true); // Set loading state
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [count, setCount] = useState(3);
+  const [count] = useState(3);
 
   useEffect(() => {
     setTimeout(() => {
