@@ -55,6 +55,7 @@ const menuItems: MenuItemType[] = [
       { title: 'Members Board', path: '/services/mobile' },
       { title: 'Special Committees', path: '/services/cloud' },
       { title: 'NAPA Convention', path: '/services/web' },
+      { title: 'NAPA Chapters', path: '/services/web' },
     ],
   },
   {
@@ -243,7 +244,7 @@ const Navbar = () => {
                     )}
                   </a>
                   {item.submenu && activeSubMenu === item.title && (
-                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg w-48">
+                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-xl w-56 font-sans">
                       {item.submenu.map((subItem, subIndex) => (
                         <a
                           key={subIndex}
@@ -262,7 +263,7 @@ const Navbar = () => {
             {/* Donate Button */}
             <div className="hidden lg:flex items-center justify-center w-1/6 lg:w-[15%]">
             <a href='/donations'>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+              <button className="px-4 py-2 bg-indigo-600 text-white hover:bg-purple-700 transition-colors">
                 Donate
               </button>
               </a>
@@ -289,7 +290,7 @@ const Navbar = () => {
         />
       )}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-white transform ${
+        className={`fixed top-0 right-0 h-full w-80 bg-white transform ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         } transition-transform duration-300 ease-in-out z-50 lg:hidden`}
       >
@@ -302,12 +303,12 @@ const Navbar = () => {
             <X className="h-6 w-6" />
           </button>
         </div>
-        <div className="p-4">
+        <div className="p-6">
           {menuItems.map((item, index) => (
             <div key={index}>
               <a
                 href={item.path || '#'}
-                className="block text-gray-700 py-2 hover:bg-gray-100"
+                className="block text-gray-700 py-4 hover:bg-gray-100"
                 onClick={(e) => {
                   if (item.submenu) {
                     e.preventDefault();

@@ -8,6 +8,7 @@ import Stats from "./stats";
 import CallToAction from "./calltoaction";
 import TeamCarousel from "./team-carousel";
 import EventsList from "./events/eventlist";
+import Ourcompany from "./ourcompany";
 
 
   const services = [
@@ -16,12 +17,6 @@ import EventsList from "./events/eventlist";
       description: "NAPA’s Matrimony Services connect Padmashali members with a trusted platform for finding compatible life partners. With culturally aligned profiles and privacy-focused features, we make matchmaking secure and meaningful.",
       image: 'https://img.freepik.com/free-photo/affectionate-indian-couple-celebrating-propose-day-together_23-2151111012.jpg?t=st=1730441251~exp=1730444851~hmac=64aee5f54413341280834f43f9abee505c50772df2fdb5cc53d8e64867449a25&w=1380',
       imageAlt: "Matrimony Service"
-    },
-    {
-      title: "Donations",
-      description: "NAPA’s Donation Services empower members to support community initiatives like cultural preservation, education, and welfare programs. Every contribution helps uplift and strengthen the Padmashali community across North America.",
-      image: "https://img.freepik.com/free-photo/close-up-volunteers-with-box_23-2149182045.jpg?t=st=1730441558~exp=1730445158~hmac=77dfe0d9365803952ac3ad1712397db08cc27fe1dd0b3711551b5897de5af9aa&w=1380",
-      imageAlt: "Donations Service"
     }
   ];
 
@@ -31,6 +26,9 @@ const Home = () => {
         <div className="carousel-main-container">
         <Carousel/>
         </div>
+        <section className="py-16 px-4 bg-white">
+        <Ourcompany/>
+        </section>
         <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Events</h2>

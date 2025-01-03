@@ -34,16 +34,15 @@ const AdminDashboardLayout: React.FC<AdminDashboardProps> = ({ children }) => {
   const navigate = useNavigate(); // Initialize navigate for redirection
 
   useEffect(() => {
-    const adminAuthToken = Cookies.get("adminAuthToken"); // Check if adminAuthToken exists
+    const adminAuthToken = Cookies.get("adminAuthToken");
     if (!adminAuthToken) {
-      navigate("/admin/login"); // Redirect to login if no token is found
+      navigate("/admin/login");
     }
   }, [navigate]);
 
-  // Function to handle logout
   const handleLogout = () => {
-    Cookies.remove("adminAuthToken"); // Remove the adminAuthToken from cookies
-    navigate("/admin/login"); // Redirect to login page
+    Cookies.remove("adminAuthToken"); 
+    navigate("/admin/login");
   };
 
   return (
