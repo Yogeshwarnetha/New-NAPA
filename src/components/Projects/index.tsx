@@ -72,7 +72,7 @@ const Projects = () => {
   return (
     <div className="min-h-screen bg-[#f9fafb]">
       {selectedProject ? (
-        <div className="flex flex-col lg:flex-row lg:gap-0 py-32 px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:gap-0 py-16 px-6 lg:px-8">
           {/* Left Side: Selected Project */}
           <div className="lg:w-3/4 bg-[#f9fafb] rounded-lg overflow-hidden">
             <button
@@ -125,7 +125,7 @@ const Projects = () => {
           </div>
         </div>
       ) : (
-        <div className="py-36 px-6 lg:px-8">
+        <div className="py-16 px-6 lg:px-8 sm:py-2">
           <div className="max-w-7xl mx-auto">
             <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Projects</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

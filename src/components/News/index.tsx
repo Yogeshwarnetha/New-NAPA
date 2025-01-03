@@ -140,7 +140,7 @@ const NewsSection = () => {
   return (
     <div className="min-h-screen bg-[#f9fafb]">
       {selectedArticle ? (
-        <div className="flex flex-col lg:flex-row lg:gap-0 py-32 px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:gap-0 py-16 px-6 lg:px-8">
           <div className="lg:w-3/4 bg-white rounded-lg overflow-hidden">
             <button
               onClick={handleBackClick}
@@ -190,7 +190,7 @@ const NewsSection = () => {
           </div>
         </div>
       ) : (
-        <div className="py-36 px-6 lg:px-8">
+        <div className="py-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Latest News</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
