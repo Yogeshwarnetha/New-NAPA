@@ -1,5 +1,5 @@
 import  { useState } from 'react';
-import { ClipboardList, Users, Calendar, DollarSign, Globe, Mail, FileCheck, Building2, ChevronDown, ChevronUp, Briefcase } from 'lucide-react';
+import { ClipboardList, Users, Calendar, DollarSign, Globe, Building2, ChevronDown, ChevronUp, Briefcase } from 'lucide-react';
 
 function OperationalGuidelines() {
   const [openSection, setOpenSection] = useState<number | null>(null);

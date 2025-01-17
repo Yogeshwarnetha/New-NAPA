@@ -15,7 +15,7 @@ import {
 import { MdDelete, MdEdit } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
 import AdminDashboardLayout from "..";
-import BoardMembers from "./create-boardmembers";
+// import BoardMembers from "./create-boardmembers";
 
 // Dummy data for Board Members
 const dummyBoardMembers = [
@@ -126,7 +126,7 @@ const BoardMembersDashboard = () => {
     <AdminDashboardLayout>
       <Box sx={{ padding: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <BoardMembers/>
+            {/* <BoardMembers/> */}
         </Box>
         <Box sx={{ padding: 2 }}>
           <Typography variant="h6" sx={{ m: 2 }}>
