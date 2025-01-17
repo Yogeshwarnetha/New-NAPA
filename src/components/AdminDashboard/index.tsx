@@ -18,6 +18,7 @@ const adminList = [
   { id: 10, text: "Users", route: "/admin/users", icon: <FaUsers /> },
   { id: 11, text: "Banner Carousels", route: "/admin/banner-carousels", icon: <FaImages /> },
   { id: 12, text: "Our Team", route: "/admin/our-team", icon: <FaUsers /> },
+  { id: 21, text: "Board Category", route: "/admin/board-category", icon: <FaUserTie/>},
   { id: 13, text: "Members Board", route: "/admin/members-board", icon: <FaUserTie /> },
   { id: 16, text: "Special Committees", route: "/admin/special-committees", icon: <FaUsersCog /> },
   { id: 17, text: "Create Admin", route: "/admin/create-admin", icon: <FaUserPlus /> },

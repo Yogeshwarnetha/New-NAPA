@@ -44,15 +44,15 @@ const menuItems: MenuItemType[] = [
       { title: 'Introduction', path: '/introduction' },
       { title: 'Vision and Mission', path: '/vision-missions' },
       { title: 'Bylaws', path: '/by-laws' },
-      { title: 'Operational Guidelines', path: '/services/web' },
+      { title: 'Operational Guidelines', path: '/operationalguidelines' },
     ],
   },
   {
     title: 'Leadership',
     icon: <Users className="w-5 h-5" />,
     submenu: [
-      { title: 'President Message', path: '/services/web' },
-      { title: 'Members Board', path: '/services/mobile' },
+      { title: 'President Message', path: '/president-message' },
+      { title: 'Members Board', path: '/members-board' },
       { title: 'Special Committees', path: '/services/cloud' },
       { title: 'NAPA Convention', path: '/services/web' },
       { title: 'NAPA Chapters', path: '/services/web' },

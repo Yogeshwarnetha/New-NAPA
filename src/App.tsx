@@ -26,6 +26,10 @@ import LoginPage from './components/Login';
 import UsersDashboard from './components/AdminDashboard/users';
 import AdminLogin from './components/AdminLogin';
 import Donations from './components/Donations';
+import OperationalGuidelines from './components/Aboutus/operationalGuidelines';
+import PresidentMessageMain from './components/Leadership/presidentmessage';
+import MembersBoardMain from './components/Leadership/membersboard';
+import BoardCategoriesDashboard from './components/AdminDashboard/BoardCategory';
 
 function App() {
   const location = useLocation();
@@ -45,11 +49,14 @@ function App() {
         <Route path='/introduction' element={<AboutusIntroduction />} />
         <Route path='/vision-missions' element={<Visionandmission/>} />
         <Route path='/by-laws' element={<ByLaws/>}/>
+        <Route path='/operationalguidelines' element={<OperationalGuidelines/>} />
         <Route path='/gallery' element={<GalleryMediaSection/>} />
         <Route path='/video-gallery' element={<VideoGallery/>} />
         <Route path='/register' element={<Registration/>} />
         <Route path='/login' element={<LoginPage/>} />
         <Route path='/donations' element={<Donations/>} />
+        <Route path='/president-message' element={<PresidentMessageMain/>} />
+        <Route path='/members-board' element={<MembersBoardMain/>}/>
 
 
         <Route
@@ -68,6 +75,7 @@ function App() {
         <Route path='/admin/banner-carousels' element={<BannersDashboard/>}/>
         <Route path='/admin/president-message' element={<PresidentMessage/>}/>
         <Route path='/admin/our-team' element={<TeamDashboard/>}/>
+        <Route path='/admin/board-category' element={<BoardCategoriesDashboard/>}/>
         <Route path='/admin/members-board' element={<BoardMembersDashboard/>}/>
         <Route path='/admin/special-committees' element={<TeamDashboard/>}/>
         <Route path='/admin/users' element={<UsersDashboard/>}/>

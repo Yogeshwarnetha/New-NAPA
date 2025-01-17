@@ -32,10 +32,12 @@ const Ourcompany = () => {
               </p>
             </div>
             <div className="mt-6 sm:mt-8">
+              <a href='/introduction'>
               <button className="inline-flex items-center bg-[#43529C] text-white px-3 sm:px-4 py-2 text-sm font-medium hover:bg-[#32408f] transition-colors">
                 Learn More
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
+              </a>
             </div>
           </div>
 
@@ -71,10 +73,12 @@ const Ourcompany = () => {
             </div>
 
             <div className="text-left">
+              <a href='/president-message'>
               <button className="inline-flex items-center bg-[#43529C] text-white px-3 sm:px-4 py-2 text-sm font-medium hover:bg-[#32408f] transition-colors">
                 Read More
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
+              </a>
             </div>
           </div>
         </div>
