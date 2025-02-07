@@ -9,7 +9,7 @@ interface ServiceCardProps {
   reverse?: boolean;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, imageAlt, reverse = false }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, imageAlt, reverse = false }) => {
   return (
     <div className={`flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} gap-8 mb-16 items-center`}>
       <div className="w-full md:w-1/2">

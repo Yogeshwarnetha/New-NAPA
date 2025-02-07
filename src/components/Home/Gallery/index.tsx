@@ -1,5 +1,5 @@
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
-import React, { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 const HomeGallery = () => {
   const galleryImages = [
