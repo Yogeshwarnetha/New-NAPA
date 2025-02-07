@@ -1,13 +1,13 @@
-import  { useState } from 'react';
-import { Button } from '../../ui/Button';
-import { Input } from '../../ui/Input';
-import { Textarea } from '../../ui/Textarea';
-import { Modal } from '../../ui/Modal';
-import { useBannerForm } from '../../../hooks/useBanner';
+import { useState } from "react";
+import { Button } from "../../ui/Button";
+import { Input } from "../../ui/Input";
+import { Textarea } from "../../ui/Textarea";
+import { Modal } from "../../ui/Modal";
+import { useBannerForm } from "../../../hooks/useBannerForm";
 
 const CreateBanner = () => {
   const [open, setOpen] = useState(false);
-  const { formData, errors, handleInputChange, resetForm, handleSubmit } = useBannerForm();
+  const { formData, errors, handleInputChange, handleFileChange, resetForm, handleSubmit } = useBannerForm();
 
   const handleClose = () => {
     setOpen(false);
@@ -36,7 +36,7 @@ const CreateBanner = () => {
                 placeholder="Enter banner heading"
                 value={formData.heading}
                 onChange={handleInputChange}
-                error={errors.heading} // Display validation error
+                error={errors.heading}
               />
 
               <Textarea
@@ -47,17 +47,16 @@ const CreateBanner = () => {
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={4}
-                error={errors.description} // Display validation error
+                error={errors.description}
               />
 
               <Input
-                id="image_url"
-                name="image_url"
-                label="Image URL"
-                placeholder="Enter image URL"
-                value={formData.image_url}
-                onChange={handleInputChange}
-                error={errors.image_url} // Display validation error
+                id="imageFile"
+                type="file"
+                name="imageFile"
+                label="Upload Image"
+                onChange={handleFileChange}
+                error={errors.imageFile}
               />
             </div>
 

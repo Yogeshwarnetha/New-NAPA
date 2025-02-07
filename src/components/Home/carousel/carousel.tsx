@@ -4,25 +4,20 @@ import { CarouselControls } from './carouselcontrols';
 
 export const images = [
   {
-    url: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447611/c6a0762c0c077ff422e6d38e3833be69_fx7vdm.jpg",
-    title: "Lorem ipsum dolor sit amet",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+    url: "https://res.cloudinary.com/dil15oc7x/image/upload/v1738836810/2c592bc8eac6a0097cf5119ffe615dc3_idyl3t.jpg",
+    title: "NAPA Delaware Chapter Launch",
+    description: ""
   },
   {
-    url: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447611/9555049f6a31eb7171d97ac5f1c2b32a_kbludh.jpg",
-    title: "Lorem ipsum dolor sit amet",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+    url: "https://res.cloudinary.com/dil15oc7x/image/upload/v1738836812/9c1c8a6dbbeebab3bc117741d7e1e3bc_pxvcvz.jpg",
+    title: "NAPA Markandeya Jayanthi Celebrations - Carolinas Chapter",
+    description: ""
   },
   {
-    url: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447610/5dc0ecb79c1d3c701b7ab0a996583229_x4384j.jpg",
-    title: "Lorem ipsum dolor sit amet",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+    url: "https://res.cloudinary.com/dil15oc7x/image/upload/v1738836812/4640b22066eeac03ab6b4c9269c86acf_p05ftv.jpg",
+    title: "NAPA Markandeya Jayanthi Celebrations - Carolinas Chapter",
+    description: ""
   },
-  {
-    url: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447612/edb6b132797b7e7354ab6a35e2045666_xcqovr.jpg",
-    title: "Lorem ipsum dolor sit amet",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
-  }
 ];
 
 export const Carousel: React.FC = () => {

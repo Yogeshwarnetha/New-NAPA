@@ -30,6 +30,7 @@ import OperationalGuidelines from './components/Aboutus/operationalGuidelines';
 import PresidentMessageMain from './components/Leadership/presidentmessage';
 import MembersBoardMain from './components/Leadership/membersboard';
 import BoardCategoriesDashboard from './components/AdminDashboard/BoardCategory';
+import ChapterList from './components/chapters';
 
 function App() {
   const location = useLocation();
@@ -57,6 +58,7 @@ function App() {
         <Route path='/donations' element={<Donations/>} />
         <Route path='/president-message' element={<PresidentMessageMain/>} />
         <Route path='/members-board' element={<MembersBoardMain/>}/>
+        <Route path='/chapters' element={<ChapterList/>}/>
 
 
         <Route

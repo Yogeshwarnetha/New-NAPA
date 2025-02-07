@@ -55,7 +55,7 @@ const menuItems: MenuItemType[] = [
       { title: 'Members Board', path: '/members-board' },
       { title: 'Special Committees', path: '/services/cloud' },
       { title: 'NAPA Convention', path: '/services/web' },
-      { title: 'NAPA Chapters', path: '/services/web' },
+      { title: 'NAPA Chapters', path: '/chapters' },
     ],
   },
   {

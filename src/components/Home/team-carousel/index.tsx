@@ -87,18 +87,16 @@ const TeamCarousel = () => {
 
   return (
     <div 
-      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed"
+      className="relative w-full bg-cover bg-center bg-no-repeat bg-fixed"
       style={{
         backgroundImage: `url('https://res.cloudinary.com/dfhisjy9w/image/upload/v1730444616/image_s1trmd.png')`,
       }}
     >
-      <div className="relative px-4 py-16 mx-auto max-w-7xl">
+      <div className="relative px-4 pt-16 mx-auto max-w-7xl">
         <div className="text-center mb-12">
-          <p className="text-sm font-semibold tracking-wider text-[#2f327d] uppercase">
-            ALL VOLUNTEERS
-          </p>
-          <h2 className="mt-2 text-4xl font-bold text-[#2f327d]">
-            Our Members
+          <h2 className="mt-2 text-4xl font-bold text-[#ffffff]">
+          Advisory Council
+
           </h2>
         </div>
 
@@ -131,11 +129,11 @@ const TeamCarousel = () => {
           </button>
         </div>
 
-        <div className="text-center mt-8">
+        {/* <div className="text-center mt-8">
           <button className="text-[#2f327d] font-medium hover:text-blue-700 transition-colors">
             VIEW ALL
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

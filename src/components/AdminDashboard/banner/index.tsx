@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -16,61 +16,42 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import AdminDashboardLayout from "..";
 import { AiOutlineClose } from "react-icons/ai";
 import CreateBanner from "./create-banner";
-
-// Dummy data for Banners
-const dummyBanners = [
-  {
-    id: "1",
-    title: "New Year Sale",
-    description: "Get 50% off on all products this New Year!",
-    imageurl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-  },
-  {
-    id: "2",
-    title: "Black Friday Deals",
-    description: "Massive discounts on electronics and gadgets.",
-    imageurl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-  },
-  {
-    id: "3",
-    title: "Summer Collection",
-    description: "Check out our new arrivals for the summer season.",
-    imageurl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-  },
-];
-
-interface Banner {
-  id: string;
-  title: string;
-  description: string;
-  imageurl: string;
-}
+import { fetchBannerPagination } from "../../../apirequest/banner";
 
 const BannersDashboard = () => {
-  const [banners, setBanners] = useState<Banner[]>([]); // Initially empty
-  const [loading, setLoading] = useState<boolean>(true); // Set loading state
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [count] = useState(3);
-  const [openImageModal, setOpenImageModal] = useState(false); // State for image modal
-  const [selectedImage, setSelectedImage] = useState<string>(""); // State for selected image
+  const [count, setCount] = useState(0);
+  const [openImageModal, setOpenImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
-    setTimeout(() => {
-      setBanners(dummyBanners);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchBannerPagination(page, limit);
+        setBanners(data.data);
+        setCount(data.count);
+      } catch (error) {
+        console.error("Failed to fetch banners:", error);
+      }
       setLoading(false);
-    }, 2000);
-  }, []);
+    };
+    fetchData();
+  }, [page, limit]);
 
-  const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (_:any, newPage:any) => {
     setPage(newPage + 1);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChangeRowsPerPage = (event:any) => {
     setLimit(parseInt(event.target.value, 10));
+    setPage(1);
   };
 
-  const openImagePopup = (imageUrl: string) => {
+  const openImagePopup = (imageUrl:any) => {
     setSelectedImage(imageUrl);
     setOpenImageModal(true);
   };
@@ -79,20 +60,20 @@ const BannersDashboard = () => {
     setOpenImageModal(false);
   };
 
-  const Child = ({ data }: { data: Banner }) => (
-    <TableRow key={data.id}>
-      <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.title}</TableCell>
-      <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.description}</TableCell>
+  const Child = ({ data }:any) => (
+    <TableRow key={data?.id}>
+      <TableCell>{data?.heading}</TableCell>
+      <TableCell>{data?.description}</TableCell>
       <TableCell>
         <img
-          src={data.imageurl}
+          src={data?.images[0]}
           alt="Banner Image"
-          style={{ maxWidth: '100px', height: 'auto', cursor: 'pointer' }}
-          onClick={() => openImagePopup(data.imageurl)} // Handle image click
+          style={{ maxWidth: "100px", height: "auto", cursor: "pointer" }}
+          onClick={() => openImagePopup(data.imageurl)}
         />
       </TableCell>
       <TableCell>
-        <Button variant="contained" color="primary" sx={{mr:1}}>
+        <Button variant="contained" color="primary" sx={{ mr: 1 }}>
           <MdEdit fontSize={20} /> Edit
         </Button>
         <Button variant="contained" color="error">
@@ -112,39 +93,20 @@ const BannersDashboard = () => {
           <Typography variant="h6" sx={{ m: 2 }}>Banner Table</Typography>
           <TableContainer>
             {loading ? (
-              <Table className="shimmer-table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell className="shimmer-placeholder" style={{ width: "30%" }} />
-                    <TableCell className="shimmer-placeholder" style={{ width: "40%" }} />
-                    <TableCell className="shimmer-placeholder" style={{ width: "20%" }} />
-                    <TableCell className="shimmer-placeholder" style={{ width: "10%" }} />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[...Array(3)].map((_, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="shimmer-cell" />
-                      <TableCell className="shimmer-cell" />
-                      <TableCell className="shimmer-cell" />
-                      <TableCell className="shimmer-cell" />
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <Typography sx={{ textAlign: "center", py: 3 }}>Loading...</Typography>
             ) : (
-              // The actual data rendering
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 700, fontSize: 16, fontFamily: 'Jost' }}>Title</TableCell>
-                    <TableCell sx={{ fontWeight: 700, fontSize: 16, fontFamily: 'Jost' }}>Description</TableCell>
-                    <TableCell sx={{ fontWeight: 700, fontSize: 16, fontFamily: 'Jost' }}>Image</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>Image</TableCell>
+                    <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {banners.map((banner) => (
-                    <Child key={banner.id} data={banner} />
+                  {banners?.map((banner:any) => (
+                    <Child key={banner?.id} data={banner} />
                   ))}
                 </TableBody>
               </Table>
@@ -162,7 +124,6 @@ const BannersDashboard = () => {
         </Box>
       </Box>
 
-      {/* Image Popup Modal */}
       <Modal open={openImageModal} onClose={closeImagePopup}>
         <Box
           sx={{

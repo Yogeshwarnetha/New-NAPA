@@ -4,18 +4,20 @@ import { EventCard } from './eventcard';
 import { DonationSection } from "./donationsection";
 import ServiceCard from "./servicecard";
 import CarouselCards from "./carouselcards";
-import Stats from "./stats";
-import CallToAction from "./calltoaction";
+// import Stats from "./stats";
+// import CallToAction from "./calltoaction";
 import TeamCarousel from "./team-carousel";
-import EventsList from "./events/eventlist";
+// import EventsList from "./events/eventlist";
 import Ourcompany from "./ourcompany";
+import ExecutiveCommittee from "./team-carousel/ExecutiveCommittee";
+import HomeGallery from "./Gallery";
 
 
   const services = [
     {
       title: "Matrimony",
       description: "NAPA’s Matrimony Services connect Padmashali members with a trusted platform for finding compatible life partners. With culturally aligned profiles and privacy-focused features, we make matchmaking secure and meaningful.",
-      image: 'https://img.freepik.com/free-photo/affectionate-indian-couple-celebrating-propose-day-together_23-2151111012.jpg?t=st=1730441251~exp=1730444851~hmac=64aee5f54413341280834f43f9abee505c50772df2fdb5cc53d8e64867449a25&w=1380',
+      // image: 'https://nextgennew.s3.ap-south-1.amazonaws.com/banners/closeup-hands-with-henna-tattoos-indian-traditional-wedding-ceremony-kanyadan-ritual.jpg',
       imageAlt: "Matrimony Service"
     }
   ];
@@ -35,8 +37,8 @@ const Home = () => {
           
           <div className="grid md:grid-cols-3 gap-12">
             <EventCard
-              location="Annual Padmashali Cultural Fest"
-              description="A vibrant celebration of Padmashali heritage, featuring traditional dances, musical performances, and regional arts. This event brings families together from across North America to honor and preserve our cultural roots."
+              location="NAPA BOD Meeting at Austin"
+              description="The North American Padmashali Association (NAPA) Board of Directors Meeting will be held on February 8, 2025, from 10 AM to 5 PM CST at Doubletree Austin Northwest Arboretum."
               // icon={<Sprout className="w-full h-full" />}
             />
             
@@ -75,15 +77,19 @@ const Home = () => {
     <CarouselCards/>
     </section>
     <section>
-    <Stats />
-    <CallToAction />
+    {/* <Stats /> */}
+    {/* <CallToAction /> */}
     </section>
     <section>
       <TeamCarousel/>
+      <ExecutiveCommittee/>
     </section>
-    <section className="py-12 px-4 ">
+    {/* <section className="py-12 px-4 ">
     <EventsList />
 
+    </section> */}
+    <section>
+      <HomeGallery/>
     </section>
     </div>
   )

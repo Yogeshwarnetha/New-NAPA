@@ -1,4 +1,5 @@
 import React from 'react';
+import MatrimonyImage from '../../Images/Materimony.jpg'
 
 interface ServiceCardProps {
   title: string;
@@ -13,7 +14,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, im
     <div className={`flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} gap-8 mb-16 items-center`}>
       <div className="w-full md:w-1/2">
         <img 
-          src={image} 
+          src={MatrimonyImage} 
           alt={imageAlt}
           className="w-full h-auto rounded-lg shadow-lg object-cover"
         />
