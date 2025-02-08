@@ -10,17 +10,18 @@ interface TeamMember {
 }
 
 const teamMembers: TeamMember[] = [
+ 
   {
     id: 1,
-    name: "Baburao Samala",
-    role: "Advisory Council",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447037/Screenshot_20241017_111848_Gallery_migdbv.jpg",
-  },
-  {
-    id: 2,
     name: "Srinivas Sayini",
     role: "President",
     image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447036/Screenshot_20241017_174331_Gallery_i6wbxm.jpg",
+  },
+  {
+    id: 2,
+    name: "Prabhakar Konda",
+    role: "President Elect",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447035/Screenshot_20241017_172722_Gallery_rqlqpd.jpg",
   },
   {
     id: 3,
@@ -30,22 +31,40 @@ const teamMembers: TeamMember[] = [
   },
   {
     id: 4,
-    name: "Jyothi Karnati",
-    role: "Joint Treasurer",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447036/Screenshot_20241017_215832_Gallery_qzcxy2.jpg",
+    name: "Santhosh Ankam",
+    role: "Joint Secretary",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1739026351/sa_h5htjw.png",
   },
   {
     id: 5,
     name: "Mallik Ganji",
     role: "Treasurer",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447036/Screenshot_20241017_215555_Gallery_bb9mo7.jpg",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1739026351/mg_ldytpn.png",
   },
   {
     id: 6,
-    name: "Prabhakar Konda",
-    role: "President Elect",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447035/Screenshot_20241017_172722_Gallery_rqlqpd.jpg",
+    name: "Jyothi Karnati",
+    role: "Joint Treasurer",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447036/Screenshot_20241017_215832_Gallery_qzcxy2.jpg",
   },
+  {
+    id: 7,
+    name: "Vijay Gaddam",
+    role: "International Coordinator",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1739026351/VG_l6jdkx.png",
+  },
+  {
+    id: 8,
+    name: "Dr.Naveen Jonnalagadda",
+    role: "Past President Ex-Officio",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1739026350/Naveen_Jonnalagadda_safvml.png",
+  },
+  // {
+  //   id: 9,
+  //   name: "Raj Siripuram",
+  //   role: "Executive Member",
+  //   image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447035/Screenshot_20241017_172722_Gallery_rqlqpd.jpg",
+  // },
 ];
 
 const ExecutiveCommittee = () => {

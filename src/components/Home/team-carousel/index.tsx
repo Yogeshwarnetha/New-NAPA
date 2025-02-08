@@ -12,40 +12,23 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     id: 1,
-    name: "Baburao Samala",
-    role: "Advisory Council",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447037/Screenshot_20241017_111848_Gallery_migdbv.jpg",
+    name: "Dr.Hari Eppanapally",
+    role:"",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1739025642/Hari_ryw76h.png",
   },
   {
     id: 2,
-    name: "Srinivas Sayini",
-    role: "President",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447036/Screenshot_20241017_174331_Gallery_i6wbxm.jpg",
+    name: "Pradeep Samala",
+    role:"",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1739025642/Pradeep_m5dfod.png",
   },
   {
     id: 3,
-    name: "Sri Cherupally",
-    role: "General Secretary",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447035/Screenshot_20241017_112149_Gallery_ig9goc.jpg",
+    name: "Baburao Samala",
+    role:"",
+    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447037/Screenshot_20241017_111848_Gallery_migdbv.jpg",
   },
-  {
-    id: 4,
-    name: "Jyothi Karnati",
-    role: "Joint Treasurer",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447036/Screenshot_20241017_215832_Gallery_qzcxy2.jpg",
-  },
-  {
-    id: 5,
-    name: "Mallik Ganji",
-    role: "Treasurer",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447036/Screenshot_20241017_215555_Gallery_bb9mo7.jpg",
-  },
-  {
-    id: 6,
-    name: "Prabhakar Konda",
-    role: "President Elect",
-    image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447035/Screenshot_20241017_172722_Gallery_rqlqpd.jpg",
-  },
+ 
 ];
 
 const TeamCarousel = () => {

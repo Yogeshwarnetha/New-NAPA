@@ -3,16 +3,16 @@ import { useState } from "react";
 
 const HomeGallery = () => {
   const galleryImages = [
-    { url: "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba", title: "Modern Architecture" },
-    { url: "https://images.unsplash.com/photo-1682687221038-404670f01d03", title: "Urban Living" },
-    { url: "https://images.unsplash.com/photo-1682687220063-4742bd7fd538", title: "Nature Inspired" },
+    { url: "https://nextgennew.s3.ap-south-1.amazonaws.com/ebe9e87e342251469bb92338d884e3a0.png", title: "Modern Architecture" },
+    { url: "https://nextgennew.s3.ap-south-1.amazonaws.com/e76fff8cb3ec0f77978d88c987c4c0ba.png", title: "Urban Living" },
+    { url: "https://nextgennew.s3.ap-south-1.amazonaws.com/a45dd3cc8e398e639d9b469ad0edab63.png", title: "Nature Inspired" },
   ];
 
   const videos = [
-    { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", title: "Featured Video", duration: "3:32" },
-    { url: "https://www.youtube.com/watch?v=jNQXAC9IVRw", title: "Behind the Scenes 1", duration: "0:18" },
-    { url: "https://www.youtube.com/watch?v=Y8Wp3dafaMQ", title: "Behind the Scenes 2", duration: "1:03" },
-    { url: "https://www.youtube.com/watch?v=LXb3EKWsInQ", title: "Behind the Scenes 3", duration: "1:36" },
+    { url: "https://youtu.be/5whBUGgQUrY?si=33Z0WLWc54DQT_PS", title: "Featured Video", duration: "3:32" },
+    { url: "https://youtu.be/oM2ceTfgsi4?si=zQOGvq5X3yk5ebBB", title: "Behind the Scenes 1", duration: "0:18" },
+    { url: "https://youtu.be/BNCaG6rZHgM?si=VtYeykMzBvIb6aNs", title: "Behind the Scenes 2", duration: "1:03" },
+    { url: "https://youtu.be/m6upY50Fg2I?si=3OSYPIDbySyJBNb2", title: "Behind the Scenes 3", duration: "1:36" },
   ];
 
   const [activeVideo, setActiveVideo] = useState(videos[0]);
