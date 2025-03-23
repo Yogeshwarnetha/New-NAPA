@@ -54,8 +54,8 @@ const menuItems: MenuItemType[] = [
     submenu: [
       { title: 'President Message', path: '/president-message' },
       { title: 'Members Board', path: '/members-board' },
-      { title: 'Special Committees', path: '/services/cloud' },
-      { title: 'NAPA Convention', path: '/services/web' },
+      { title: 'Special Committees', path: '' },
+      { title: 'NAPA Convention', path: '' },
       { title: 'NAPA Chapters', path: '/chapters' },
     ],
   },

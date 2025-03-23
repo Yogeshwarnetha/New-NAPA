@@ -197,7 +197,7 @@ export const fetchAdvisoryCouncilPagination = async (page: number, limit: number
   
     try {
         const response = await axios.get(
-            `${origin}/api/v1/chapter-leads/pagination?page=${page}&limit=${limit}`,
+            `${origin}/api/v1/chapter-directors/pagination?page=${page}&limit=${limit}`,
             {
                 headers: {
                     // Authorization: `Bearer ${token}`,
@@ -214,7 +214,7 @@ export const fetchAdvisoryCouncilPagination = async (page: number, limit: number
 
   export const fetchChapterDirectors = async () => {
     try {
-      const response = await axios.get(`${origin}/api/v1/chapter-leads`, {
+      const response = await axios.get(`${origin}/api/v1/chapter-directors`, {
         headers: {
           "Content-Type": "application/json",
         },

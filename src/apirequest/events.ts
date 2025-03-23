@@ -38,4 +38,16 @@ export const createEvent = async (data: FormData) => {
   };
   
   
-  
+  export const fetchEvents = async () => {
+    try {
+      const response = await axios.get(`${origin}/api/v1/events`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data; 
+    } catch (err: any) {
+      console.error("Error fetching Events:", err.message);
+      throw err;
+    }
+  };

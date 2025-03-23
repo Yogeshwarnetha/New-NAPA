@@ -36,6 +36,7 @@ import CreateChapterLeadsDashboard from './components/AdminDashboard/createchapt
 import { ChapterDetail } from './components/chapters/chapter';
 import CreateChapterDirectors from './components/AdminDashboard/createchapterdirectors/createchapterdirectors';
 import CreateChapterDirectorsDashboard from './components/AdminDashboard/createchapterdirectors';
+import { EventDetailPage } from './components/Home/eventDetail';
 
 function App() {
   const location = useLocation();
@@ -65,6 +66,7 @@ function App() {
         <Route path='/members-board' element={<MembersBoardMain />} />
         <Route path='/chapters' element={<ChapterList />} />
         <Route path="/chapter/:id" element={<ChapterDetail />} />
+        <Route path="/event/:id" element={<EventDetailPage />} />
 
 
 
