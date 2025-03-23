@@ -1,36 +1,41 @@
 import React, { useState } from 'react';
-import { Send, Loader2, MapPin, Phone, Mail, Clock, Heart, Users, Globe } from 'lucide-react';
+import { Send, Loader2, MapPin, Phone, Mail, Heart, Users, Globe } from 'lucide-react';
+import { createContactus } from '../../apirequest/contactus';
 
-interface FormData {
-    name: string;
+interface ContactFormData {
+    fullName: string;
     email: string;
     subject: string;
     message: string;
-    involvement: string;
 }
 
 export function Contact() {
-    const [formData, setFormData] = useState<FormData>({
-        name: '',
+    const [data, setData] = useState<ContactFormData>({
+        fullName: '',
         email: '',
         subject: '',
         message: '',
-        involvement: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setIsSubmitting(false);
-        setFormData({ name: '', email: '', subject: '', message: '', involvement: '' });
-        alert('Thank you for reaching out! We\'ll get back to you soon.');
+
+        try {
+            await createContactus(data);
+            alert("Thank you for reaching out! We'll get back to you soon.");
+        } catch (error) {
+            console.error("Error submitting contact form:", error);
+            alert("Something went wrong. Please try again later.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setData(prev => ({ ...prev, [name]: value }));
     };
 
     const impactStats = [
@@ -72,14 +77,14 @@ export function Contact() {
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                         <div>
-                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
                                                 Your Name
                                             </label>
                                             <input
                                                 type="text"
-                                                id="name"
-                                                name="name"
-                                                value={formData.name}
+                                                id="fullName"
+                                                name="fullName"
+                                                value={data.fullName}
                                                 onChange={handleChange}
                                                 required
                                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm py-3 px-2"
@@ -93,14 +98,14 @@ export function Contact() {
                                                 type="email"
                                                 id="email"
                                                 name="email"
-                                                value={formData.email}
+                                                value={data.email}
                                                 onChange={handleChange}
                                                 required
                                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm py-3 px-2"
                                             />
                                         </div>
                                     </div>
-                                    <div>
+                                    {/* <div>
                                         <label htmlFor="involvement" className="block text-sm font-medium text-gray-700">
                                             How would you like to get involved?
                                         </label>
@@ -118,7 +123,7 @@ export function Contact() {
                                             <option value="partner">Become a Partner</option>
                                             <option value="other">Other</option>
                                         </select>
-                                    </div>
+                                    </div> */}
                                     <div>
                                         <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
                                             Subject
@@ -127,7 +132,7 @@ export function Contact() {
                                             type="text"
                                             id="subject"
                                             name="subject"
-                                            value={formData.subject}
+                                            value={data.subject}
                                             onChange={handleChange}
                                             required
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm py-3 px-2"
@@ -141,7 +146,7 @@ export function Contact() {
                                             id="message"
                                             name="message"
                                             rows={4}
-                                            value={formData.message}
+                                            value={data.message}
                                             onChange={handleChange}
                                             required
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm py-3 px-2"
@@ -175,9 +180,9 @@ export function Contact() {
                         <div className="space-y-8">
                             {/* Donation CTA */}
                             <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg shadow-xl p-8 text-white">
-                                <div className="flex items-center justify-center mb-6">
+                                {/* <div className="flex items-center justify-center mb-6">
                                     <Heart className="h-12 w-12 text-pink-300" />
-                                </div>
+                                </div> */}
                                 <h3 className="text-2xl font-bold text-center mb-4">Make a Difference Today</h3>
                                 <p className="text-indigo-100 text-center mb-6">
                                     Your support can help us continue our mission to create positive change in communities worldwide.
@@ -219,7 +224,7 @@ export function Contact() {
                                             <p className="text-sm text-gray-600">help@hopefoundation.org</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-start">
+                                    {/* <div className="flex items-start">
                                         <Clock className="h-6 w-6 text-indigo-600 mt-1 flex-shrink-0" />
                                         <div className="ml-3">
                                             <p className="text-sm font-medium text-gray-900">Office Hours</p>
@@ -229,7 +234,7 @@ export function Contact() {
                                                 Sunday: Closed
                                             </p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

@@ -14,6 +14,7 @@ import {
 import { MdDelete, MdEdit } from "react-icons/md";
 import AdminDashboardLayout from "..";  
 import CreateNews from "./create-news";
+import { fetchNewsPagination } from "../../../apirequest/news";
 
 // Dummy data for News
 const dummyNews = [
@@ -48,7 +49,7 @@ const dummyNews = [
 
 interface NewsItem {
   id: string;
-  imageUrl: string;
+  images: string[];
   heading: string;
   date: string;
   time: string;
@@ -61,14 +62,22 @@ const NewsDashboard = () => {
   const [loading, setLoading] = useState<boolean>(true); // Set loading state
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [count] = useState(3);
+  const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setNews(dummyNews);
-      setLoading(false); 
-    }, 2000);
-  }, []);
+useEffect(() => {
+       const fetchData = async () => {
+         setLoading(true);
+         try {
+           const data = await fetchNewsPagination(page, limit);
+           setNews(data.data);
+           setCount(data.count);
+         } catch (error) {
+           console.error("Failed to fetch banners:", error);
+         }
+         setLoading(false);
+       };
+       fetchData();
+     }, [page, limit]);
 
   const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage + 1);
@@ -85,7 +94,7 @@ const NewsDashboard = () => {
       <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.time}</TableCell>
       <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.venue}</TableCell>
       <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.description}</TableCell>
-      <img src={data.imageUrl} alt="News Image" style={{ maxWidth: '100px', height: 'auto' }} />
+      <img src={data.images[0]} alt="News Image" style={{ maxWidth: '100px', height: 'auto' }} />
       <TableCell>
         <Button variant="contained" color="primary">
           <MdEdit fontSize={20} /> Edit

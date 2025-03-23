@@ -1,5 +1,4 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
 
 const HomeGallery = () => {
   const galleryImages = [
@@ -8,17 +7,11 @@ const HomeGallery = () => {
     { url: "https://nextgennew.s3.ap-south-1.amazonaws.com/a45dd3cc8e398e639d9b469ad0edab63.png", title: "Nature Inspired" },
   ];
 
-  const videos = [
-    { url: "https://youtu.be/5whBUGgQUrY?si=33Z0WLWc54DQT_PS", title: "Featured Video", duration: "3:32" },
-    { url: "https://youtu.be/oM2ceTfgsi4?si=zQOGvq5X3yk5ebBB", title: "Behind the Scenes 1", duration: "0:18" },
-    { url: "https://youtu.be/BNCaG6rZHgM?si=VtYeykMzBvIb6aNs", title: "Behind the Scenes 2", duration: "1:03" },
-    { url: "https://youtu.be/m6upY50Fg2I?si=3OSYPIDbySyJBNb2", title: "Behind the Scenes 3", duration: "1:36" },
-  ];
+  
 
-  const [activeVideo, setActiveVideo] = useState(videos[0]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className=" bg-gray-50">
       {/* Gallery Section */}
       <section className="py-16 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
@@ -55,46 +48,7 @@ const HomeGallery = () => {
         </div>
       </section>
 
-      {/* Video Section */}
-      <section className="py-16 px-4 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Featured Videos</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Watch our latest videos showcasing our projects and behind-the-scenes content.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Embedded Video Player */}
-            <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
-              <iframe
-                src={`${activeVideo.url.replace("watch?v=", "embed/")}?autoplay=0&rel=0&modestbranding=1`}
-                title={activeVideo.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full"
-              />
-            </div>
-
-            {/* Video List (Without Thumbnails) */}
-            <div className="space-y-4">
-              {videos.map((video) => (
-                <div
-                  key={video.url}
-                  onClick={() => setActiveVideo(video)}
-                  className={`p-4 rounded-lg cursor-pointer transition-colors ${
-                    activeVideo.url === video.url ? "bg-gray-700 ring-2 ring-blue-500" : "bg-gray-800 hover:bg-gray-700"
-                  }`}
-                >
-                  <h4 className="font-medium">{video.title}</h4>
-                  <p className="text-sm text-gray-400">{video.duration}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+     
     </div>
   );
 };

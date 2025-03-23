@@ -13,6 +13,7 @@ const CreateEvent = () => {
     formData,
     errors,
     handleInputChange,
+    handleFileChange,
     setDate,
     setTime,
     resetForm,
@@ -77,6 +78,15 @@ const CreateEvent = () => {
                 onDateChange={setDate}
                 onTimeChange={setTime}
               />
+
+              <Input
+                id="imageFile"
+                type="file"
+                name="imageFile"
+                label="Upload Image"
+                onChange={handleFileChange}
+                error={errors.imageFile}
+              />
             </div>
 
             <div className="flex justify-end space-x-4 pt-4">
@@ -92,6 +102,6 @@ const CreateEvent = () => {
       </Modal>
     </>
   );
-}
+};
 
-export default CreateEvent
+export default CreateEvent;

@@ -9,7 +9,7 @@ export const adminPostBoardCategoryData = async (data:any) =>{
         const response = await axios(
             {
                 method: "POST",
-                url:`${origin}/api/v1/admin/board-category`,
+                url:`${origin}/api/v1/board-category`,
                 headers :{
                     // Authorization:`Bearer ${token}`,
                     "Content-Type" : "application/json"

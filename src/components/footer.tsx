@@ -7,13 +7,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Company Info */}
           <div>
-            <img 
-              src="https://res.cloudinary.com/dfhisjy9w/image/upload/v1730445448/Link_n0aqeh.png" 
-              alt="Company Logo" 
+            <img
+              src="https://res.cloudinary.com/dfhisjy9w/image/upload/v1730445448/Link_n0aqeh.png"
+              alt="Company Logo"
               className="h-12 mb-6"
             />
             <p className="text-gray-400 mb-6">
-            Padmashalis are a Telugu speaking community with roots tracing back to Markandeya Maharishi. We are the third largest community and form 12% of the population of Andhra Pradesh and Telangana.
+              Padmashalis are a Telugu speaking community with roots tracing back to Markandeya Maharishi. We are the third largest community and form 12% of the population of Andhra Pradesh and Telangana.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
@@ -40,15 +40,12 @@ const Footer = () => {
               <div className="space-y-2">
                 <div className="flex items-center text-gray-400">
                   <Phone className="w-4 h-4 mr-2" />
-                  <span>New York : 1800-2355-2356</span>
+                  <span>+1(703)599 0008</span>
                 </div>
-                <div className="flex items-center text-gray-400">
-                  <Phone className="w-4 h-4 mr-2" />
-                  <span>London : 020-1455-236-34</span>
-                </div>
+
                 <div className="flex items-center text-gray-400">
                   <Mail className="w-4 h-4 mr-2" />
-                  <span>contact@charity.theme</span>
+                  <span>  info@napausa.org</span>
                 </div>
               </div>
             </div>
@@ -87,7 +84,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Bottom Bar */}
       <div className="border-t border-gray-800">
         <div className="container mx-auto px-4 py-6">

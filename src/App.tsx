@@ -31,6 +31,11 @@ import PresidentMessageMain from './components/Leadership/presidentmessage';
 import MembersBoardMain from './components/Leadership/membersboard';
 import BoardCategoriesDashboard from './components/AdminDashboard/BoardCategory';
 import ChapterList from './components/chapters';
+import CreateChaptersDashboard from './components/AdminDashboard/createchapters';
+import CreateChapterLeadsDashboard from './components/AdminDashboard/createchapterleads';
+import { ChapterDetail } from './components/chapters/chapter';
+import CreateChapterDirectors from './components/AdminDashboard/createchapterdirectors/createchapterdirectors';
+import CreateChapterDirectorsDashboard from './components/AdminDashboard/createchapterdirectors';
 
 function App() {
   const location = useLocation();
@@ -41,48 +46,54 @@ function App() {
     <>
       {/* Conditionally render Navbar */}
       {!isAdminPath && <Navbar />}
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/news" element={<NewsSection />} />
         <Route path="/contact" element={<Contact />} />
         <Route path='/introduction' element={<AboutusIntroduction />} />
-        <Route path='/vision-missions' element={<Visionandmission/>} />
-        <Route path='/by-laws' element={<ByLaws/>}/>
-        <Route path='/operationalguidelines' element={<OperationalGuidelines/>} />
-        <Route path='/gallery' element={<GalleryMediaSection/>} />
-        <Route path='/video-gallery' element={<VideoGallery/>} />
-        <Route path='/register' element={<Registration/>} />
-        <Route path='/login' element={<LoginPage/>} />
-        <Route path='/donations' element={<Donations/>} />
-        <Route path='/president-message' element={<PresidentMessageMain/>} />
-        <Route path='/members-board' element={<MembersBoardMain/>}/>
-        <Route path='/chapters' element={<ChapterList/>}/>
+        <Route path='/vision-missions' element={<Visionandmission />} />
+        <Route path='/by-laws' element={<ByLaws />} />
+        <Route path='/operationalguidelines' element={<OperationalGuidelines />} />
+        <Route path='/gallery' element={<GalleryMediaSection />} />
+        <Route path='/video-gallery' element={<VideoGallery />} />
+        <Route path='/register' element={<Registration />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/donations' element={<Donations />} />
+        <Route path='/president-message' element={<PresidentMessageMain />} />
+        <Route path='/members-board' element={<MembersBoardMain />} />
+        <Route path='/chapters' element={<ChapterList />} />
+        <Route path="/chapter/:id" element={<ChapterDetail />} />
+
 
 
         <Route
           path="/admin"
           element={
             <AdminDashboardLayout>
-              
-              <Dashboard/>
+
+              <Dashboard />
             </AdminDashboardLayout>
           }
         />
-        <Route path='/admin/events' element={<Events/>}/>
-        <Route path='/admin/projects' element={<ProjectsDashboard/>}/>
-        <Route path='/admin/news' element={<NewsDashboard/>}/>
-        <Route path='/admin/contact' element={<ContactUsDashboard/>}/>
-        <Route path='/admin/banner-carousels' element={<BannersDashboard/>}/>
-        <Route path='/admin/president-message' element={<PresidentMessage/>}/>
-        <Route path='/admin/our-team' element={<TeamDashboard/>}/>
-        <Route path='/admin/board-category' element={<BoardCategoriesDashboard/>}/>
-        <Route path='/admin/members-board' element={<BoardMembersDashboard/>}/>
-        <Route path='/admin/special-committees' element={<TeamDashboard/>}/>
-        <Route path='/admin/users' element={<UsersDashboard/>}/>
+        <Route path='/admin/events' element={<Events />} />
+        <Route path='/admin/projects' element={<ProjectsDashboard />} />
+        <Route path='/admin/news' element={<NewsDashboard />} />
+        <Route path='/admin/contact' element={<ContactUsDashboard />} />
+        <Route path='/admin/banner-carousels' element={<BannersDashboard />} />
+        <Route path='/admin/president-message' element={<PresidentMessage />} />
+        <Route path='/admin/our-team' element={<TeamDashboard />} />
+        <Route path='/admin/board-category' element={<BoardCategoriesDashboard />} />
+        <Route path='/admin/members-board' element={<BoardMembersDashboard />} />
+        <Route path='/admin/special-committees' element={<TeamDashboard />} />
+        <Route path='/admin/users' element={<UsersDashboard />} />
+        <Route path='/admin/create-chapters' element={<CreateChaptersDashboard />} />
+        <Route path='/admin/create-chapterleads' element={<CreateChapterLeadsDashboard />} />
+        <Route path='/admin/create-chapterdirectors' element={<CreateChapterDirectorsDashboard />} />
 
-        <Route path='/admin/login' element={<AdminLogin/>}/>
+
+        <Route path='/admin/login' element={<AdminLogin />} />
 
 
       </Routes>

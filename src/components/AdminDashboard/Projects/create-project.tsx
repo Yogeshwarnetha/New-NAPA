@@ -12,6 +12,7 @@ const CreateProject = () => {
     formData,
     errors,
     handleInputChange,
+    handleFileChange,
     resetForm,
     handleSubmit,
   } = useProjectForm();
@@ -37,15 +38,17 @@ const CreateProject = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
-              <Input
-                id="imageUrl"
-                name="imageUrl"
-                label="Project Image URL"
-                placeholder="Enter image URL"
-                value={formData.imageUrl}
-                onChange={handleInputChange}
-                error={errors.imageUrl}
+              {/* Image File Upload */}
+              <label className="block text-sm font-medium text-gray-700">Project Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
               />
+              {errors.imageFile && <p className="text-red-500 text-sm">{errors.imageFile}</p>}
+
+  
 
               <Input
                 id="heading"
@@ -67,16 +70,13 @@ const CreateProject = () => {
                 rows={4}
                 error={errors.description}
               />
-
             </div>
 
             <div className="flex justify-end space-x-4 pt-4">
               <Button type="button" variant="secondary" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button type="submit">
-                Create Project
-              </Button>
+              <Button type="submit">Create Project</Button>
             </div>
           </form>
         </div>

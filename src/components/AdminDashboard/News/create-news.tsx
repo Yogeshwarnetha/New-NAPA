@@ -3,13 +3,24 @@ import { PlusCircle } from 'lucide-react';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Modal } from '../../ui/Modal';
-import ReactQuill from 'react-quill'; // Rich text editor library
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { DateTimePicker } from '../../DateTimePicker';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { useNewsForm } from '../../../hooks/useNewsForm';
 
 const CreateNews = () => {
   const [open, setOpen] = useState(false);
-  const { formData, errors, handleInputChange, handleDescriptionChange, resetForm, handleSubmit } = useNewsForm();
+  const {
+    formData,
+    errors,
+    handleInputChange,
+    handleDescriptionChange,
+    resetForm,
+    handleSubmit,
+    handleFileChange,
+    setDate,
+    setTime,
+  } = useNewsForm();
 
   const handleClose = () => {
     setOpen(false);
@@ -34,15 +45,21 @@ const CreateNews = () => {
           <div className="max-h-[60vh] overflow-y-auto p-4 border border-gray-300 rounded-md">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
-                <Input
-                  id="imageUrl"
-                  name="imageUrl"
-                  label="News Image URL"
-                  placeholder="Enter image URL"
-                  value={formData.imageUrl}
-                  onChange={handleInputChange}
-                  error={errors.imageUrl}
-                />
+                {/* Image Upload */}
+                <div>
+                  <label htmlFor="imageUpload" className="block text-sm font-medium text-gray-700">
+                    Upload News Image
+                  </label>
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    name="imageUpload"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  />
+                  {errors.imageFile && <p className="text-red-500 text-sm mt-1">{errors.imageFile}</p>}
+                </div>
 
                 <Input
                   id="heading"
@@ -54,24 +71,11 @@ const CreateNews = () => {
                   error={errors.heading}
                 />
 
-                <Input
-                  id="date"
-                  name="date"
-                  label="News Date"
-                  placeholder="Enter news date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  error={errors.date}
-                />
-
-                <Input
-                  id="time"
-                  name="time"
-                  label="News Time"
-                  placeholder="Enter news time"
-                  value={formData.time}
-                  onChange={handleInputChange}
-                  error={errors.time}
+                <DateTimePicker
+                  date={formData.date}
+                  time={formData.time}
+                  onDateChange={setDate}
+                  onTimeChange={setTime}
                 />
 
                 <Input

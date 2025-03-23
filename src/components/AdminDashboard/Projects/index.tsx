@@ -16,34 +16,13 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import AdminDashboardLayout from "..";
 import CreateEvent from "./create-project";
 import { AiOutlineClose } from "react-icons/ai";
-
-// Dummy data for Events
-const dummyProjects = [
-  {
-    id: "1",
-    heading: "Annual Tech Conference",
-    description: "A conference on the latest trends in tech.",
-    imageurl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-  },
-  {
-    id: "2",
-    heading: "Music Festival",
-    description: "A festival featuring top artists from around the world.",
-    imageurl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-  },
-  {
-    id: "3",
-    heading: "Charity Run",
-    description: "A charity run to raise funds for education.",
-    imageurl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-  },
-];
+import { fetchProjectPagination } from "../../../apirequest/projects";
 
 interface Event {
   id: string;
   heading: string;
   description: string;
-  imageurl: string;
+  images: string[];
 }
 
 const ProjectsDashboard = () => {
@@ -51,16 +30,24 @@ const ProjectsDashboard = () => {
   const [loading, setLoading] = useState<boolean>(true); // Set loading state
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [count] = useState(3);
+  const [count, setCount] = useState(0);
   const [openImageModal, setOpenImageModal] = useState(false); // State for image modal
   const [selectedImage, setSelectedImage] = useState<string>(""); // State for selected image
 
-  useEffect(() => {
-    setTimeout(() => {
-      setProjects(dummyProjects);
-      setLoading(false);
-    }, 2000);
-  }, []);
+   useEffect(() => {
+       const fetchData = async () => {
+         setLoading(true);
+         try {
+           const data = await fetchProjectPagination(page, limit);
+           setProjects(data.data);
+           setCount(data.count);
+         } catch (error) {
+           console.error("Failed to fetch banners:", error);
+         }
+         setLoading(false);
+       };
+       fetchData();
+     }, [page, limit]);
 
   const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage + 1);
@@ -85,10 +72,10 @@ const ProjectsDashboard = () => {
       <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.description}</TableCell>
       <TableCell>
         <img
-          src={data.imageurl}
+          src={data.images[0]}
           alt="Project Image"
           style={{ maxWidth: '100px', height: 'auto', cursor: 'pointer' }}
-          onClick={() => openImagePopup(data.imageurl)} // Handle image click
+          onClick={() => openImagePopup(data.images[0])}
         />
       </TableCell>
       <TableCell>

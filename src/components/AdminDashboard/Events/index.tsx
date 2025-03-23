@@ -16,38 +16,11 @@ import {
 import { MdDelete, MdEdit } from "react-icons/md";
 import AdminDashboardLayout from "..";
 import CreateEvent from "./create-event";
-
-// Dummy data for Events
-const dummyEvents = [
-  {
-    id: "1",
-    heading: "Annual Tech Conference",
-    description: "A conference on the latest trends in tech.",
-    date: "2024-12-15",
-    time: "10:00 AM",
-    place: "Tech City Convention Center",
-  },
-  {
-    id: "2",
-    heading: "Music Festival",
-    description: "A festival featuring top artists from around the world.",
-    date: "2024-12-20",
-    time: "5:00 PM",
-    place: "Stadium Park",
-  },
-  {
-    id: "3",
-    heading: "Charity Run",
-    description: "A charity run to raise funds for education.",
-    date: "2024-12-25",
-    time: "8:00 AM",
-    place: "Central Park",
-  },
-];
+import { fetchEventsPagination } from "../../../apirequest/events";
 
 interface Event {
   id: string;
-  heading: string;
+  name: string;
   description: string;
   date: string;
   time: string;
@@ -59,14 +32,22 @@ const EventsDashboard = () => {
   const [loading, setLoading] = useState<boolean>(true); // Set loading state
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [count] = useState(3);
+  const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setEvents(dummyEvents);
-      setLoading(false); 
-    }, 2000);
-  }, []);
+ useEffect(() => {
+     const fetchData = async () => {
+       setLoading(true);
+       try {
+         const data = await fetchEventsPagination(page, limit);
+         setEvents(data.data);
+         setCount(data.count);
+       } catch (error) {
+         console.error("Failed to fetch banners:", error);
+       }
+       setLoading(false);
+     };
+     fetchData();
+   }, [page, limit]);
 
   const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage + 1);
@@ -78,7 +59,7 @@ const EventsDashboard = () => {
 
   const Child = ({ data }: { data: Event }) => (
     <TableRow key={data.id}>
-      <TableCell sx={{fontFamily:'Poppins', fontSize:14}}>{data.heading}</TableCell>
+      <TableCell sx={{fontFamily:'Poppins', fontSize:14}}>{data.name}</TableCell>
       <TableCell sx={{fontFamily:'Poppins', fontSize:14}}>{data.description}</TableCell>
       <TableCell sx={{fontFamily:'Poppins', fontSize:14}}>{data.date}</TableCell>
       <TableCell sx={{fontFamily:'Poppins', fontSize:14}}>{data.time}</TableCell>

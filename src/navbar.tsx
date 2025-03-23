@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {jwtDecode} from 'jwt-decode'; // Import jwt-decode
+import { jwtDecode } from 'jwt-decode'; // Import jwt-decode
 import mainlogo from './Images/logo.png';
 import Cookies from 'js-cookie';
 
@@ -22,6 +22,7 @@ import {
 type SubMenuItem = {
   title: string;
   path: string;
+  external?: boolean;
 };
 
 type MenuItemType = {
@@ -67,7 +68,7 @@ const menuItems: MenuItemType[] = [
     title: 'Services',
     icon: <BookOpen className="w-5 h-5" />,
     submenu: [
-      { title: 'Matrimony', path: 'https://matrimony.napausa.org/' },
+      { title: 'Matrimony', path: 'https://matrimony.napausa.org/', external: true },
       { title: 'Donations', path: '/resources/docs' },
     ],
   },
@@ -189,24 +190,24 @@ const Navbar = () => {
           </div>
           {/* Login & Register */}
           <div className="flex space-x-4 border-l border-gray-600 pl-4">
-  {userToken ? (
-    <>
-      <span className="text-sm">Welcome, {userName}</span>
-      <button onClick={logout} className="text-sm hover:text-blue-400">
-        Logout
-      </button>
-    </>
-  ) : (
-    <>
-      <a href="/login" className="text-sm hover:text-blue-400">
-        Login
-      </a>
-      <a href="/register" className="text-sm hover:text-blue-400">
-        Register
-      </a>
-    </>
-  )}
-</div>
+            {userToken ? (
+              <>
+                <span className="text-sm">Welcome, {userName}</span>
+                <button onClick={logout} className="text-sm hover:text-blue-400">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <a href="/login" className="text-sm hover:text-blue-400">
+                  Login
+                </a>
+                <a href="/register" className="text-sm hover:text-blue-400">
+                  Register
+                </a>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -246,13 +247,25 @@ const Navbar = () => {
                   {item.submenu && activeSubMenu === item.title && (
                     <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-xl w-56 font-sans">
                       {item.submenu.map((subItem, subIndex) => (
-                        <a
-                          key={subIndex}
-                          href={subItem.path}
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        >
-                          {subItem.title}
-                        </a>
+                        subItem.external ? (
+                          <a
+                            key={subIndex}
+                            href={subItem.path}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          >
+                            {subItem.title}
+                          </a>
+                        ) : (
+                          <a
+                            key={subIndex}
+                            href={subItem.path}
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          >
+                            {subItem.title}
+                          </a>
+                        )
                       ))}
                     </div>
                   )}
@@ -262,10 +275,10 @@ const Navbar = () => {
 
             {/* Donate Button */}
             <div className="hidden lg:flex items-center justify-center w-1/6 lg:w-[15%]">
-            <a href='/donations'>
-              <button className="px-4 py-2 bg-indigo-600 text-white hover:bg-purple-700 transition-colors">
-                Donate
-              </button>
+              <a href='/donations'>
+                <button className="px-4 py-2 bg-indigo-600 text-white hover:bg-purple-700 transition-colors">
+                  Donate
+                </button>
               </a>
             </div>
 
@@ -290,9 +303,8 @@ const Navbar = () => {
         />
       )}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white transform ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        } transition-transform duration-300 ease-in-out z-50 lg:hidden`}
+        className={`fixed top-0 right-0 h-full w-80 bg-white transform ${isOpen ? 'translate-x-0' : 'translate-x-full'
+          } transition-transform duration-300 ease-in-out z-50 lg:hidden`}
       >
         <div className="flex justify-between items-center p-4 border-b">
           <span className="text-xl font-semibold text-blue-600">Menu</span>

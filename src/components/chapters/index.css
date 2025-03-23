@@ -1,0 +1,30 @@
+.banner-title-heading1 {
+    font-size: clamp(24px, 5vw, 36px); /* Responsive font size */
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: white;
+    margin-bottom: 10px;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px; /* Add letter spacing for better readability */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.banner-title-heading2 {
+    font-size: clamp(32px, 6vw, 48px); /* Responsive font size */
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: white;
+    margin-top: 10px;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px; /* Add letter spacing for better readability */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    -webkit-text-stroke: 2px yellow; /* Border for WebKit browsers (Chrome, Safari) */
+    -moz-text-stroke: 2px yellow; /* Border for Firefox */
+    text-stroke: 2px yellow; /* Standard property (not widely supported yet) */
+}

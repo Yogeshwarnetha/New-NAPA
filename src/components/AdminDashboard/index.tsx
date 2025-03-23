@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { CiMenuFries } from "react-icons/ci";
-import { FaCalendarAlt, FaProjectDiagram, FaPhotoVideo, FaNewspaper, FaAddressBook, FaDonate, FaEnvelopeOpenText, FaUsers, FaImages, FaUserTie, FaUsersCog, FaUserPlus, FaComments, FaInfoCircle, FaBullhorn, FaChevronRight } from "react-icons/fa";
+import { FaCalendarAlt, FaProjectDiagram, FaPhotoVideo, FaNewspaper, FaAddressBook, FaDonate, FaEnvelopeOpenText, FaUsers, FaImages, FaUserTie, FaUsersCog, FaUserPlus, FaInfoCircle, FaChevronRight, FaBuilding, FaUserShield } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Import the navigate function for redirection
 import Cookies from "js-cookie"; // Import Cookies to read and remove cookies
 import './index.css';
@@ -13,18 +13,18 @@ const adminList = [
   { id: 3, text: "Media", route: "/admin/media", icon: <FaPhotoVideo /> },
   { id: 4, text: "News", route: "/admin/news", icon: <FaNewspaper /> },
   { id: 5, text: "Contact Details", route: "/admin/contact", icon: <FaAddressBook /> },
-  { id: 7, text: "Donations", route: "/admin/donations", icon: <FaDonate /> },
-  { id: 9, text: "President Message", route: "/admin/president-message", icon: <FaEnvelopeOpenText /> },
-  { id: 10, text: "Users", route: "/admin/users", icon: <FaUsers /> },
-  { id: 11, text: "Banner Carousels", route: "/admin/banner-carousels", icon: <FaImages /> },
-  { id: 12, text: "Our Team", route: "/admin/our-team", icon: <FaUsers /> },
-  { id: 21, text: "Board Category", route: "/admin/board-category", icon: <FaUserTie/>},
-  { id: 13, text: "Members Board", route: "/admin/members-board", icon: <FaUserTie /> },
-  { id: 16, text: "Special Committees", route: "/admin/special-committees", icon: <FaUsersCog /> },
-  { id: 17, text: "Create Admin", route: "/admin/create-admin", icon: <FaUserPlus /> },
-  { id: 18, text: "Messages", route: "/admin/messages", icon: <FaComments /> },
-  { id: 19, text: "About NAPA", route: "/admin/about-napa", icon: <FaInfoCircle /> },
-  { id: 20, text: "Advertisements", route: "/admin/advertisements", icon: <FaBullhorn /> }
+  { id: 6, text: "Donations", route: "/admin/donations", icon: <FaDonate /> },
+  { id: 7, text: "President Message", route: "/admin/president-message", icon: <FaEnvelopeOpenText /> },
+  { id: 8, text: "Users", route: "/admin/users", icon: <FaUsers /> },
+  { id: 9, text: "Banner Carousels", route: "/admin/banner-carousels", icon: <FaImages /> },
+  { id: 10, text: "Create Chapters", route: "/admin/create-chapters", icon: <FaBuilding /> },
+  { id: 11, text: "Chapter Directors", route: "/admin/create-chapterdirectors", icon: <FaUserShield /> },
+  { id: 12, text: "Chapter Leads", route: "/admin/create-chapterleads", icon: <FaUserShield /> },
+  { id: 13, text: "Board Category", route: "/admin/board-category", icon: <FaUserTie /> },
+  { id: 14, text: "Members Board", route: "/admin/members-board", icon: <FaUserTie /> },
+  { id: 15, text: "Special Committees", route: "/admin/special-committees", icon: <FaUsersCog /> },
+  { id: 16, text: "Create Admin", route: "/admin/create-admin", icon: <FaUserPlus /> },
+  { id: 17, text: "About NAPA", route: "/admin/about-napa", icon: <FaInfoCircle /> },
 ];
 
 interface AdminDashboardProps {
@@ -42,7 +42,7 @@ const AdminDashboardLayout: React.FC<AdminDashboardProps> = ({ children }) => {
   }, [navigate]);
 
   const handleLogout = () => {
-    Cookies.remove("adminAuthToken"); 
+    Cookies.remove("adminAuthToken");
     navigate("/admin/login");
   };
 

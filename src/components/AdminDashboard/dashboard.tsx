@@ -1,22 +1,22 @@
 import React from "react";
 import { Box, Typography, Card, CardContent, CardActionArea } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { 
-  FaCalendarAlt,     
-  FaProjectDiagram,  
-  FaPhotoVideo,      
-  FaNewspaper,       
-  FaAddressBook,     
-  FaDonate,          
+import {
+  FaCalendarAlt,
+  FaProjectDiagram,
+  FaPhotoVideo,
+  FaNewspaper,
+  FaAddressBook,
+  FaDonate,
   FaEnvelopeOpenText,
-  FaImages,          
-  FaUsers,           
-  FaUserTie,        
-  FaUsersCog,        
-  FaUserPlus,        
-  FaComments,        
-  FaInfoCircle,     
-  FaBullhorn  
+  FaImages,
+  FaUsers,
+  FaUserTie,
+  FaUsersCog,
+  FaUserPlus,
+  FaInfoCircle,
+  FaBuilding,
+  FaUserShield,
 } from "react-icons/fa";
 import './index.css';
 
@@ -26,17 +26,18 @@ const adminList = [
   { id: 3, text: "Media", route: "/admin/media", icon: <FaPhotoVideo /> },
   { id: 4, text: "News", route: "/admin/news", icon: <FaNewspaper /> },
   { id: 5, text: "Contact Details", route: "/admin/contact", icon: <FaAddressBook /> },
-  { id: 7, text: "Donations", route: "/admin/donations", icon: <FaDonate /> },
-  { id: 9, text: "President Message", route: "/admin/president-message", icon: <FaEnvelopeOpenText /> },
-   { id: 10, text: "Users", route: "/admin/users", icon: <FaUsers /> },
-  { id: 11, text: "Banner Carousels", route: "/admin/banner-carousels", icon: <FaImages /> },
-  { id: 12, text: "Our Team", route: "/admin/our-team", icon: <FaUsers /> },
-  { id: 13, text: "Members Board", route: "/admin/members-board", icon: <FaUserTie /> },
-  { id: 16, text: "Special Committees", route: "/admin/special-committees", icon: <FaUsersCog /> },
-  { id: 17, text: "Create Admin", route: "/admin/create-admin", icon: <FaUserPlus /> },
-  { id: 18, text: "Messages", route: "/admin/messages", icon: <FaComments /> },
-  { id: 19, text: "About NAPA", route: "/admin/about-napa", icon: <FaInfoCircle /> },
-  { id: 20, text: "Advertisements", route: "/admin/advertisements", icon: <FaBullhorn /> }
+  { id: 6, text: "Donations", route: "/admin/donations", icon: <FaDonate /> },
+  { id: 7, text: "President Message", route: "/admin/president-message", icon: <FaEnvelopeOpenText /> },
+  { id: 8, text: "Users", route: "/admin/users", icon: <FaUsers /> },
+  { id: 9, text: "Banner Carousels", route: "/admin/banner-carousels", icon: <FaImages /> },
+  { id: 10, text: "Create Chapters", route: "/admin/create-chapters", icon: <FaBuilding /> },
+  { id: 11, text: "Chapter Directors", route: "/admin/create-chapterdirectors", icon: <FaUserShield /> },
+  { id: 12, text: "Chapter Leads", route: "/admin/create-chapterleads", icon: <FaUserShield /> },
+  { id: 13, text: "Board Category", route: "/admin/board-category", icon: <FaUserTie /> },
+  { id: 14, text: "Members Board", route: "/admin/members-board", icon: <FaUserTie /> },
+  { id: 15, text: "Special Committees", route: "/admin/special-committees", icon: <FaUsersCog /> },
+  { id: 16, text: "Create Admin", route: "/admin/create-admin", icon: <FaUserPlus /> },
+  { id: 17, text: "About NAPA", route: "/admin/about-napa", icon: <FaInfoCircle /> },
 ];
 
 const Dashboard: React.FC = () => {
