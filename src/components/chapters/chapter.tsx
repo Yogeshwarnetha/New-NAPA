@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchChapters} from "../../apirequest/chapter";
+import { fetchChapters } from "../../apirequest/chapter";
 import ChapterBackgroundImg from '../../Images/New Background.jpg';
 import './index.css';
-import { fetchChapterLeads } from "../../apirequest/boardMember";
+import { fetchChapterDirectors, fetchChapterLeads } from "../../apirequest/boardMember";
 
 interface Chapter {
   id: number;
@@ -19,10 +19,19 @@ interface ChapterLead {
   imageUrl: string;
 }
 
+interface ChapterDirector {
+  id: number;
+  name: string;
+  imageUrl: string;
+}
+
+
 export function ChapterDetail() {
   const { id } = useParams();
   const [chapter, setChapter] = useState<Chapter | null>(null);
-  const [chapterLeads, setChapterLeads] = useState<ChapterLead[]>([]); // State for chapter leads
+  const [chapterLeads, setChapterLeads] = useState<ChapterLead[]>([]);
+  const [chapterDirector, setChapterDirector] = useState<ChapterDirector[]>([]);
+  // State for chapter leads
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -30,18 +39,17 @@ export function ChapterDetail() {
   useEffect(() => {
     const getChapter = async () => {
       try {
-        // Fetch chapters and chapter leads
-        const [chaptersData, leadsData] = await Promise.all([
+        const [chaptersData, leadsData, directorsData] = await Promise.all([
           fetchChapters(),
           fetchChapterLeads(),
+          fetchChapterDirectors()
         ]);
 
-        // Find the selected chapter
-        const selectedChapter = chaptersData.find((c:any) => c.id === Number(id)) || null;
+        const selectedChapter = chaptersData.find((c: any) => c.id === Number(id)) || null;
         setChapter(selectedChapter);
 
-        // Set chapter leads
         setChapterLeads(leadsData);
+        setChapterDirector(directorsData)
       } catch (error) {
         console.error("Error fetching data:", error);
         setChapter(null);
@@ -53,9 +61,12 @@ export function ChapterDetail() {
     getChapter();
   }, [id]);
 
-  // Function to get chapter lead details by ID
   const getChapterLeadDetails = (leadId: number) => {
     return chapterLeads.find((lead) => lead.id === leadId);
+  };
+
+  const getChapterDirectorDetails = (directorId: number) => {
+    return chapterDirector.find((director) => director.id === directorId);
   };
 
   const openModal = (image: string) => {
@@ -127,6 +138,34 @@ export function ChapterDetail() {
                 )}
 
                 <div className="mt-6">
+                  <h2 className="text-xl font-bold">Chapter Director</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 flex-wrap">
+                    {chapter.chapterLeads.map((leadId) => {
+                      const lead = getChapterDirectorDetails(leadId);
+                      return (
+                        <div key={leadId} className="flex items-start">
+                          {lead ? (
+                            <>
+                              <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-[250px]">
+                                <img
+                                  src={lead.imageUrl}
+                                  alt={lead.name}
+                                  className="w-24 h-24 rounded-sm object-contain"
+                                />
+                                <p className="text-lg font-medium mt-2">{lead.name}</p>
+                              </div>
+                            </>
+                          ) : (
+                            <p className="text-gray-500">Chapter Director not found</p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+
+                <div className="mt-6">
                   <h2 className="text-xl font-bold">Chapter Leads</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 flex-wrap">
                     {chapter.chapterLeads.map((leadId) => {
@@ -135,14 +174,14 @@ export function ChapterDetail() {
                         <div key={leadId} className="flex items-start">
                           {lead ? (
                             <>
-                            <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-[250px]">
-  <img
-    src={lead.imageUrl}
-    alt={lead.name}
-    className="w-24 h-24 rounded-sm object-contain"
-  />
-  <p className="text-lg font-medium mt-2">{lead.name}</p>
-</div>
+                              <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-[250px]">
+                                <img
+                                  src={lead.imageUrl}
+                                  alt={lead.name}
+                                  className="w-24 h-24 rounded-sm object-contain"
+                                />
+                                <p className="text-lg font-medium mt-2">{lead.name}</p>
+                              </div>
                             </>
                           ) : (
                             <p className="text-gray-500">Chapter Leader not found</p>

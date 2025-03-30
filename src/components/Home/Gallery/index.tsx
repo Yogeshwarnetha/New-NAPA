@@ -7,7 +7,7 @@ const HomeGallery = () => {
     { url: "https://nextgennew.s3.ap-south-1.amazonaws.com/a45dd3cc8e398e639d9b469ad0edab63.png", title: "Nature Inspired" },
   ];
 
-  
+
 
 
   return (
@@ -29,11 +29,7 @@ const HomeGallery = () => {
                 alt={image.title}
                 className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <div className="text-white text-center">
-                  <h3 className="text-lg font-semibold">{image.title}</h3>
-                </div>
-              </div>
+
             </div>
           ))}
         </div>
@@ -48,7 +44,7 @@ const HomeGallery = () => {
         </div>
       </section>
 
-     
+
     </div>
   );
 };

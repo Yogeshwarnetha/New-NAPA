@@ -56,7 +56,7 @@ const Carousel = () => {
   return (
     <div className="flex items-center justify-center p-0 sm:p-4">
       <div
-        className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] overflow-hidden group shadow-lg"
+        className="relative w-full h-[400px] sm:h-[500px] md:h-[800px] overflow-hidden group shadow-lg"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
@@ -71,7 +71,7 @@ const Carousel = () => {
                 className="absolute inset-0 bg-center"
                 style={{
                   backgroundImage: `url(${image.url})`,
-                  backgroundSize: 'contain',
+                  backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundColor: '#fff'
                 }}
