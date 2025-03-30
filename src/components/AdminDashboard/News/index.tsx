@@ -12,40 +12,9 @@ import {
   Typography,
 } from "@mui/material";
 import { MdDelete, MdEdit } from "react-icons/md";
-import AdminDashboardLayout from "..";  
+import AdminDashboardLayout from "..";
 import CreateNews from "./create-news";
 import { fetchNewsPagination } from "../../../apirequest/news";
-
-// Dummy data for News
-const dummyNews = [
-  {
-    id: "1",
-    imageUrl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-    heading: "New Tech Breakthrough Announced",
-    date: "2024-12-15",
-    time: "10:00 AM",
-    venue: "Tech Hall, Silicon Valley",
-    description: "A groundbreaking discovery in AI that promises to change the tech industry forever. Stay tuned for more details.",
-  },
-  {
-    id: "2",
-    imageUrl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-    heading: "Music Festival 2024 Lineup Revealed",
-    date: "2024-12-18",
-    time: "3:00 PM",
-    venue: "Central Park, NYC",
-    description: "The most awaited music festival of the year with performances by top artists. Tickets go on sale soon!",
-  },
-  {
-    id: "3",
-    imageUrl: "https://images.ctfassets.net/ihx0a8chifpc/gPyHKDGI0md4NkRDjs4k8/36be1e73008a0181c1980f727f29d002/avatar-placeholder-generator-500x500.jpg?w=1920&q=60&fm=webp",
-    heading: "Annual Charity Run Fundraiser",
-    date: "2024-12-20",
-    time: "8:00 AM",
-    venue: "City Park, Downtown",
-    description: "Join us for a fun run to support education for underprivileged children. Every step counts!",
-  },
-];
 
 interface NewsItem {
   id: string;
@@ -64,20 +33,20 @@ const NewsDashboard = () => {
   const [limit, setLimit] = useState(10);
   const [count, setCount] = useState(0);
 
-useEffect(() => {
-       const fetchData = async () => {
-         setLoading(true);
-         try {
-           const data = await fetchNewsPagination(page, limit);
-           setNews(data.data);
-           setCount(data.count);
-         } catch (error) {
-           console.error("Failed to fetch banners:", error);
-         }
-         setLoading(false);
-       };
-       fetchData();
-     }, [page, limit]);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchNewsPagination(page, limit);
+        setNews(data.data);
+        setCount(data.count);
+      } catch (error) {
+        console.error("Failed to fetch banners:", error);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, [page, limit]);
 
   const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage + 1);
@@ -111,7 +80,7 @@ useEffect(() => {
       <Box sx={{ padding: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           {/* Create News button, if you have such a component */}
-          <CreateNews/>
+          <CreateNews />
         </Box>
         <Box sx={{ padding: 2 }}>
           <Typography variant="h6" sx={{ m: 2 }}>News Table</Typography>

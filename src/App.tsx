@@ -34,7 +34,6 @@ import ChapterList from './components/chapters';
 import CreateChaptersDashboard from './components/AdminDashboard/createchapters';
 import CreateChapterLeadsDashboard from './components/AdminDashboard/createchapterleads';
 import { ChapterDetail } from './components/chapters/chapter';
-import CreateChapterDirectors from './components/AdminDashboard/createchapterdirectors/createchapterdirectors';
 import CreateChapterDirectorsDashboard from './components/AdminDashboard/createchapterdirectors';
 import { EventDetailPage } from './components/Home/eventDetail';
 
