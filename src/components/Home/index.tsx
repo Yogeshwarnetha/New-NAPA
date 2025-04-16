@@ -1,17 +1,13 @@
 import './index.css'
 import { DonationSection } from "./donationsection";
 import ServiceCard from "./servicecard";
-import CarouselCards from "./carouselcards";
-// import Stats from "./stats";
-// import CallToAction from "./calltoaction";
 import TeamCarousel from "./team-carousel";
-// import EventsList from "./events/eventlist";
 import Ourcompany from "./ourcompany";
-import ExecutiveCommittee from "./team-carousel/ExecutiveCommittee";
 import HomeGallery from "./Gallery";
 import { useEffect, useState } from "react";
 import { fetchEvents } from "../../apirequest/events";
 import Carousel from './carousel/carousel';
+import ProjectCarousel from './carouselcards';
 
 
 const services = [
@@ -51,19 +47,16 @@ const Home = () => {
       <div className="carousel-main-container">
         <Carousel />
       </div>
-      <section className="py-16 px-4 bg-white">
+      <section className="py-8 bg-white">
         <Ourcompany />
       </section>
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-8 px-4 bg-white">
+        <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Events</h2>
 
           <div className="grid md:grid-cols-3 gap-12">
             {eventData?.map((x: any) => (
               <div className="flex items-start gap-4 font-sans">
-                {/* <div className="w-12 h-12 text-emerald-500 flex-shrink-0">
-                 {icon}
-               </div> */}
                 <div>
                   <h3 className="font-semibold text-xl text-gray-800 mb-2">{x?.name}</h3>
                   <p className="text-gray-600 text-sm mb-2">{x?.description}</p>
@@ -79,12 +72,12 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-white">
+      <section className="py-8 px-4 bg-white">
         <DonationSection />
       </section>
 
-      <section className="py-16 px-4 max-w-6xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-16 services-card-main-heading">Our Services</h1>
+      <section className="py-10 px-4 max-w-6xl mx-auto">
+        <p className="text-3xl md:text-3xl font-bold text-center text-gray-800 mb-16 services-card-main-heading">Our Services</p>
         <div className="space-y-12">
           {services.map((service: any, index) => (
             <ServiceCard
@@ -96,7 +89,7 @@ const Home = () => {
         </div>
       </section>
       <section>
-        <CarouselCards />
+        <ProjectCarousel />
       </section>
       <section>
         {/* <Stats /> */}
@@ -104,7 +97,7 @@ const Home = () => {
       </section>
       <section>
         <TeamCarousel />
-        <ExecutiveCommittee />
+        {/* <ExecutiveCommittee /> */}
       </section>
       {/* <section className="py-12 px-4 ">
     <EventsList />

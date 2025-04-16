@@ -13,7 +13,6 @@ import ContactUsDashboard from './components/AdminDashboard/contact';
 import BannersDashboard from './components/AdminDashboard/banner';
 import TeamDashboard from './components/AdminDashboard/Team';
 import BoardMembersDashboard from './components/AdminDashboard/BoardMembers';
-import Projects from './components/Projects';
 import NewsSection from './components/News';
 import { Contact } from './components/Contactus';
 import AboutusIntroduction from './components/Aboutus/introduction';
@@ -36,6 +35,8 @@ import CreateChapterLeadsDashboard from './components/AdminDashboard/createchapt
 import { ChapterDetail } from './components/chapters/chapter';
 import CreateChapterDirectorsDashboard from './components/AdminDashboard/createchapterdirectors';
 import { EventDetailPage } from './components/Home/eventDetail';
+import ProjectDetailPage from './components/Projects/projectDetailedPage';
+import ProjectListPage from './components/Projects/projectListPage';
 
 function App() {
   const location = useLocation();
@@ -49,7 +50,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects" element={<ProjectListPage />} />
         <Route path="/news" element={<NewsSection />} />
         <Route path="/contact" element={<Contact />} />
         <Route path='/introduction' element={<AboutusIntroduction />} />
@@ -66,6 +67,7 @@ function App() {
         <Route path='/chapters' element={<ChapterList />} />
         <Route path="/chapter/:id" element={<ChapterDetail />} />
         <Route path="/event/:id" element={<EventDetailPage />} />
+        <Route path='/project/:id' element={<ProjectDetailPage />} />
 
 
 
@@ -97,9 +99,10 @@ function App() {
         <Route path='/admin/login' element={<AdminLogin />} />
 
 
-      </Routes>
+      </Routes >
 
-      {!isAdminPath && <Footer />}
+      {!isAdminPath && <Footer />
+      }
     </>
   );
 }

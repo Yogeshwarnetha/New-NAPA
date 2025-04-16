@@ -3,39 +3,51 @@ import { origin } from "./config";
 
 
 export const createProject = async (data: FormData) => {
-    try {
-      const response = await axios.post(`${origin}/api/v1/projects`, data, {
+  try {
+    const response = await axios.post(`${origin}/api/v1/projects`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Event creation failed:", error);
+    throw error;
+  }
+};
+
+
+export const fetchProjectPagination = async (page: number, limit: number) => {
+
+  try {
+    const response = await axios.get(
+      `${origin}/api/v1/projects/pagination?page=${page}&limit=${limit}`,
+      {
         headers: {
-          "Content-Type": "multipart/form-data",
+          // Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-      });
-  
-      return response.data;
-    } catch (error) {
-      console.error("Event creation failed:", error);
-      throw error;
-    }
-  };
+      }
+    );
+    return response.data;
+  } catch (err: any) {
+    console.error("Error fetching paginated Banner:", err.message);
+    throw err;
+  }
+};
 
+export const fetchProjects = async () => {
+  try {
+    const response = await axios.get(`${origin}/api/v1/projects`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (err: any) {
+    console.error("Error fetching Events:", err.message);
+    throw err;
+  }
+};
 
-  export const fetchProjectPagination = async (page: number, limit: number) => {
-  
-    try {
-        const response = await axios.get(
-            `${origin}/api/v1/projects/pagination?page=${page}&limit=${limit}`,
-            {
-                headers: {
-                    // Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        return response.data;
-    } catch (err: any) {
-        console.error("Error fetching paginated Banner:", err.message);
-        throw err;
-    }
-  };
-  
-  
-  

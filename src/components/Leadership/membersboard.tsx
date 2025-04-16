@@ -6,6 +6,11 @@ interface BoardMember {
   image: string;
 }
 
+interface SectionTitleProps {
+  title: string;
+  className?: string;  // Make it optional
+}
+
 const advisoryCouncil: BoardMember[] = [
   {
     name: "Dr. Hari Eppanapally",
@@ -65,7 +70,7 @@ function MemberCard({ member }: { member: BoardMember }) {
   );
 }
 
-function SectionTitle({ title }: { title: string }) {
+const SectionTitle: React.FC<SectionTitleProps> = ({ title, className = '' }) => {
   return (
     <div className="relative mb-12">
       <div className="absolute inset-0 flex items-center">
@@ -76,7 +81,8 @@ function SectionTitle({ title }: { title: string }) {
           <Users className="w-8 h-8 text-white" />
         </div>
       </div>
-      <h2 className="text-center mt-6 text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">
+      <h2 className={`text-center mt-6 font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 
+        text-3xl sm:text-4xl md:text-5xl ${className || 'text-3xl sm:text-2xl md:text-3xl'}`}>
         {title}
       </h2>
     </div>
@@ -89,7 +95,10 @@ function MembersBoardMain() {
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <div className="space-y-24">
           <section>
-            <SectionTitle title="Advisory Council" />
+            <SectionTitle
+              title="Advisory Council"
+              className="text-2xl sm:text-1xl md:text-3xl"
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               {advisoryCouncil.map((member) => (
                 <MemberCard key={member.name} member={member} />

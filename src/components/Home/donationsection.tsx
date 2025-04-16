@@ -4,22 +4,21 @@ export function DonationSection() {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
 
   return (
-    <div className="bg-white py-16">
+    <div className="bg-white">
       <div className="max-w-2xl mx-auto text-center px-4">
         <h2 className="text-3xl font-bold text-gray-900 mb-4 font-jost leading-2">Donate Today</h2>
         <p className="text-gray-600 mb-8 donation-description">
-        Support NAPA’s mission to uplift our community! Your donation funds cultural programs, scholarships, and welfare initiatives. Every gift makes a difference—join us in empowering our future!        </p>
-        
+          Support NAPA’s mission to uplift our community! Your donation funds cultural programs, scholarships, and welfare initiatives. Every gift makes a difference—join us in empowering our future!        </p>
+
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {['$10', '$25', '$50', '$100'].map((amount) => (
             <button
               key={amount}
               onClick={() => setSelectedAmount(Number(amount.slice(1)))}
-              className={`px-6 py-2 rounded border ${
-                selectedAmount === Number(amount.slice(1))
+              className={`px-6 py-2 rounded border ${selectedAmount === Number(amount.slice(1))
                   ? 'bg-[#4052A8] text-white border-[#4052A8]'
                   : 'border-gray-300 text-gray-700 hover:border-[#4052A8]'
-              }`}
+                }`}
             >
               {amount}
             </button>

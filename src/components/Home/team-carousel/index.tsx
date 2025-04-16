@@ -13,22 +13,22 @@ const teamMembers: TeamMember[] = [
   {
     id: 1,
     name: "Dr.Hari Eppanapally",
-    role:"",
+    role: "",
     image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1739025642/Hari_ryw76h.png",
   },
   {
     id: 2,
     name: "Pradeep Samala",
-    role:"",
+    role: "",
     image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1739025642/Pradeep_m5dfod.png",
   },
   {
     id: 3,
     name: "Baburao Samala",
-    role:"",
+    role: "",
     image: "https://res.cloudinary.com/dfhisjy9w/image/upload/v1730447037/Screenshot_20241017_111848_Gallery_migdbv.jpg",
   },
- 
+
 ];
 
 const TeamCarousel = () => {
@@ -48,13 +48,13 @@ const TeamCarousel = () => {
   }, []);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       (prevIndex + 1) % teamMembers.length
     );
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? teamMembers.length - 1 : prevIndex - 1
     );
   };
@@ -69,22 +69,22 @@ const TeamCarousel = () => {
   };
 
   return (
-    <div 
+    <div
       className="relative w-full bg-cover bg-center bg-no-repeat bg-fixed"
       style={{
         backgroundImage: `url('https://res.cloudinary.com/dfhisjy9w/image/upload/v1730444616/image_s1trmd.png')`,
       }}
     >
-      <div className="relative px-4 pt-16 mx-auto max-w-7xl">
+      <div className="relative px-4 py-16 mx-auto max-w-7xl">
         <div className="text-center mb-12">
           <h2 className="mt-2 text-4xl font-bold text-[#ffffff]">
-          Advisory Council
+            Advisory Council
 
           </h2>
         </div>
 
         <div className="relative px-12">
-          <button 
+          <button
             onClick={prevSlide}
             className="absolute left-0 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow-lg hover:bg-gray-50 transition-colors flex items-center justify-center z-10"
             aria-label="Previous slide"
@@ -103,7 +103,7 @@ const TeamCarousel = () => {
             ))}
           </div>
 
-          <button 
+          <button
             onClick={nextSlide}
             className="absolute right-0 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow-lg hover:bg-gray-50 transition-colors flex items-center justify-center z-10"
             aria-label="Next slide"
