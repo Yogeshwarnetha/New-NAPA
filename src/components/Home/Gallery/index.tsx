@@ -13,9 +13,9 @@ const HomeGallery = () => {
   return (
     <div className=" bg-gray-50">
       {/* Gallery Section */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
+      <section className="py-10 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Gallery</h2>
+          <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-4">Our Gallery</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Explore our curated collection of stunning visuals that showcase our work and inspiration.
           </p>

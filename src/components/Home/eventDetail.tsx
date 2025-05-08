@@ -12,6 +12,7 @@ interface EventData {
     place: string;
     images: string[];
 }
+
 export const EventDetailPage: React.FC = () => {
     const [eventData, setEventData] = useState<EventData[]>([]);
 
@@ -27,9 +28,9 @@ export const EventDetailPage: React.FC = () => {
         fetchData();
     }, []);
 
-
     const { id } = useParams<{ id: string }>();
     const event = eventData.find((e: any) => e.id === Number(id));
+    const otherEvents = eventData.filter((e: any) => e.id !== Number(id));
 
     if (!event) {
         return (
@@ -57,14 +58,13 @@ export const EventDetailPage: React.FC = () => {
                         <img
                             src={event.images[0]}
                             alt={event.name}
-                            className="w-full h-auto object-contain"
+                            className="w-full h-[500px] object-contain"
                         />
                     ) : (
                         <div className="w-full h-72 bg-gray-200 flex items-center justify-center">
                             <span className="text-gray-500">No Image Available</span>
                         </div>
                     )}
-
 
                     <div className="p-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-6">{event.name}</h1>
@@ -90,6 +90,43 @@ export const EventDetailPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Other Events Section */}
+                {otherEvents.length > 0 && (
+                    <div className="mt-12">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">Other Events You Might Like</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {otherEvents.map((otherEvent) => (
+                                <div key={otherEvent.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                                    <Link to={`/event/${otherEvent.id}`}>
+                                        {otherEvent.images && otherEvent.images.length > 0 ? (
+                                            <img
+                                                src={otherEvent.images[0]}
+                                                alt={otherEvent.name}
+                                                className="w-full h-48 object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                                                <span className="text-gray-500">No Image Available</span>
+                                            </div>
+                                        )}
+                                        <div className="p-4">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-2">{otherEvent.name}</h3>
+                                            <div className="flex items-center text-gray-600 text-sm mb-1">
+                                                <Calendar className="w-4 h-4 mr-2" />
+                                                <span>{new Date(otherEvent.date).toLocaleDateString()}</span>
+                                            </div>
+                                            <div className="flex items-center text-gray-600 text-sm">
+                                                <MapPin className="w-4 h-4 mr-2" />
+                                                <span>{otherEvent.place}</span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

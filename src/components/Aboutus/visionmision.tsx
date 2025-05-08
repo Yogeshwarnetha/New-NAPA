@@ -4,8 +4,8 @@ function Visionandmission() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div 
-        className="relative h-[400px] bg-cover bg-center"
+      <div
+        className="relative h-[250px] md:h-[400px] bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80")',
         }}
@@ -13,19 +13,19 @@ function Visionandmission() {
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/90 to-indigo-600/90" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
-            <h1 className="text-5xl font-bold mb-4">Vision & Mission</h1>
-            <p className="text-xl opacity-90">Building a United Global Padmashali Community</p>
+            <h1 className="text-xl md:text-5xl font-bold mb-4">Vision & Mission</h1>
+            <p className="text-md md:text-xl opacity-90">Building a United Global Padmashali Community</p>
           </div>
         </div>
       </div>
 
       {/* Vision Section */}
-      <section className="py-20">
+      <section className="py-10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-6">Our Vision</h2>
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <h2 className="text-2xl md:text-4xl font-bold mb-6">Our Vision</h2>
+              <p className="text-sm md:text-xl text-gray-600 leading-relaxed text-justify">
                 NAPA's Vision is to bring all Padmashalis in North America and across globe under one umbrella. Our core focus is to leverage a digital platform to bring the Padmashali community together and help to accelerate the process of community integration.
               </p>
             </div>
@@ -47,11 +47,11 @@ function Visionandmission() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
+      <section className="py-10 bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">Our Mission</h2>
-            <p className="text-xl mb-16 leading-relaxed">
+            <h2 className="text-xl md:text-3xl font-bold mb-6">Our Mission</h2>
+            <p className="text-sm md:text-lg  leading-relaxed ">
               Unite Padmashalis across globe and leverage collective community strength to provide focused social services to our extended family members and provide a strong united voice for economic and social growth.
             </p>
           </div>
@@ -59,9 +59,9 @@ function Visionandmission() {
       </section>
 
       {/* Community Development Programs */}
-      <section className="py-20">
+      <section className="py-10">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-16">Community Development Programs</h2>
+          <h2 className="text-lg md:text-3xl font-bold text-center mb-8 md:mb-12">Community Development Programs</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {[
               { icon: Heart, title: 'Marriage Support', desc: 'Assistance for wedding arrangements and ceremonies' },
@@ -80,11 +80,11 @@ function Visionandmission() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-10 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6">Join Our Community</h2>
-            <p className="text-xl text-gray-600 mb-8">
+            <h2 className="text-xl md:text-3xl font-bold mb-6">Join Our Community</h2>
+            <p className="text-md md:text-lg text-gray-600 mb-8">
               Be part of our growing global network and help us strengthen the Padmashali community worldwide.
             </p>
             <button className="px-8 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold">

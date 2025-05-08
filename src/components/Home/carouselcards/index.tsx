@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchProjects } from '../../../apirequest/projects';
+import { useNavigate } from 'react-router-dom';
 
 interface Project {
   id: number;
@@ -13,6 +14,7 @@ const ProjectCarousel: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
+  const navigate = useNavigate();
 
   const getVisibleCards = useCallback(() => {
     if (window.innerWidth < 768) return 1;
@@ -52,14 +54,18 @@ const ProjectCarousel: React.FC = () => {
     );
   };
 
+  const handleCardClick = (projectId: number) => {
+    navigate(`/project/${projectId}`);
+  };
+
   return (
-    <div className="w-full py-12 sm:py-16 lg:py-20 bg-[#43529C21]">
+    <div className="w-full py-8 md:py-10 bg-[#43529C21]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-sm uppercase tracking-wider text-indigo-600 font-semibold mb-2">
             GET UPDATED
           </h2>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+          <h1 className="text-xl md:text-4xl font-bold text-gray-900">
             Projects
           </h1>
         </div>
@@ -71,7 +77,8 @@ const ProjectCarousel: React.FC = () => {
               .map((project) => (
                 <div
                   key={project.id}
-                  className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] bg-white overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-105"
+                  className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] bg-white overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-105 cursor-pointer"
+                  onClick={() => handleCardClick(project.id)}
                 >
                   <div className="relative h-48 sm:h-56 md:h-64">
                     <img
@@ -81,7 +88,6 @@ const ProjectCarousel: React.FC = () => {
                     />
                   </div>
                   <div className="p-4 sm:p-6">
-                    {/* <p className="text-sm text-indigo-600 mb-2 project-title-date">{project.description}</p> */}
                     <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 project-title">
                       {project.heading}
                     </h3>

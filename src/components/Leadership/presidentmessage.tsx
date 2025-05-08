@@ -14,7 +14,7 @@ function PresidentMessageMain() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div 
+      <div
         className="relative h-[400px] bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80")',
@@ -36,7 +36,7 @@ function PresidentMessageMain() {
       {/* Message Content */}
       <div className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
               {/* President's Image and Introduction */}
               <div className="flex flex-col md:flex-row gap-8 mb-8">
@@ -58,26 +58,26 @@ function PresidentMessageMain() {
                 <div className="w-full md:w-2/3">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Dear NAPA Family,</h2>
                   <p className="text-gray-600 leading-relaxed">
-                    I am deeply honored to serve as the President of NAPA, and I sincerely thank the NAPA 
-                    Advisory Council, the Executive team, and the entire NAPA family for their unanimous 
+                    I am deeply honored to serve as the President of NAPA, and I sincerely thank the NAPA
+                    Advisory Council, the Executive team, and the entire NAPA family for their unanimous
                     support.
                   </p>
                 </div>
               </div>
-              
+
               <div className="space-y-6 text-gray-600 leading-relaxed">
                 <p>
-                  NAPA's vision is to bring all Padmashalis in North America and across the globe under 
-                  one umbrella, fostering community integration and providing services to our extended 
+                  NAPA's vision is to bring all Padmashalis in North America and across the globe under
+                  one umbrella, fostering community integration and providing services to our extended
                   families. Together, we aim to grow stronger both economically and socially.
                 </p>
 
                 <p>
-                  As President of NAPA, I will continue to uphold the objectives of our previous presidents, 
-                  focusing on strengthening NAPA financially, increasing membership, and expanding the 
-                  number of chapters. I am committed to enhancing our existing services, such as 
-                  Matrimony and educational support, with a key focus on building a digital platform for 
-                  marketing weaving and other business products. This new and improved platform will also 
+                  As President of NAPA, I will continue to uphold the objectives of our previous presidents,
+                  focusing on strengthening NAPA financially, increasing membership, and expanding the
+                  number of chapters. I am committed to enhancing our existing services, such as
+                  Matrimony and educational support, with a key focus on building a digital platform for
+                  marketing weaving and other business products. This new and improved platform will also
                   provide comprehensive information on all committees, webinars, and other NAPA events.
                 </p>
               </div>
@@ -89,7 +89,7 @@ function PresidentMessageMain() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {committees.map((committee, index) => (
-                    <div 
+                    <div
                       key={index}
                       className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg"
                     >

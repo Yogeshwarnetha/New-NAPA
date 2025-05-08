@@ -55,7 +55,7 @@ const menuItems: MenuItemType[] = [
       { title: 'President Message', path: '/president-message' },
       { title: 'Members Board', path: '/members-board' },
       { title: 'Special Committees', path: '' },
-      { title: 'NAPA Convention', path: '' },
+      { title: 'NAPA Convention', path: 'https://www.napaconvention.org/', external: true },
       { title: 'NAPA Chapters', path: '/chapters' },
     ],
   },
@@ -95,7 +95,6 @@ const menuItems: MenuItemType[] = [
 interface CustomJwtPayload {
   name: string;
   exp: number;
-
 }
 
 const Navbar = () => {
@@ -135,7 +134,6 @@ const Navbar = () => {
   useEffect(() => {
     getTokenFromCookies();
   }, []);
-
 
   const logout = () => {
     // Remove the token from cookies
@@ -336,13 +334,25 @@ const Navbar = () => {
               {item.submenu && activeSubMenu === item.title && (
                 <div className="ml-4">
                   {item.submenu.map((subItem, subIndex) => (
-                    <a
-                      key={subIndex}
-                      href={subItem.path}
-                      className="block text-gray-600 py-2 hover:bg-gray-100"
-                    >
-                      {subItem.title}
-                    </a>
+                    subItem.external ? (
+                      <a
+                        key={subIndex}
+                        href={subItem.path}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-gray-600 py-2 hover:bg-gray-100"
+                      >
+                        {subItem.title}
+                      </a>
+                    ) : (
+                      <a
+                        key={subIndex}
+                        href={subItem.path}
+                        className="block text-gray-600 py-2 hover:bg-gray-100"
+                      >
+                        {subItem.title}
+                      </a>
+                    )
                   ))}
                 </div>
               )}
