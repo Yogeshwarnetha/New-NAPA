@@ -1,37 +1,47 @@
+// src/components/Carousel.tsx
+
 import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchBannerData } from '../../../apirequest/banner';
 
-interface BannerItem {
-  id: number;
-  heading: string;
-  description: string;
-  images: string[];
+interface CarouselImage {
+  url: string;
+  title: string;
 }
 
 const Carousel = () => {
-  const [images, setImages] = useState<{ url: string; title: string }[]>([]);
+  const [images, setImages] = useState<CarouselImage[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch and transform banner data
   useEffect(() => {
     const getBanners = async () => {
       try {
-        const response = await fetchBannerData();
+        setLoading(true);
+        const banners = await fetchBannerData();
 
-        // ✅ Fix: updated this line
-        const data: BannerItem[] = response.data;
+        // No need to access .data here since fetchBannerData returns Banner[] directly
+        const activeBanners = banners.filter(banner => !banner.is_deleted);
 
-        const formatted = data.flatMap((item) =>
-          item.images.map((img) => ({
-            url: img,
-            title: item.heading || "Untitled",
+        // Transform banner data to carousel images
+        const formattedImages = activeBanners.flatMap(banner =>
+          banner.images.map(image => ({
+            url: image,
+            title: banner.heading || "Untitled",
           }))
         );
-        setImages(formatted);
-      } catch (error) {
-        console.error('Error fetching banner data:', error);
+
+        setImages(formattedImages);
+        setError(null);
+      } catch (err) {
+        setError('Failed to load banners');
+        console.error('Error fetching banner data:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -39,13 +49,13 @@ const Carousel = () => {
   }, []);
 
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) =>
+    setCurrentIndex(prevIndex =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
-  }, [images]);
+  }, [images.length]);
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
+    setCurrentIndex(prevIndex =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
@@ -54,6 +64,7 @@ const Carousel = () => {
     setCurrentIndex(index);
   };
 
+  // Handle responsive behavior
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -64,6 +75,7 @@ const Carousel = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Auto-play functionality
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
@@ -71,17 +83,28 @@ const Carousel = () => {
       intervalId = setInterval(nextSlide, isMobile ? 7000 : 5000);
     }
 
-    return () => clearInterval(intervalId);
-  }, [isAutoPlaying, nextSlide, isMobile, images]);
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isAutoPlaying, nextSlide, isMobile, images.length]);
 
-  if (images.length === 0) {
+  if (loading) {
     return <div className="text-center py-10 text-gray-500">Loading banners...</div>;
   }
 
+  if (error) {
+    return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
+
+  if (images.length === 0) {
+    return <div className="text-center py-10 text-gray-500">No banners available</div>;
+  }
+
   return (
-    <div className="flex items-center justify-center p-0 sm:p-4">
+    <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8 mx-4 sm:mx-6 lg:mx-8 my-4 sm:my-6">
       <div
-        className={`relative w-full ${isMobile ? "h-[300px]" : "h-[500px] sm:h-[600px] md:h-[800px]"} overflow-hidden group shadow-lg`}
+        className={`relative w-full max-w-[1800px] rounded-xl overflow-hidden ${isMobile ? "h-[300px]" : "h-[500px] sm:h-[600px] md:h-[800px]"
+          } group shadow-lg`}
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
@@ -90,20 +113,17 @@ const Carousel = () => {
           className="w-full h-full flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {images.map((banner) => (
-            <div key={banner.url} className="min-w-full h-full relative">
+          {images.map((banner, index) => (
+            <div key={`${banner.url}-${index}`} className="min-w-full h-full relative">
               <div
-                className="absolute inset-0 bg-center"
-                style={{
-                  backgroundImage: `url(${banner?.url})`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundColor: '#fff'
-                }}
+                className="absolute inset-0 bg-center bg-cover bg-no-repeat"
+                style={{ backgroundImage: `url(${banner.url})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-              <div className={`absolute bottom-0 left-0 right-0 ${isMobile ? "p-2" : "p-6 md:p-8"} text-white`}>
-                <h2 className="text-xl sm:text-md md:text-3xl lg:text-4xl font-light sm:font-semibold md:font-bold mb-2 md:mb-3 opacity-90 line-clamp-2">
+              <div className={`absolute bottom-0 left-0 right-0 ${isMobile ? "p-4" : "p-6 md:p-8"
+                } text-white`}
+              >
+                <h2 className="text-md md:text-2xl lg:text-4xl font-light sm:font-semibold md:font-bold mb-2 md:mb-3 opacity-90 line-clamp-2">
                   {banner.title}
                 </h2>
               </div>
@@ -111,11 +131,11 @@ const Carousel = () => {
           ))}
         </div>
 
-        {/* Navigation Arrows */}
-        {!isMobile && (
+        {/* Navigation Arrows - Always visible on mobile */}
+        {images.length > 1 && (
           <>
             <button
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/30 backdrop-blur-sm p-2 sm:p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+              className={`absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/30 backdrop-blur-sm p-2 sm:p-3 rounded-full ${isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} transition-all duration-300 hover:scale-110`}
               onClick={prevSlide}
               aria-label="Previous slide"
             >
@@ -123,7 +143,7 @@ const Carousel = () => {
             </button>
 
             <button
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/30 backdrop-blur-sm p-2 sm:p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+              className={`absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/30 backdrop-blur-sm p-2 sm:p-3 rounded-full ${isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} transition-all duration-300 hover:scale-110`}
               onClick={nextSlide}
               aria-label="Next slide"
             >
@@ -133,24 +153,31 @@ const Carousel = () => {
         )}
 
         {/* Progress Indicators */}
-        <div className={`absolute bottom-3 ${isMobile ? "gap-1" : "bottom-6 gap-2"} left-1/2 -translate-x-1/2 flex`}>
-          {images.map((img, index) => (
-            <button
-              key={img.url}
-              onClick={() => goToSlide(index)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${currentIndex === index
-                ? 'w-6 bg-black'
-                : 'w-1.5 bg-black/50 hover:bg-black/70'
-                }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+        {images.length > 1 && (
+          <div className={`absolute bottom-3 ${isMobile ? "gap-1" : "bottom-6 gap-2"
+            } left-1/2 -translate-x-1/2 flex`}
+          >
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${currentIndex === index
+                  ? 'w-6 bg-white'
+                  : 'w-1.5 bg-white/50 hover:bg-white/70'
+                  }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Auto-play Indicator */}
-        <div
-          className={`absolute top-4 right-4 w-2 h-2 rounded-full ${isAutoPlaying ? 'bg-green-400' : 'bg-black/50'}`}
-        />
+        {!isMobile && images.length > 1 && (
+          <div
+            className={`absolute top-4 right-4 w-2 h-2 rounded-full ${isAutoPlaying ? 'bg-green-400' : 'bg-white/50'
+              }`}
+          />
+        )}
       </div>
     </div>
   );

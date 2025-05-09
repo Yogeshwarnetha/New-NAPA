@@ -51,3 +51,31 @@ export const fetchProjects = async () => {
   }
 };
 
+export const updateProject = async (id: string, data: FormData) => {
+  try {
+    const response = await axios.put(`${origin}/api/v1/projects/${id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Project update failed:", error);
+    throw error;
+  }
+};
+
+export const deleteProject = async (id: string) => {
+  try {
+    const response = await axios.delete(`${origin}/api/v1/projects/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Project deletion failed:", error);
+    throw error;
+  }
+};
+

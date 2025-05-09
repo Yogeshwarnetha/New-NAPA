@@ -10,33 +10,17 @@ import {
   TableRow,
   TablePagination,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AdminDashboardLayout from "..";
-
-const dummySubmissions = [
-  {
-    id: "1",
-    fullName: "John Doe",
-    email: "john.doe@example.com",
-    message: "I have an inquiry about your services.",
-    createdAt: "2024-12-10",
-  },
-  {
-    id: "2",
-    fullName: "Jane Smith",
-    email: "jane.smith@example.com",
-    message: "Could you provide more details about the pricing?",
-    createdAt: "2024-12-12",
-  },
-  {
-    id: "3",
-    fullName: "David Johnson",
-    email: "david.johnson@example.com",
-    message: "I'm interested in a collaboration.",
-    createdAt: "2024-12-14",
-  },
-];
+import { fetchContactForms, deleteContactForm } from "../../../apirequest/contactus";
 
 interface ContactForm {
   id: string;
@@ -47,25 +31,65 @@ interface ContactForm {
 }
 
 const ContactUsDashboard = () => {
-  const [submissions, setSubmissions] = useState<ContactForm[]>([]); // Initially empty
-  const [loading, setLoading] = useState<boolean>(true); // Set loading state
+  const [submissions, setSubmissions] = useState<ContactForm[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [count] = useState(3);
+  const [count, setCount] = useState(0);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [submissionToDelete, setSubmissionToDelete] = useState<string | null>(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      setSubmissions(dummySubmissions);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetchContactForms(page, limit);
+        setSubmissions(response.data);
+        setCount(response.pagination.totalItems);
+      } catch (error) {
+        console.error("Failed to fetch contact submissions:", error);
+        toast.error("Failed to load contact submissions");
+      }
       setLoading(false);
-    }, 2000);
-  }, []);
+    };
+    fetchData();
+  }, [page, limit]);
 
-  const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleDeleteClick = (id: string) => {
+    setSubmissionToDelete(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!submissionToDelete) return;
+
+    try {
+      await deleteContactForm(submissionToDelete);
+      const response = await fetchContactForms(page, limit);
+      setSubmissions(response.data);
+      setCount(response.pagination.totalItems);
+      toast.success("Contact submission deleted successfully!");
+    } catch (error) {
+      console.error("Failed to delete submission:", error);
+      toast.error("Failed to delete contact submission");
+    } finally {
+      setDeleteConfirmOpen(false);
+      setSubmissionToDelete(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmOpen(false);
+    setSubmissionToDelete(null);
+  };
+
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage + 1);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLimit(parseInt(event.target.value, 10));
+    setPage(1);
   };
 
   const Child = ({ data }: { data: ContactForm }) => (
@@ -73,12 +97,15 @@ const ContactUsDashboard = () => {
       <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.fullName}</TableCell>
       <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.email}</TableCell>
       <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.message}</TableCell>
-      <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>{data.createdAt}</TableCell>
+      <TableCell sx={{ fontFamily: 'Poppins', fontSize: 14 }}>
+        {new Date(data.createdAt).toLocaleDateString()}
+      </TableCell>
       <TableCell>
-        <Button variant="contained" color="primary">
-          <MdEdit fontSize={20} /> Edit
-        </Button>
-        <Button variant="contained" color="error">
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => handleDeleteClick(data.id)}
+        >
           <MdDelete fontSize={20} /> Delete
         </Button>
       </TableCell>
@@ -87,6 +114,18 @@ const ContactUsDashboard = () => {
 
   return (
     <AdminDashboardLayout>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       <Box sx={{ padding: 2 }}>
         <Box sx={{ padding: 2 }}>
           <Typography variant="h6" sx={{ m: 2 }}>
@@ -117,7 +156,6 @@ const ContactUsDashboard = () => {
                 </TableBody>
               </Table>
             ) : (
-              // The actual data rendering
               <Table>
                 <TableHead>
                   <TableRow>
@@ -147,6 +185,29 @@ const ContactUsDashboard = () => {
           />
         </Box>
       </Box>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={handleCancelDelete}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this contact submission? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </AdminDashboardLayout>
   );
 };

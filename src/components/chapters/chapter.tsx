@@ -11,6 +11,9 @@ interface Chapter {
   description: string;
   images: string[];
   chapterLeads: number[];
+  is_deleted?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface ChapterLead {
@@ -25,13 +28,11 @@ interface ChapterDirector {
   imageUrl: string;
 }
 
-
 export function ChapterDetail() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [chapterLeads, setChapterLeads] = useState<ChapterLead[]>([]);
-  const [chapterDirector, setChapterDirector] = useState<ChapterDirector[]>([]);
-  // State for chapter leads
+  const [chapterDirectors, setChapterDirectors] = useState<ChapterDirector[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -45,11 +46,10 @@ export function ChapterDetail() {
           fetchChapterDirectors()
         ]);
 
-        const selectedChapter = chaptersData.find((c: any) => c.id === Number(id)) || null;
+        const selectedChapter = chaptersData.find((c: Chapter) => c.id === Number(id)) || null;
         setChapter(selectedChapter);
-
         setChapterLeads(leadsData);
-        setChapterDirector(directorsData)
+        setChapterDirectors(directorsData);
       } catch (error) {
         console.error("Error fetching data:", error);
         setChapter(null);
@@ -66,7 +66,7 @@ export function ChapterDetail() {
   };
 
   const getChapterDirectorDetails = (directorId: number) => {
-    return chapterDirector.find((director) => director.id === directorId);
+    return chapterDirectors.find((director) => director.id === directorId);
   };
 
   const openModal = (image: string) => {
@@ -117,6 +117,7 @@ export function ChapterDetail() {
             <div className="p-6">
               <h2 className="text-3xl font-bold">{chapter.title}</h2>
               <p className="text-gray-600 mt-4">{chapter.description}</p>
+
               <div className="mt-6">
                 <h3 className="text-md font-light">Media Collection</h3>
                 {chapter.images?.length > 0 ? (
@@ -137,15 +138,42 @@ export function ChapterDetail() {
                   </div>
                 )}
 
-                <div className="mt-6">
-                  <h2 className="text-xl font-bold">Chapter Director</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 flex-wrap">
-                    {chapter.chapterLeads.map((leadId) => {
-                      const lead = getChapterDirectorDetails(leadId);
-                      return (
-                        <div key={leadId} className="flex items-start">
-                          {lead ? (
-                            <>
+                {chapterDirectors.length > 0 && (
+                  <div className="mt-6">
+                    <h2 className="text-xl font-bold">Chapter Directors</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 flex-wrap">
+                      {chapter.chapterLeads.map((leadId) => {
+                        const director = getChapterDirectorDetails(leadId);
+                        return (
+                          <div key={leadId} className="flex items-start">
+                            {director ? (
+                              <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-[250px]">
+                                <img
+                                  src={director.imageUrl}
+                                  alt={director.name}
+                                  className="w-24 h-24 rounded-sm object-contain"
+                                />
+                                <p className="text-lg font-medium mt-2">{director.name}</p>
+                              </div>
+                            ) : (
+                              <p className="text-gray-500">Chapter Director not found</p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {chapterLeads.length > 0 && (
+                  <div className="mt-6">
+                    <h2 className="text-xl font-bold">Chapter Leads</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 flex-wrap">
+                      {chapter.chapterLeads.map((leadId) => {
+                        const lead = getChapterLeadDetails(leadId);
+                        return (
+                          <div key={leadId} className="flex items-start">
+                            {lead ? (
                               <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-[250px]">
                                 <img
                                   src={lead.imageUrl}
@@ -154,43 +182,15 @@ export function ChapterDetail() {
                                 />
                                 <p className="text-lg font-medium mt-2">{lead.name}</p>
                               </div>
-                            </>
-                          ) : (
-                            <p className="text-gray-500">Chapter Director not found</p>
-                          )}
-                        </div>
-                      );
-                    })}
+                            ) : (
+                              <p className="text-gray-500">Chapter Leader not found</p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-
-
-                <div className="mt-6">
-                  <h2 className="text-xl font-bold">Chapter Leads</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 flex-wrap">
-                    {chapter.chapterLeads.map((leadId) => {
-                      const lead = getChapterLeadDetails(leadId);
-                      return (
-                        <div key={leadId} className="flex items-start">
-                          {lead ? (
-                            <>
-                              <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-[250px]">
-                                <img
-                                  src={lead.imageUrl}
-                                  alt={lead.name}
-                                  className="w-24 h-24 rounded-sm object-contain"
-                                />
-                                <p className="text-lg font-medium mt-2">{lead.name}</p>
-                              </div>
-                            </>
-                          ) : (
-                            <p className="text-gray-500">Chapter Leader not found</p>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

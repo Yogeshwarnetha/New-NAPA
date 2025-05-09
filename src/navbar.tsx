@@ -217,7 +217,7 @@ const Navbar = () => {
               <a href="/">
                 <img
                   src={mainlogo}
-                  className="w-24 sm:w-32 md:w-40 lg:w-56"
+                  className="w-56 md:w-40 lg:w-56"
                   alt="Logo"
                 />
               </a>
