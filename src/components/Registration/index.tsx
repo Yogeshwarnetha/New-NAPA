@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   User, Mail, Lock, Phone, Home, MapPin, Briefcase,
   Building2, Flag, ChevronLeft, ChevronRight, Users,
   CheckCircle, XCircle, ArrowLeft
 } from 'lucide-react';
 import { OTPEmailVerification, resendOTPEmailVerification, signupUser } from '../../apirequest/auth';
+
+interface StateProvince {
+  code: string;
+  name: string;
+}
 
 function Registration() {
   // Form steps state
@@ -25,7 +30,16 @@ function Registration() {
   const [isResending, setIsResending] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoadingStates, setIsLoadingStates] = useState(true);
+  const [statesError, setStatesError] = useState('');
 
+  const [statesProvinces, setStatesProvinces] = useState<{
+    usStates: StateProvince[];
+    canadaProvinces: StateProvince[];
+  }>({
+    usStates: [],
+    canadaProvinces: []
+  });
 
   // Form data state
   const [formData, setFormData] = useState({
@@ -48,21 +62,118 @@ function Registration() {
     gothram: '',
   });
 
+  useEffect(() => {
+    const fetchStatesProvinces = async () => {
+      setIsLoadingStates(true);
+      setStatesError('');
+      try {
+        // Mock data - in a real app, you would fetch this from your backend
+        const mockData = {
+          usStates: [
+            { code: 'AL', name: 'Alabama' },
+            { code: 'AK', name: 'Alaska' },
+            { code: 'AZ', name: 'Arizona' },
+            { code: 'AR', name: 'Arkansas' },
+            { code: 'CA', name: 'California' },
+            { code: 'CO', name: 'Colorado' },
+            { code: 'CT', name: 'Connecticut' },
+            { code: 'DE', name: 'Delaware' },
+            { code: 'FL', name: 'Florida' },
+            { code: 'GA', name: 'Georgia' },
+            { code: 'HI', name: 'Hawaii' },
+            { code: 'ID', name: 'Idaho' },
+            { code: 'IL', name: 'Illinois' },
+            { code: 'IN', name: 'Indiana' },
+            { code: 'IA', name: 'Iowa' },
+            { code: 'KS', name: 'Kansas' },
+            { code: 'KY', name: 'Kentucky' },
+            { code: 'LA', name: 'Louisiana' },
+            { code: 'ME', name: 'Maine' },
+            { code: 'MD', name: 'Maryland' },
+            { code: 'MA', name: 'Massachusetts' },
+            { code: 'MI', name: 'Michigan' },
+            { code: 'MN', name: 'Minnesota' },
+            { code: 'MS', name: 'Mississippi' },
+            { code: 'MO', name: 'Missouri' },
+            { code: 'MT', name: 'Montana' },
+            { code: 'NE', name: 'Nebraska' },
+            { code: 'NV', name: 'Nevada' },
+            { code: 'NH', name: 'New Hampshire' },
+            { code: 'NJ', name: 'New Jersey' },
+            { code: 'NM', name: 'New Mexico' },
+            { code: 'NY', name: 'New York' },
+            { code: 'NC', name: 'North Carolina' },
+            { code: 'ND', name: 'North Dakota' },
+            { code: 'OH', name: 'Ohio' },
+            { code: 'OK', name: 'Oklahoma' },
+            { code: 'OR', name: 'Oregon' },
+            { code: 'PA', name: 'Pennsylvania' },
+            { code: 'RI', name: 'Rhode Island' },
+            { code: 'SC', name: 'South Carolina' },
+            { code: 'SD', name: 'South Dakota' },
+            { code: 'TN', name: 'Tennessee' },
+            { code: 'TX', name: 'Texas' },
+            { code: 'UT', name: 'Utah' },
+            { code: 'VT', name: 'Vermont' },
+            { code: 'VA', name: 'Virginia' },
+            { code: 'WA', name: 'Washington' },
+            { code: 'WV', name: 'West Virginia' },
+            { code: 'WI', name: 'Wisconsin' },
+            { code: 'WY', name: 'Wyoming' }
+          ],
+          canadaProvinces: [
+            { code: 'AB', name: 'Alberta' },
+            { code: 'BC', name: 'British Columbia' },
+            { code: 'MB', name: 'Manitoba' },
+            { code: 'NB', name: 'New Brunswick' },
+            { code: 'NL', name: 'Newfoundland and Labrador' },
+            { code: 'NT', name: 'Northwest Territories' },
+            { code: 'NS', name: 'Nova Scotia' },
+            { code: 'NU', name: 'Nunavut' },
+            { code: 'ON', name: 'Ontario' },
+            { code: 'PE', name: 'Prince Edward Island' },
+            { code: 'QC', name: 'Quebec' },
+            { code: 'SK', name: 'Saskatchewan' },
+            { code: 'YT', name: 'Yukon' }
+          ]
+        };
+
+        // In a real app, you would use:
+        // const response = await axios.get('/api/v1/users/states-provinces');
+        // setStatesProvinces(response.data);
+
+        // For demo purposes, we're using mock data
+        setStatesProvinces(mockData);
+      } catch (error) {
+        console.error('Failed to fetch states/provinces:', error);
+        setStatesError('Failed to load states/provinces. Please refresh the page.');
+      } finally {
+        setIsLoadingStates(false);
+      }
+    };
+    fetchStatesProvinces();
+  }, []);
+
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    // Reset state when country changes
+    if (name === 'country') {
+      setFormData(prev => ({ ...prev, [name]: value, state: '' }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   // Handle OTP input change
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOtp(e.target.value.replace(/\D/g, '').slice(0, 6)); // Only allow numbers and limit to 6 digits
+    setOtp(e.target.value.replace(/\D/g, '').slice(0, 6));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
       showSnackbar('Passwords do not match.', 'error');
       return;
@@ -72,7 +183,6 @@ function Registration() {
       setIsSubmitting(true);
       const response = await signupUser(formData);
 
-      // Check for successful response or verification requirement
       if (response.message?.includes('success') || response.data?.requiresVerification) {
         setEmailForVerification(formData.email);
         setVerificationStep(true);
@@ -93,6 +203,7 @@ function Registration() {
       setIsSubmitting(false);
     }
   };
+
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -107,7 +218,6 @@ function Registration() {
 
       if (response.success || response.message?.includes('success')) {
         showSnackbar('Email verified successfully! Redirecting to login...', 'success');
-        // Redirect after 2 seconds
         setTimeout(() => {
           window.location.href = '/login';
         }, 2000);
@@ -148,32 +258,26 @@ function Registration() {
     }
   };
 
-  // Return to registration form
   const handleBackToRegister = () => {
     setVerificationStep(false);
     setOtp('');
   };
 
-  // Helper to show snackbar
   const showSnackbar = (message: string, type: 'info' | 'success' | 'error') => {
     setSnackbar({ message, open: true, type });
     setTimeout(() => setSnackbar(prev => ({ ...prev, open: false })), 5000);
   };
 
-  // Close snackbar
   const closeSnackbar = () => {
     setSnackbar(prev => ({ ...prev, open: false }));
   };
 
-  // Navigation between form steps
   const nextStep = () => setStep(prev => Math.min(prev + 1, 3));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
 
-  // CSS classes
   const inputClasses = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10 bg-white/50";
   const iconClasses = "absolute left-3 top-3.5 h-5 w-5 text-gray-400";
 
-  // Step indicator component
   const StepIndicator = () => (
     <div className="mb-8">
       <div className="flex justify-center space-x-4">
@@ -195,7 +299,6 @@ function Registration() {
     </div>
   );
 
-  // Verification Step UI
   if (verificationStep) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -262,7 +365,6 @@ function Registration() {
     );
   }
 
-  // Registration Form UI
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -408,45 +510,6 @@ function Registration() {
 
                 <div className="grid grid-cols-2 gap-6">
                   <div className="relative">
-                    <input
-                      type="text"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleInputChange}
-                      className={inputClasses}
-                      placeholder="City *"
-                      required
-                    />
-                    <MapPin className={iconClasses} />
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="state"
-                      value={formData.state}
-                      onChange={handleInputChange}
-                      className={inputClasses}
-                      placeholder="State *"
-                      required
-                    />
-                    <MapPin className={iconClasses} />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="zip"
-                      value={formData.zip}
-                      onChange={handleInputChange}
-                      className={inputClasses}
-                      placeholder="ZIP Code *"
-                      required
-                    />
-                    <MapPin className={iconClasses} />
-                  </div>
-                  <div className="relative">
                     <select
                       name="country"
                       value={formData.country}
@@ -462,7 +525,65 @@ function Registration() {
                     </select>
                     <Flag className={iconClasses} />
                   </div>
+
+                  <div className="relative">
+                    <select
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      className={inputClasses}
+                      required
+                      disabled={isLoadingStates}
+                    >
+                      <option value="">{isLoadingStates ? 'Loading states...' : 'Select State/Province *'}</option>
+                      {formData.country === 'USA' && statesProvinces.usStates.map((state) => (
+                        <option key={state.code} value={state.code}>
+                          {state.name}
+                        </option>
+                      ))}
+                      {formData.country === 'CAN' && statesProvinces.canadaProvinces.map((province) => (
+                        <option key={province.code} value={province.code}>
+                          {province.name}
+                        </option>
+                      ))}
+                      {!['USA', 'CAN'].includes(formData.country) && (
+                        <option value="OTHER">Other (Non-US/Canada)</option>
+                      )}
+                    </select>
+                    <MapPin className={iconClasses} />
+                  </div>
                 </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      className={inputClasses}
+                      placeholder="City *"
+                      required
+                    />
+                    <MapPin className={iconClasses} />
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="zip"
+                      value={formData.zip}
+                      onChange={handleInputChange}
+                      className={inputClasses}
+                      placeholder="ZIP Code *"
+                      required
+                    />
+                    <MapPin className={iconClasses} />
+                  </div>
+
+                </div>
+                {statesError && (
+                  <p className="text-red-500 text-sm mt-1">{statesError}</p>
+                )}
               </div>
             )}
 
@@ -567,7 +688,6 @@ function Registration() {
   );
 }
 
-// Snackbar component
 const Snackbar = ({
   message,
   open,
@@ -603,6 +723,5 @@ const Snackbar = ({
     </div>
   );
 };
-
 
 export default Registration;
