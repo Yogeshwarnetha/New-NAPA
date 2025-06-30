@@ -1,115 +1,248 @@
-import { useState } from "react";
-import { Modal } from "../../ui/Modal";
-import { Button } from "../../ui/Button";
-import { Input } from "../../ui/Input";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import AdminDashboardLayout from "..";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+  Avatar
+} from "@mui/material";
+import { MdEdit } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AdminDashboardLayout from ".."; // Adjust if needed
+import {
+  fetchPresidentMessage,
+  updatePresidentMessage,
+  PresidentMessage,
+} from "../../../apirequest/presidentMessage";
 
-const PresidentMessage = () => {
-  const [data, setData] = useState({
-    id: 1,
-    name: "John Doe",
-    timePeriod: "2022-2024",
-    description: "<p>This is the President's message.</p>",
-    signatureImageUrl: "https://via.placeholder.com/150",
+const PresidentMessageDashboard = () => {
+  const [content, setContent] = useState<PresidentMessage | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [formState, setFormState] = useState<Omit<PresidentMessage, 'id' | 'image_url'>>({
+    president_name: "",
+    president_period: "",
+    president_description1: "",
+    president_description2: "",
+    president_description3: "",
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({
-    name: data?.name || "",
-    timePeriod: data?.timePeriod || "",
-    description: data?.description || "",
-    signatureImageUrl: data?.signatureImageUrl || "",
-  });
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await fetchPresidentMessage();
+        setContent(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
-  const handleInputChange = (e:any) => {
+  const handleEditClick = () => {
+    if (!content) return;
+    const {
+      president_name,
+      president_period,
+      president_description1,
+      president_description2,
+      president_description3,
+    } = content;
+
+    setFormState({
+      president_name,
+      president_period,
+      president_description1,
+      president_description2,
+      president_description3,
+    });
+
+    setPreview(content.image_url);
+    setModalOpen(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleDescriptionChange = (value:any) => {
-    setForm((prev) => ({ ...prev, description: value }));
-  };
-
-  const handleSubmit = () => {
-    if (data) {
-      // Update
-      setData({ ...data, ...form });
-    } else {
-      // Create
-      setData({ ...form, id: 1 });
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+      setPreview(URL.createObjectURL(e.target.files[0]));
     }
-    setOpen(false);
   };
 
-  const handleDelete = () => {
-    setData(null as any);
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    Object.entries(formState).forEach(([key, value]) =>
+      formData.append(key, value)
+    );
+    if (imageFile) formData.append("image", imageFile);
+
+    try {
+      setSubmitting(true);
+      const updated = await updatePresidentMessage(formData);
+      setContent(updated);
+      setModalOpen(false);
+      toast.success("President message updated successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update content.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-
     <AdminDashboardLayout>
+      <ToastContainer />
+      <Box sx={{ p: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+          }}
+        >
+          <Typography variant="h5">President Message</Typography>
+          <Button
+            variant="contained"
+            startIcon={<MdEdit />}
+            onClick={handleEditClick}
+            disabled={loading}
+          >
+            Edit
+          </Button>
+        </Box>
 
-    <div className="space-y-6">
-      {data ? (
-        <>
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold">{data.name}</h2>
-            <p className="text-gray-600">{data.timePeriod}</p>
-            <div dangerouslySetInnerHTML={{ __html: data.description }} />
-            <img src={data.signatureImageUrl} alt="Signature" className="h-16" />
-          </div>
-          <div className="space-x-4">
-            <Button onClick={() => setOpen(true)}>Update</Button>
-            <Button variant="secondary" onClick={handleDelete}>
-              Delete
-            </Button>
-          </div>
-        </>
-      ) : (
-        <div>
-          <p>No President message available. Create one now:</p>
-          <Button onClick={() => setOpen(true)}>Create a President Message</Button>
-        </div>
-      )}
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : content ? (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Field</TableCell>
+                  <TableCell>Value</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Object.entries(content).map(([key, value]) =>
+                  key !== "id" && key !== "image_url" ? (
+                    <TableRow key={key}>
+                      <TableCell>{key.replace(/_/g, " ")}</TableCell>
+                      <TableCell>{value}</TableCell>
+                    </TableRow>
+                  ) : null
+                )}
+                <TableRow>
+                  <TableCell>Image</TableCell>
+                  <TableCell>
+                    <Avatar
+                      src={content.image_url}
+                      alt="President"
+                      sx={{ width: 64, height: 64 }}
+                    />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <Typography>No content available.</Typography>
+        )}
+      </Box>
 
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <form className="space-y-6">
-          <Input
-            name="name"
-            label="President's Name"
-            value={form.name}
-            onChange={handleInputChange}
-          />
-          <Input
-            name="timePeriod"
-            label="Time Period"
-            value={form.timePeriod}
-            onChange={handleInputChange}
-          />
-          <div>
-            <label className="block text-sm font-medium">Description</label>
-            <ReactQuill value={form.description} onChange={handleDescriptionChange} />
-          </div>
-          <Input
-            name="signatureImageUrl"
-            label="Signature Image URL"
-            value={form.signatureImageUrl}
-            onChange={handleInputChange}
-          />
-          <div className="flex justify-end space-x-4">
-            <Button variant="secondary" onClick={() => setOpen(false)}>
-              Cancel
+      {/* Edit Modal */}
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "90%",
+            maxWidth: 600,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Edit President Message
+          </Typography>
+
+          <Box
+            component="form"
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            {Object.entries(formState).map(([key, value]) => (
+              <TextField
+                key={key}
+                name={key}
+                label={key.replace(/_/g, " ")}
+                value={value}
+                onChange={handleInputChange}
+                multiline={key.includes("description")}
+                rows={key.includes("description") ? 3 : 1}
+                fullWidth
+              />
+            ))}
+
+            <Button variant="outlined" component="label">
+              Upload Image
+              <input
+                hidden
+                accept="image/*"
+                type="file"
+                onChange={handleFileChange}
+              />
             </Button>
-            <Button onClick={handleSubmit}>{data ? "Update" : "Create"}</Button>
-          </div>
-        </form>
+
+            {preview && (
+              <Avatar
+                src={preview}
+                alt="Preview"
+                sx={{ width: 100, height: 100 }}
+              />
+            )}
+
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+              <Button onClick={() => setModalOpen(false)} sx={{ mr: 2 }}>
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleSubmit}
+                disabled={submitting}
+              >
+                {submitting ? <CircularProgress size={24} /> : "Save Changes"}
+              </Button>
+            </Box>
+          </Box>
+        </Box>
       </Modal>
-    </div>
     </AdminDashboardLayout>
-
   );
 };
 
-export default PresidentMessage;
+export default PresidentMessageDashboard;

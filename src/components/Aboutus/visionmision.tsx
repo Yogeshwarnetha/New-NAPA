@@ -1,6 +1,33 @@
 import { Globe2, Users, GraduationCap, Heart, Building, Handshake } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { fetchAboutMissionVision } from '../../apirequest/aboutmissionvision'; // adjust the path as needed
+import { AboutMissionVision } from '../../apirequest/aboutmissionvision';
+
 
 function Visionandmission() {
+  const [content, setContent] = useState<AboutMissionVision | null>(null);
+
+  useEffect(() => {
+    const loadContent = async () => {
+      try {
+        const data = await fetchAboutMissionVision();
+        setContent(data);
+      } catch (error) {
+        console.error("Failed to load Vision & Mission content", error);
+      }
+    };
+    loadContent();
+  }, []);
+
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600 text-lg">Loading content...</p>
+      </div>
+    );
+  }
+
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -13,8 +40,8 @@ function Visionandmission() {
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/90 to-indigo-600/90" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
-            <h1 className="text-xl md:text-5xl font-bold mb-4">Vision & Mission</h1>
-            <p className="text-md md:text-xl opacity-90">Building a United Global Padmashali Community</p>
+            <h1 className="text-xl md:text-5xl font-bold mb-4">{content.missionvision_heading}</h1>
+            <p className="text-md md:text-xl opacity-90">{content.missionvision_description}</p>
           </div>
         </div>
       </div>
@@ -24,9 +51,12 @@ function Visionandmission() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-2xl md:text-4xl font-bold mb-6">Our Vision</h2>
+              <h2 className="text-2xl md:text-4xl font-bold mb-6">{content.vision_mainHeading}</h2>
               <p className="text-sm md:text-xl text-gray-600 leading-relaxed text-justify">
-                NAPA's Vision is to bring all Padmashalis in North America and across globe under one umbrella. Our core focus is to leverage a digital platform to bring the Padmashali community together and help to accelerate the process of community integration.
+                {content.vision_para1}
+              </p>
+              <p className="text-sm md:text-xl text-gray-600 leading-relaxed text-justify">
+                {content.vision_para2}
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
@@ -50,9 +80,12 @@ function Visionandmission() {
       <section className="py-10 bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-xl md:text-3xl font-bold mb-6">Our Mission</h2>
+            <h2 className="text-xl md:text-3xl font-bold mb-6">{content.mission_mainHeading}</h2>
             <p className="text-sm md:text-lg  leading-relaxed ">
-              Unite Padmashalis across globe and leverage collective community strength to provide focused social services to our extended family members and provide a strong united voice for economic and social growth.
+              {content.mission_para1}
+            </p>
+            <p className="text-sm md:text-lg  leading-relaxed ">
+              {content.mission_para2}
             </p>
           </div>
         </div>
@@ -85,11 +118,13 @@ function Visionandmission() {
           <div className="max-w-3xl mx-auto">
             <h2 className="text-xl md:text-3xl font-bold mb-6">Join Our Community</h2>
             <p className="text-md md:text-lg text-gray-600 mb-8">
-              Be part of our growing global network and help us strengthen the Padmashali community worldwide.
-            </p>
-            <button className="px-8 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
-              Get Involved
-            </button>
+              {content.joinourcommunity}            </p>
+
+            <a href='/register'>
+              <button className="px-8 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                Get Involved
+              </button>
+            </a>
           </div>
         </div>
       </section>

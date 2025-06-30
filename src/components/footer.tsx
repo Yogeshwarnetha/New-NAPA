@@ -7,11 +7,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Company Info */}
           <div>
-            <img
-              src="https://res.cloudinary.com/dfhisjy9w/image/upload/v1730445448/Link_n0aqeh.png"
-              alt="Company Logo"
-              className="h-12 mb-6"
-            />
+
             <p className="text-gray-400 mb-6">
               Padmashalis are a Telugu speaking community with roots tracing back to Markandeya Maharishi. We are the third largest community and form 12% of the population of Andhra Pradesh and Telangana.
             </p>
@@ -32,11 +28,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-6">CONTACT INFO</h3>
             <div className="space-y-4">
-              <p className="text-gray-400">
-                Box 3233<br />
-                1810 Kings Way<br />
-                King Street, 5th Avenue, New York
-              </p>
+
               <div className="space-y-2">
                 <div className="flex items-center text-gray-400">
                   <Phone className="w-4 h-4 mr-2" />
@@ -65,16 +57,8 @@ const Footer = () => {
                   Become a Volunteer
                 </a>
               </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  Case Studies
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  Sponsors
-                </a>
-              </li>
+
+
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition-colors">
                   FAQ
@@ -95,7 +79,7 @@ const Footer = () => {
               <a href="#" className="hover:text-white transition-colors">Terms Of Use</a>
             </div>
             <div>
-              Copyright 2024 Simple Like This, All Right Reserved
+              Copyright 2025 NAPAUSA, All Right Reserved
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Loader2, MapPin, Phone, Mail, Heart, Users, Globe } from 'lucide-react';
+import { Send, Loader2, Phone, Mail, Heart, Users, Globe } from 'lucide-react';
 import { createContactus } from '../../apirequest/contactus';
 
 interface ContactFormData {
@@ -199,17 +199,7 @@ export function Contact() {
                                     <Heart className="h-5 w-5 text-pink-500" />
                                 </div>
                                 <div className="space-y-4">
-                                    <div className="flex items-start">
-                                        <MapPin className="h-6 w-6 text-indigo-600 mt-1 flex-shrink-0" />
-                                        <div className="ml-3">
-                                            <p className="text-sm font-medium text-gray-900">Our Location</p>
-                                            <p className="text-sm text-gray-600">
-                                                Hope Foundation Building<br />
-                                                123 Charity Lane<br />
-                                                Compassion City, CA 94043
-                                            </p>
-                                        </div>
-                                    </div>
+
                                     <div className="flex items-center">
                                         <Phone className="h-6 w-6 text-indigo-600 flex-shrink-0" />
                                         <div className="ml-3">

@@ -1,4 +1,16 @@
 import { User2, Users, BookOpen, Radio, Heart, UserPlus, GraduationCap, Video } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { fetchPresidentMessage } from '../../apirequest/presidentMessage';
+
+
+interface PresidentMessage {
+  president_name: string;
+  president_period: string;
+  president_description1: string;
+  president_description2: string;
+  president_description3: string;
+  image_url: string;
+}
 
 function PresidentMessageMain() {
   const committees = [
@@ -10,6 +22,30 @@ function PresidentMessageMain() {
     { icon: GraduationCap, name: "Students and Youth Committee" },
     { icon: Video, name: "Webinars Committee" }
   ];
+
+  const [message, setMessage] = useState<PresidentMessage | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadMessage = async () => {
+      try {
+        const data = await fetchPresidentMessage();
+        setMessage(data);
+      } catch (error) {
+        console.error("Failed to fetch president message:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadMessage();
+  }, []);
+  if (loading) {
+    return <div className="text-center py-20 text-blue-600 font-semibold">Loading President Message...</div>;
+  }
+
+  if (!message) {
+    return <div className="text-center py-20 text-red-600 font-semibold">Failed to load president message.</div>;
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -27,8 +63,8 @@ function PresidentMessageMain() {
               <User2 className="w-4 h-4" />
               <span className="text-sm font-medium">President's Message</span>
             </div>
-            <h1 className="text-5xl font-bold mb-4">Srinivas Sayini</h1>
-            <p className="text-xl font-medium text-blue-200">President (2024-2025)</p>
+            <h1 className="text-5xl font-bold mb-4">{message.president_name}</h1>
+            <p className="text-xl font-medium text-blue-200">President ({message.president_period})</p>
           </div>
         </div>
       </div>
@@ -50,36 +86,22 @@ function PresidentMessageMain() {
                       />
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-900/90 to-transparent p-4">
-                      <p className="text-white text-center font-medium">Srinivas Sayini</p>
-                      <p className="text-blue-200 text-sm text-center">President (2024-2025)</p>
+                      <p className="text-white text-center font-medium">{message.president_name}</p>
+                      <p className="text-blue-200 text-sm text-center">President ({message.president_period})</p>
                     </div>
                   </div>
                 </div>
                 <div className="w-full md:w-2/3">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Dear NAPA Family,</h2>
                   <p className="text-gray-600 leading-relaxed">
-                    I am deeply honored to serve as the President of NAPA, and I sincerely thank the NAPA
-                    Advisory Council, the Executive team, and the entire NAPA family for their unanimous
-                    support.
+                    {message.president_description1}
                   </p>
                 </div>
               </div>
 
               <div className="space-y-6 text-gray-600 leading-relaxed">
-                <p>
-                  NAPA's vision is to bring all Padmashalis in North America and across the globe under
-                  one umbrella, fostering community integration and providing services to our extended
-                  families. Together, we aim to grow stronger both economically and socially.
-                </p>
-
-                <p>
-                  As President of NAPA, I will continue to uphold the objectives of our previous presidents,
-                  focusing on strengthening NAPA financially, increasing membership, and expanding the
-                  number of chapters. I am committed to enhancing our existing services, such as
-                  Matrimony and educational support, with a key focus on building a digital platform for
-                  marketing weaving and other business products. This new and improved platform will also
-                  provide comprehensive information on all committees, webinars, and other NAPA events.
-                </p>
+                <p>{message.president_description2}</p>
+                <p>{message.president_description3}</p>
               </div>
 
               {/* Committees Section */}

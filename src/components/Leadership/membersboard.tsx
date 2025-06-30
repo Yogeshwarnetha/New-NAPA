@@ -1,54 +1,20 @@
+import { useState, useEffect } from 'react';
 import { Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { fetchAdvisoryCouncilData } from "../../apirequest/boardMember";
+import { fetchExecutiveCommitteeData } from "../../apirequest/boardMember";
 
 interface BoardMember {
+  id: number;
   name: string;
   title?: string;
-  image: string;
+  imageUrl: string;
 }
 
 interface SectionTitleProps {
   title: string;
   className?: string;
 }
-
-const advisoryCouncil: BoardMember[] = [
-  {
-    name: "Dr. Hari Eppanapally",
-    image: "https://napausa.org/img/committees/Hari.jpeg",
-  },
-  {
-    name: "Pradeep Samala",
-    image: "https://napausa.org/img/committees/Pradeep.jpeg",
-  },
-  {
-    name: "Baburao Samala",
-    image: "https://res-console.cloudinary.com/dfhisjy9w/thumbnails/v1/image/upload/v1730447037/U2NyZWVuc2hvdF8yMDI0MTAxN18xMTE4NDhfR2FsbGVyeV9taWdkYnY=/drilldown",
-  },
-];
-
-const executiveCommittee: BoardMember[] = [
-  {
-    name: "Srinivas Sayini",
-    title: "President",
-    image: "https://napausa.org/img/committees/ss.jpg",
-  },
-  {
-    name: "Prabhakar Konda",
-    title: "President Elect",
-    image: "https://napausa.org/img/committees/pk.jpg",
-  },
-  {
-    name: "Sri Cherupally",
-    title: "General Secretary",
-    image: "https://napausa.org/img/committees/sri.jpg",
-  },
-  {
-    name: "Santhosh Ankam",
-    title: "Joint Secretary",
-    image: "https://napausa.org/img/committees/sa.jpg",
-  },
-];
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -73,9 +39,10 @@ function MemberCard({ member }: { member: BoardMember }) {
     >
       <div className="relative h-64 sm:h-72 overflow-hidden">
         <img
-          src={member.image}
+          src={member.imageUrl}
           alt={member.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
@@ -120,6 +87,57 @@ const SectionTitle: React.FC<SectionTitleProps> = ({ title, className = '' }) =>
 }
 
 function MembersBoardMain() {
+  const [advisoryCouncil, setAdvisoryCouncil] = useState<BoardMember[]>([]);
+  const [executiveCommittee, setExecutiveCommittee] = useState<BoardMember[]>([]);
+  const [loading, setLoading] = useState({
+    advisory: true,
+    executive: true
+  });
+  const [error, setError] = useState({
+    advisory: '',
+    executive: ''
+  });
+
+  useEffect(() => {
+    const fetchAdvisoryData = async () => {
+      try {
+        const response = await fetchAdvisoryCouncilData();
+        setAdvisoryCouncil(response.data || []); // Access .data here
+      } catch (err) {
+        setError(prev => ({ ...prev, advisory: 'Failed to load advisory council' }));
+        console.error("Error fetching advisory council:", err);
+      } finally {
+        setLoading(prev => ({ ...prev, advisory: false }));
+      }
+    };
+
+    const fetchExecutiveData = async () => {
+      try {
+        const response = await fetchExecutiveCommitteeData();
+        setExecutiveCommittee(response.data || []); // Access .data here
+      } catch (err) {
+        setError(prev => ({ ...prev, executive: 'Failed to load executive committee' }));
+        console.error("Error fetching executive committee:", err);
+      } finally {
+        setLoading(prev => ({ ...prev, executive: false }));
+      }
+    };
+
+    fetchAdvisoryData();
+    fetchExecutiveData();
+  }, []);
+
+  if (loading.advisory && loading.executive) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading team members...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -129,31 +147,64 @@ function MembersBoardMain() {
           variants={staggerContainer}
           className="space-y-24"
         >
+          {/* Advisory Council Section */}
           <section>
             <SectionTitle
               title="Advisory Council"
               className="text-3xl md:text-4xl"
             />
-            <motion.div
-              variants={staggerContainer}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {advisoryCouncil.map((member, index) => (
-                <MemberCard key={`${member.name}-${index}`} member={member} />
-              ))}
-            </motion.div>
+            {error.advisory ? (
+              <div className="text-center py-8 text-red-500">
+                {error.advisory}
+              </div>
+            ) : (
+              <motion.div
+                variants={staggerContainer}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+              >
+                {advisoryCouncil.length > 0 ? (
+                  advisoryCouncil.map((member) => (
+                    <MemberCard key={`advisory-${member.id}`} member={member} />
+                  ))
+                ) : (
+                  !loading.advisory && (
+                    <div className="col-span-full text-center text-gray-500 py-8">
+                      No advisory council members found
+                    </div>
+                  )
+                )}
+              </motion.div>
+            )}
           </section>
 
+          {/* Executive Committee Section */}
           <section>
-            <SectionTitle title="Executive Committee" className="text-3xl md:text-4xl" />
-            <motion.div
-              variants={staggerContainer}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-            >
-              {executiveCommittee.map((member, index) => (
-                <MemberCard key={`${member.name}-${index}`} member={member} />
-              ))}
-            </motion.div>
+            <SectionTitle
+              title="Executive Committee"
+              className="text-3xl md:text-4xl"
+            />
+            {error.executive ? (
+              <div className="text-center py-8 text-red-500">
+                {error.executive}
+              </div>
+            ) : (
+              <motion.div
+                variants={staggerContainer}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+              >
+                {executiveCommittee.length > 0 ? (
+                  executiveCommittee.map((member) => (
+                    <MemberCard key={`executive-${member.id}`} member={member} />
+                  ))
+                ) : (
+                  !loading.executive && (
+                    <div className="col-span-full text-center text-gray-500 py-8">
+                      No executive committee members found
+                    </div>
+                  )
+                )}
+              </motion.div>
+            )}
           </section>
         </motion.div>
       </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode'; // Import jwt-decode
-import mainlogo from './Images/logo.png';
+import mainlogo from './Images/logo.jpg';
 import Cookies from 'js-cookie';
 
 import {

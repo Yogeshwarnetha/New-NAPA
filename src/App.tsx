@@ -37,6 +37,9 @@ import CreateChapterDirectorsDashboard from './components/AdminDashboard/createc
 import { EventDetailPage } from './components/Home/eventDetail';
 import ProjectDetailPage from './components/Projects/projectDetailedPage';
 import ProjectListPage from './components/Projects/projectListPage';
+import GalleryDashboard from './components/AdminDashboard/gallery';
+import AboutPageDashboard from './components/AdminDashboard/Webpages';
+import HomepageDashboard from './components/AdminDashboard/HomePage';
 
 function App() {
   const location = useLocation();
@@ -94,10 +97,11 @@ function App() {
         <Route path='/admin/create-chapters' element={<CreateChaptersDashboard />} />
         <Route path='/admin/create-chapterleads' element={<CreateChapterLeadsDashboard />} />
         <Route path='/admin/create-chapterdirectors' element={<CreateChapterDirectorsDashboard />} />
-
+        <Route path='/admin/gallery' element={<GalleryDashboard />} />
 
         <Route path='/admin/login' element={<AdminLogin />} />
-
+        <Route path='/admin/about-introduction' element={<AboutPageDashboard />} />
+        <Route path='/admin/home-page' element={<HomepageDashboard />} />
 
       </Routes >
 

@@ -1,6 +1,34 @@
 import { Users, Globe, Building, GraduationCap } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { fetchAboutIntroduction } from '../../apirequest/aboutIntroduction';
+
+interface AboutIntroduction {
+  introduction_heading: string;
+  introduction_description: string;
+  introduction_mainHeading: string;
+  introduction_para1: string;
+  introduction_para2: string;
+  napa_story_para1: string;
+  napa_story_para2: string;
+}
 
 function AboutusIntroduction() {
+  const [data, setData] = useState<AboutIntroduction | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await fetchAboutIntroduction();
+        setData(res);
+      } catch (err) {
+        console.error('Failed to fetch about introduction:', err);
+      }
+    };
+    getData();
+  }, []);
+
+  if (!data) return <div className="text-center py-20">Loading content...</div>;
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -13,8 +41,8 @@ function AboutusIntroduction() {
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
-            <h1 className="text-xl md:text-5xl font-bold mb-4">North American Padmashali Association</h1>
-            <p className="text-md md:text-xl opacity-90">Preserving Our Heritage, Building Our Future</p>
+            <h1 className="text-xl md:text-5xl font-bold mb-4">{data.introduction_heading}</h1>
+            <p className="text-md md:text-xl opacity-90">{data.introduction_description}</p>
           </div>
         </div>
       </div>
@@ -23,13 +51,13 @@ function AboutusIntroduction() {
       <section className="py-10 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="md:max-w-7xl mx-auto px-2 md:px-6 lg:px-8">
-            <h2 className="text-2xl md:text-4xl font-bold mb-8 text-center">Our Rich Heritage</h2>
+            <h2 className="text-2xl md:text-4xl font-bold mb-8 text-center">{data.introduction_mainHeading}</h2>
             <div className="prose prose-lg max-w-none text-gray-600">
               <p className="mb-6 leading-8 text-justify">
-                Padmashalis are a Telugu speaking community with roots tracing back to Markandeya Maharishi. We are the third largest community and form 12% of the population of Andhra Pradesh and Telangana. Our community also has a large presence across India, including Maharashtra and Gujarat. Padmashalis are traditionally a weaving and artisan community but over time, many members from our community have successfully moved into modern professions. As a result, our community spread all over the world, including the United States of America and Canada.
+                {data.introduction_para1}
               </p>
               <p className="mb-6 leading-8 text-justify">
-                There was strong passion and zeal among US residents to reunite our family ties. This idea sparked the establishment of a strong and vibrant platform, <span className='font-semibold	'>“North American Padmashali Association” (NAPA)</span>, non-profit organization for Padmashalis. The goal of the NAPA is to build a strong vibrant community-based platform in North America to not only help ourselves locally in North America, but also help our extended family members who reside across the globe. The organization’s goals are not just limited to education, economics and social services, but we want to act as a catalyst to groom economically self-reliant citizens who can support their families and the greater community when it is required most.
+                {data.introduction_para2}
               </p>
             </div>
           </div>
@@ -62,11 +90,11 @@ function AboutusIntroduction() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-xl md:text-3xl font-bold mb-8">The NAPA Story</h2>
-            <p className="text-md md:text-lg leading-relaxed mb-8 text-justify md:text-center">
-              Born from a strong passion among US residents to reunite our family ties, the North American Padmashali Association (NAPA) emerged as a vibrant platform for our community. As a non-profit organization, NAPA serves as a bridge connecting Padmashalis across North America while extending support to our global community.
+            <p className="mb-6 leading-8 text-center">
+              {data.napa_story_para1}
             </p>
-            <p className="text-md md:text-lg leading-relaxed text-justify md:text-center">
-              Our organization goes beyond traditional community service, focusing on creating economically self-reliant citizens who can support both their families and the greater community. Through education, economic empowerment, and social services, NAPA continues to strengthen our community bonds and create lasting impact.
+            <p className="mb-6 leading-8 text-center">
+              {data.napa_story_para2}
             </p>
           </div>
         </div>

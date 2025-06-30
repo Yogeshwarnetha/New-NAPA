@@ -1,4 +1,4 @@
-import { Linkedin, Twitter, Facebook } from 'lucide-react';
+// import { Linkedin, Twitter, Facebook } from 'lucide-react';
 
 interface TeamCardProps {
   name: string;
@@ -22,7 +22,7 @@ const TeamCard = ({ name, role, image }: TeamCardProps) => {
       <p className="text-gray-500 text-center mt-2 text-sm">
         {role}
       </p>
-      <div className="flex justify-center space-x-4 mt-4">
+      {/* <div className="flex justify-center space-x-4 mt-4">
         <a href="#" className="text-gray-400 hover:text-[#2f327d] transition-colors">
           <Facebook className="w-5 h-5" />
         </a>
@@ -32,7 +32,7 @@ const TeamCard = ({ name, role, image }: TeamCardProps) => {
         <a href="#" className="text-gray-400 hover:text-[#2f327d] transition-colors">
           <Twitter className="w-5 h-5" />
         </a>
-      </div>
+      </div> */}
     </div>
   );
 };
