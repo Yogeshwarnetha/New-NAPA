@@ -138,7 +138,7 @@ const AdminLogin = () => {
               <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mb-4">
                 <Lock className="h-8 w-8 text-indigo-600" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900">PSH Admin</h2>
+              <h2 className="text-3xl font-bold text-gray-900">NAPA Admin</h2>
               <p className="mt-2 text-gray-600">
                 {step === 1
                   ? 'Welcome back! Please sign in to continue.'
