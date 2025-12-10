@@ -58,12 +58,12 @@ const AdminLogin = () => {
       if (response?.needsEmailOtpVerification) {
         setStep(2);
       } else if (response?.token) {
-        Cookies.set("adminToken", response.token, {
+          Cookies.set("adminAuthToken", response.token, {
           expires: 1,
           secure: process.env.NODE_ENV === "production",
           sameSite: 'strict'
         });
-        window.location.href = "/admin/dashboard";
+        window.location.href = "/admin";
       } else {
         setErrors({ general: "Invalid credentials. Please try again." });
       }
@@ -87,12 +87,12 @@ const AdminLogin = () => {
       });
 
       if (response?.token) {
-        Cookies.set("adminToken", response.token, {
+          Cookies.set("adminAuthToken", response.token, {
           expires: 1,
           secure: process.env.NODE_ENV === "production",
           sameSite: 'strict'
         });
-        window.location.href = "/admin/dashboard";
+        window.location.href = "/admin";
       } else {
         setErrors({ general: "Invalid OTP code." });
       }

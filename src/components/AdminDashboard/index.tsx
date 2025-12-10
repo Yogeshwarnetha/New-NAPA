@@ -38,7 +38,7 @@ const AdminDashboardLayout: React.FC<AdminDashboardProps> = ({ children }) => {
   const navigate = useNavigate(); // Initialize navigate for redirection
 
   useEffect(() => {
-    const adminAuthToken = Cookies.get("adminAuthToken");
+    const adminAuthToken = Cookies.get("adminAuthToken") || Cookies.get("adminToken");
     if (!adminAuthToken) {
       navigate("/admin/login");
     }
