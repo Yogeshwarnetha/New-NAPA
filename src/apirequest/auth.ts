@@ -1,3 +1,99 @@
+// Reset Password API Request
+export const resetPassword = async (
+  email: string,
+  resetToken: string,
+  newPassword: string,
+  confirmPassword: string
+) : Promise<{ success: boolean; message?: string }> => {
+  try {
+    const response = await axios.post(
+      `${origin}/api/v1/auth/reset-password`,
+      { email, resetToken, newPassword, confirmPassword },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+      }
+    );
+    return {
+      success: response.data.success !== undefined ? response.data.success : true,
+      message: response.data.message || 'Password reset successful',
+    };
+  } catch (err: any) {
+    let errorMessage = 'Failed to reset password';
+    if (axios.isAxiosError(err)) {
+      errorMessage = err.response?.data?.message || err.message;
+    } else if (err instanceof Error) {
+      errorMessage = err.message;
+    }
+    return {
+      success: false,
+      message: errorMessage,
+    };
+  }
+};
+// Verify Reset OTP API Request
+export const verifyResetOTP = async (email: string, otp: string): Promise<{ success: boolean; message?: string; resetToken?: string }> => {
+  try {
+    const response = await axios.post(
+      `${origin}/api/v1/auth/verify-reset-otp`,
+      { email, otp },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+      }
+    );
+    return {
+      success: response.data.success !== undefined ? response.data.success : true,
+      message: response.data.message || 'OTP verified successfully',
+      resetToken: response.data.resetToken,
+    };
+  } catch (err: any) {
+    let errorMessage = 'Failed to verify OTP';
+    if (axios.isAxiosError(err)) {
+      errorMessage = err.response?.data?.message || err.message;
+    } else if (err instanceof Error) {
+      errorMessage = err.message;
+    }
+    return {
+      success: false,
+      message: errorMessage,
+    };
+  }
+};
+// Forgot Password API Request
+export const forgotPassword = async (email: string): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const response = await axios.post(
+      `${origin}/api/v1/auth/forgot-password`,
+      { email },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+      }
+    );
+    return {
+      success: response.data.success !== undefined ? response.data.success : true,
+      message: response.data.message || 'OTP sent to your email',
+    };
+  } catch (err: any) {
+    let errorMessage = 'Failed to send OTP';
+    if (axios.isAxiosError(err)) {
+      errorMessage = err.response?.data?.message || err.message;
+    } else if (err instanceof Error) {
+      errorMessage = err.message;
+    }
+    return {
+      success: false,
+      message: errorMessage,
+    };
+  }
+};
 import axios from "axios";
 import { origin } from "./config";
 import Cookies from "js-cookie";

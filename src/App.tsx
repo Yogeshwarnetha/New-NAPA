@@ -40,6 +40,9 @@ import ProjectListPage from './components/Projects/projectListPage';
 import GalleryDashboard from './components/AdminDashboard/gallery';
 import AboutPageDashboard from './components/AdminDashboard/Webpages';
 import HomepageDashboard from './components/AdminDashboard/HomePage';
+import ForgotPasswordPage from './components/Login/ForgotPasswordPage';
+import VerifyResetOTP from './components/Login/VerifyResetOTP';
+import ResetPassword from './components/Login/ResetPassword';
 
 function App() {
   const location = useLocation();
@@ -71,7 +74,9 @@ function App() {
         <Route path="/chapter/:id" element={<ChapterDetail />} />
         <Route path="/event/:id" element={<EventDetailPage />} />
         <Route path='/project/:id' element={<ProjectDetailPage />} />
-
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+<Route path="/verify-reset-otp" element={<VerifyResetOTP />} />
+<Route path="/reset-password" element={<ResetPassword />} />
 
 
         <Route
