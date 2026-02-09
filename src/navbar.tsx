@@ -54,7 +54,7 @@ const menuItems: MenuItemType[] = [
     submenu: [
       { title: 'President Message', path: '/president-message' },
       { title: 'Members Board', path: '/members-board' },
-      { title: 'Special Committees', path: '' },
+      // { title: 'Special Committees', path: '' },
       { title: 'NAPA Convention', path: 'https://www.napaconvention.org/', external: true },
       { title: 'NAPA Chapters', path: '/chapters' },
     ],
@@ -69,7 +69,7 @@ const menuItems: MenuItemType[] = [
     icon: <BookOpen className="w-5 h-5" />,
     submenu: [
       { title: 'Matrimony', path: 'https://matrimony.napausa.org/', external: true },
-      { title: 'Donations', path: '/resources/docs' },
+      { title: 'Donations', path: 'https://checkout.square.site/merchant/XQQYWZ0XCSB8B/checkout/DT7LDQF2CO5RPLHPRXHDHYIH', external: true },
     ],
   },
   {
@@ -188,6 +188,9 @@ const Navbar = () => {
           </div>
           {/* Login & Register */}
           <div className="flex space-x-4 border-l border-gray-600 pl-4">
+            <a href='https://checkout.square.site/merchant/XQQYWZ0XCSB8B/checkout/DT7LDQF2CO5RPLHPRXHDHYIH' className="text-sm hover:text-blue-400" target="_blank" rel="noopener noreferrer">
+              Donations
+            </a>
             {userToken ? (
               <>
                 <span className="text-sm">Welcome, {userName}</span>

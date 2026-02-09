@@ -70,6 +70,21 @@ const ProjectListPage: React.FC = () => {
 
     return (
         <div className="py-16 px-6 lg:px-8">
+            {/* Banner Section */}
+            {/* <div
+                className="relative h-[400px] md:h-[500px] bg-cover bg-center mb-12"
+                style={{
+                    backgroundImage: `url('https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/ProjectsBanner.png')`,
+                }}
+            >
+                <div className="absolute inset-0 bg-black/30" />
+                <div className="relative container mx-auto px-4 h-full flex items-center justify-center">
+                    <div className="max-w-3xl text-white text-center">
+                        <h1 className="text-3xl md:text-5xl font-bold mb-4">Projects</h1>
+                        <p className="text-md md:text-xl opacity-90">Explore our impactful initiatives and community projects</p>
+                    </div>
+                </div>
+            </div> */}
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Projects</h1>
                 {projects.length === 0 ? (

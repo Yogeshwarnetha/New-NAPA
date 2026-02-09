@@ -35,10 +35,10 @@ function AboutusIntroduction() {
       <div
         className="relative h-[300px] md:h-[500px] bg-cover bg-center"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80")',
+          backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/About%20Introduction.png")',
         }}
       >
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/30" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
             <h1 className="text-xl md:text-5xl font-bold mb-4">{data.introduction_heading}</h1>
