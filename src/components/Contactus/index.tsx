@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Loader2, Phone, Mail, Heart, Users, Globe } from 'lucide-react';
+import { Send, Loader2, Phone, Mail, Heart, } from 'lucide-react';
 import { createContactus } from '../../apirequest/contactus';
 
 interface ContactFormData {
@@ -38,11 +38,6 @@ export function Contact() {
         setData(prev => ({ ...prev, [name]: value }));
     };
 
-    const impactStats = [
-        { icon: Users, label: 'Lives Touched', value: '50K+' },
-        { icon: Heart, label: 'Projects Completed', value: '200+' },
-        { icon: Globe, label: 'Communities Served', value: '100+' }
-    ];
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
@@ -57,17 +52,7 @@ export function Contact() {
                             Together, we can make a lasting impact. Reach out to learn how you can contribute to our cause.
                         </p>
                     </div>
-
-                    {/* Impact Stats */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 mt-12">
-                        {impactStats.map((stat, index) => (
-                            <div key={index} className="bg-white rounded-lg p-6 text-center shadow-md">
-                                <stat.icon className="h-8 w-8 text-indigo-600 mx-auto mb-3" />
-                                <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
-                                <p className="text-sm text-gray-600">{stat.label}</p>
-                            </div>
-                        ))}
-                    </div>
+                
 
                     <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
                         {/* Contact Form */}

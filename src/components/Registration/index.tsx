@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   User, Mail, Lock, Phone, Home, MapPin, Briefcase,
   Building2, Flag, ChevronLeft, ChevronRight, Users,
-  CheckCircle, XCircle, ArrowLeft
+  CheckCircle, XCircle, ArrowLeft, Eye, EyeOff
 } from 'lucide-react';
 import { OTPEmailVerification, resendOTPEmailVerification, signupUser } from '../../apirequest/auth';
 
@@ -61,6 +61,15 @@ function Registration() {
     companyName: '',
     gothram: '',
   });
+
+  // Password visibility state
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Navigation to login
+  const handleGoToLogin = () => {
+    window.location.href = '/login';
+  };
 
   useEffect(() => {
     const fetchStatesProvinces = async () => {
@@ -425,7 +434,7 @@ function Registration() {
 
                 <div className="relative">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
@@ -435,6 +444,14 @@ function Registration() {
                     minLength={6}
                   />
                   <Lock className={iconClasses} />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-3.5 text-gray-400"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
                   <p className="text-xs text-gray-500 mt-1">
                     Password must be at least 6 characters long
                   </p>
@@ -442,7 +459,7 @@ function Registration() {
 
                 <div className="relative">
                   <input
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
@@ -451,6 +468,14 @@ function Registration() {
                     required
                   />
                   <Lock className={iconClasses} />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    className="absolute right-3 top-3.5 text-gray-400"
+                    tabIndex={-1}
+                  >
+                    {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
                 </div>
               </div>
             )}
@@ -681,6 +706,17 @@ function Registration() {
             </div>
           </form>
         </div>
+      </div>
+
+      {/* Button to go to login */}
+      <div className="mt-6 text-center">
+        <button
+          type="button"
+          onClick={handleGoToLogin}
+          className="text-indigo-600 hover:text-indigo-700 font-medium underline"
+        >
+          Already have an account? Login
+        </button>
       </div>
 
       <Snackbar {...snackbar} onClose={closeSnackbar} />

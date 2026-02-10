@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Scroll, Book, Users, Gavel, Calendar, DollarSign, FileText, ChevronDown, ChevronUp } from 'lucide-react';
+import { Scroll, Users, Gavel, Calendar, DollarSign, FileText, ChevronDown, ChevronUp } from 'lucide-react';
 
 function ByLaws() {
   const [openSection, setOpenSection] = useState<number | null>(null);
@@ -66,16 +66,15 @@ function ByLaws() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div 
-        className="relative h-[300px] bg-cover bg-center"
+        className="relative h-[400px] md:h-[500px] bg-cover bg-center"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80")',
+          backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/By%20Laws.png")',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-800/90" />
+        <div className="absolute inset-0 bg-black/30" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
             <div className="flex items-center gap-4 mb-4">
-              <Book className="w-10 h-10" />
               <h1 className="text-5xl font-bold">By-Laws</h1>
             </div>
             <p className="text-xl opacity-90">Governing Principles of NAPA</p>

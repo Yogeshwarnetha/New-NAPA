@@ -32,12 +32,12 @@ function Visionandmission() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div
-        className="relative h-[250px] md:h-[400px] bg-cover bg-center"
+        className="relative h-[400px] md:h-[500px] bg-cover bg-center"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80")',
+          backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/Mission%20and%20vision.png")',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/90 to-indigo-600/90" />
+        <div className="absolute inset-0 bg-black/30" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
             <h1 className="text-xl md:text-5xl font-bold mb-4">{content.missionvision_heading}</h1>

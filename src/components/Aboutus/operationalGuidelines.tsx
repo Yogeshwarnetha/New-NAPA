@@ -1,5 +1,5 @@
 import  { useState } from 'react';
-import { ClipboardList, Users, Calendar, DollarSign, Globe, Building2, ChevronDown, ChevronUp, Briefcase } from 'lucide-react';
+import { Users, Calendar, DollarSign, Globe, Building2, ChevronDown, ChevronUp, Briefcase } from 'lucide-react';
 
 function OperationalGuidelines() {
   const [openSection, setOpenSection] = useState<number | null>(null);
@@ -82,16 +82,15 @@ function OperationalGuidelines() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div 
-        className="relative h-[300px] bg-cover bg-center"
+        className="relative h-[400px] md:h-[500px] bg-cover bg-center"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80")',
+          backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/Operational%20Guidelines.png")',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/90" />
+        <div className="absolute inset-0 bg-black/30" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
             <div className="flex items-center gap-4 mb-4">
-              <ClipboardList className="w-10 h-10" />
               <h1 className="text-5xl font-bold">Operational Guidelines</h1>
             </div>
             <p className="text-xl opacity-90">Standard Operating Procedures for NAPA</p>
