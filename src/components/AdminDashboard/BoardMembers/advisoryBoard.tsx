@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
-import { fetchAdvisoryCouncilPagination } from "../../../apirequest/boardMember";
+import { fetchAdvisoryCouncilPagination, updateAdvisoryCouncil, deleteAdvisoryCouncil } from "../../../apirequest/boardMember";
 import CreateAdvisoryCouncil from "./createAdvisoryCouncil";
 
 interface BoardMember {
@@ -31,6 +31,11 @@ const AdvisoryBoardDashboard = () => {
   const [count, setCount] = useState(0);
   const [openImageModal, setOpenImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editMember, setEditMember] = useState<BoardMember | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editImage, setEditImage] = useState<File | null>(null);
+  const [editLoading, setEditLoading] = useState(false);
 
   // Fetch data from API
   useEffect(() => {
@@ -68,6 +73,50 @@ const AdvisoryBoardDashboard = () => {
     setOpenImageModal(false);
   };
 
+  const handleEditOpen = (member: BoardMember) => {
+    setEditMember(member);
+    setEditName(member.name);
+    setEditImage(null);
+    setEditModalOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditModalOpen(false);
+    setEditMember(null);
+    setEditName("");
+    setEditImage(null);
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!editMember) return;
+    setEditLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('name', editName);
+      if (editImage) formData.append('image', editImage);
+      await updateAdvisoryCouncil(editMember.id, formData);
+      handleEditClose();
+      // Refresh data
+      setPage(1);
+    } catch (error) {
+      alert('Failed to update member');
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm('Are you sure you want to delete this member?')) return;
+    try {
+      await deleteAdvisoryCouncil(id);
+      // Refresh data
+      setPage(1);
+    } catch (error) {
+      alert('Failed to delete member');
+    }
+  };
+
   return (
     <>
       <Box sx={{ padding: 2 }}>
@@ -102,10 +151,10 @@ const AdvisoryBoardDashboard = () => {
                         onClick={() => openImagePopup(member.imageUrl)} />
                     </TableCell>
                     <TableCell>
-                      <Button variant="contained" color="primary" sx={{ mr: 1 }}>
+                      <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => handleEditOpen(member)}>
                         <MdEdit fontSize={20} /> Edit
                       </Button>
-                      <Button variant="contained" color="error">
+                      <Button variant="contained" color="error" onClick={() => handleDelete(member.id)}>
                         <MdDelete fontSize={20} /> Delete
                       </Button>
                     </TableCell>
@@ -154,6 +203,43 @@ const AdvisoryBoardDashboard = () => {
               <AiOutlineClose />
             </Button>
           </Box>
+        </Box>
+      </Modal>
+      <Modal open={editModalOpen} onClose={handleEditClose}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'white',
+          padding: 2,
+          borderRadius: 1,
+          boxShadow: 3,
+          minWidth: 300,
+        }}>
+          <Typography variant="h6">Edit Advisory Council Member</Typography>
+          <form onSubmit={handleEditSubmit}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <input
+                type="text"
+                value={editName}
+                onChange={e => setEditName(e.target.value)}
+                placeholder="Name"
+                required
+              />
+              <input
+                type="file"
+                onChange={e => setEditImage(e.target.files?.[0] || null)}
+              />
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+                <Button type="button" variant="outlined" onClick={handleEditClose}>Cancel</Button>
+                <Button type="submit" variant="contained" disabled={editLoading}>Save</Button>
+              </Box>
+            </Box>
+          </form>
         </Box>
       </Modal></>
   );

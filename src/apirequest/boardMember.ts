@@ -254,3 +254,161 @@ export const fetchChapterDirectors = async () => {
     throw err;
   }
 };
+
+export const updateAdvisoryCouncil = async (id: number, data: FormData) => {
+  try {
+    const response = await axios.put(`${origin}/api/v1/advisory-council/${id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("advisory-council update failed:", error);
+    throw error;
+  }
+};
+
+export const updateBoardMember = async (id: number, data: FormData) => {
+  try {
+    const response = await axios.put(
+      `${origin}/api/v1/boardofdirectors/${id}`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("boardofdirectors update failed:", error);
+    throw error;
+  }
+};
+
+
+export const updateExecutiveCommittee = async (id: number, data: FormData) => {
+  try {
+    const response = await axios.put(
+      `${origin}/api/v1/executive-committee/${id}`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("executive-committee update failed:", error);
+    throw error;
+  }
+};
+
+export const updatePastPresident = async (id: number, data: FormData) => {
+  try {
+    const response = await axios.put(
+      `${origin}/api/v1/past-presidents/${id}`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("past-presidents update failed:", error);
+    throw error;
+  }
+};
+
+export const updateChapterLead = async (id: number, data: FormData) => {
+  try {
+    const response = await axios.put(
+      `${origin}/api/v1/chapter-leads/${id}`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("chapter-leads update failed:", error);
+    throw error;
+  }
+};
+
+export const updateChapterDirector = async (id: number, data: FormData) => {
+  try {
+    const response = await axios.put(
+      `${origin}/api/v1/chapter-directors/${id}`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("chapter-directors update failed:", error);
+    throw error;
+  }
+};
+
+
+export const deleteAdvisoryCouncil = async (id: number) => {
+  try {
+    const response = await axios.delete(`${origin}/api/v1/advisory-council/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("advisory-council delete failed:", error);
+    throw error;
+  }
+};
+
+
+export const deleteBoardMember = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${origin}/api/v1/boardofdirectors/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("boardofdirectors delete failed:", error);
+    throw error;
+  }
+};
+
+
+export const deleteExecutiveCommittee = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${origin}/api/v1/executive-committee/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("executive-committee delete failed:", error);
+    throw error;
+  }
+};
+
+export const deletePastPresident = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${origin}/api/v1/past-presidents/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("past-presidents delete failed:", error);
+    throw error;
+  }
+};
+
+export const deleteChapterLead = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${origin}/api/v1/chapter-leads/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("chapter-leads delete failed:", error);
+    throw error;
+  }
+};
+
+export const deleteChapterDirector = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${origin}/api/v1/chapter-directors/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("chapter-directors delete failed:", error);
+    throw error;
+  }
+};
