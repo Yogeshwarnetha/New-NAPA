@@ -7,6 +7,7 @@ import { fetchAdvisoryCouncilData, fetchExecutiveCommitteeData, fetchBoardofDire
 interface BoardMember {
   id: number;
   name: string;
+  designation: string;
   title?: string;
   imageUrl: string;
 }
@@ -73,8 +74,15 @@ function MemberCard({ member }: { member: BoardMember }) {
             {member.name}
           </h3>
           
+          {/* Designation - Conditionally rendered */}
+          {member.designation && member.designation.trim() && (
+            <p className="text-gray-700 text-sm leading-relaxed mb-3">
+              {member.designation}
+            </p>
+          )}
+          
           {/* Title */}
-          {member.title && (
+          {member.title && member.title.trim() && (
             <p className="text-gray-700 text-sm leading-relaxed mt-auto">
               {member.title}
             </p>
