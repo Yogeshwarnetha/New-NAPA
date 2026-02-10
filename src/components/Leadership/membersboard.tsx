@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {  Award, Briefcase, Shield } from 'lucide-react';
+import { Award, Briefcase, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { fetchAdvisoryCouncilData, fetchExecutiveCommitteeData, fetchBoardofDirectorsPagination } from "../../apirequest/boardMember";
@@ -106,12 +106,10 @@ const SectionTitle: React.FC<SectionTitleProps> = ({ title }) => {
       className="mb-12"
     >
       <div className="flex items-center mb-6">
-        
         <div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
             {title}
           </h2>
-          
         </div>
       </div>
       <div className="w-16 h-1 bg-gray-900"></div>
@@ -144,19 +142,28 @@ function MembersBoardMain() {
         ]);
 
         if (advisoryResponse.status === 'fulfilled') {
-          setAdvisoryCouncil(advisoryResponse.value.data || []);
+          // Sort by id in ascending order (oldest first, latest last)
+          const sortedAdvisory = [...(advisoryResponse.value.data || [])]
+            .sort((a, b) => a.id - b.id);
+          setAdvisoryCouncil(sortedAdvisory);
         } else {
           setError(prev => ({ ...prev, advisory: 'Unable to load advisory council' }));
         }
 
         if (executiveResponse.status === 'fulfilled') {
-          setExecutiveCommittee(executiveResponse.value.data || []);
+          // Sort by id in ascending order (oldest first, latest last)
+          const sortedExecutive = [...(executiveResponse.value.data || [])]
+            .sort((a, b) => a.id - b.id);
+          setExecutiveCommittee(sortedExecutive);
         } else {
           setError(prev => ({ ...prev, executive: 'Unable to load executive committee' }));
         }
 
         if (directorsResponse.status === 'fulfilled') {
-          setBoardDirectors(directorsResponse.value.data || []);
+          // Sort by id in ascending order (oldest first, latest last)
+          const sortedDirectors = [...(directorsResponse.value.data || [])]
+            .sort((a, b) => a.id - b.id);
+          setBoardDirectors(sortedDirectors);
         } else {
           setError(prev => ({ ...prev, directors: 'Unable to load board of directors' }));
         }
