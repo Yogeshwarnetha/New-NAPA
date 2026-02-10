@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'; // Import jwt-decode
 import mainlogo from './Images/logo.jpg';
 import Cookies from 'js-cookie';
@@ -98,6 +99,7 @@ interface CustomJwtPayload {
 }
 
 const Navbar = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
@@ -228,50 +230,56 @@ const Navbar = () => {
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center justify-center w-4/6 lg:w-[70%] space-x-6">
-              {menuItems.map((item, index) => (
-                <div key={index} className="relative">
-                  <a
-                    href={item.path || '#'}
-                    className="text-gray-700 hover:text-blue-600"
-                    onClick={(e) => {
-                      if (item.submenu) {
-                        e.preventDefault();
-                        toggleSubMenu(item.title);
-                      }
-                    }}
-                  >
-                    {item.title}
-                    {item.submenu && (
-                      <ChevronDown className="w-4 h-4 inline-block ml-1" />
+              {menuItems.map((item, index) => {
+                // Determine if the main item is active
+                const isActive = item.path && location.pathname === item.path;
+                return (
+                  <div key={index} className="relative">
+                    <a
+                      href={item.path || '#'}
+                      className={`text-gray-700 hover:text-blue-600 ${isActive ? 'font-bold text-blue-600 underline underline-offset-4' : ''}`}
+                      onClick={(e) => {
+                        if (item.submenu) {
+                          e.preventDefault();
+                          toggleSubMenu(item.title);
+                        }
+                      }}
+                    >
+                      {item.title}
+                      {item.submenu && (
+                        <ChevronDown className="w-4 h-4 inline-block ml-1" />
+                      )}
+                    </a>
+                    {item.submenu && activeSubMenu === item.title && (
+                      <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-xl w-56 font-sans">
+                        {item.submenu.map((subItem, subIndex) => {
+                          // Determine if the submenu item is active
+                          const isSubActive = subItem.path && location.pathname === subItem.path;
+                          return subItem.external ? (
+                            <a
+                              key={subIndex}
+                              href={subItem.path}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block px-4 py-2 text-gray-700 hover:bg-gray-100 ${isSubActive ? 'font-bold text-blue-600 underline underline-offset-4' : ''}`}
+                            >
+                              {subItem.title}
+                            </a>
+                          ) : (
+                            <a
+                              key={subIndex}
+                              href={subItem.path}
+                              className={`block px-4 py-2 text-gray-700 hover:bg-gray-100 ${isSubActive ? 'font-bold text-blue-600 underline underline-offset-4' : ''}`}
+                            >
+                              {subItem.title}
+                            </a>
+                          );
+                        })}
+                      </div>
                     )}
-                  </a>
-                  {item.submenu && activeSubMenu === item.title && (
-                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-xl w-56 font-sans">
-                      {item.submenu.map((subItem, subIndex) => (
-                        subItem.external ? (
-                          <a
-                            key={subIndex}
-                            href={subItem.path}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                          >
-                            {subItem.title}
-                          </a>
-                        ) : (
-                          <a
-                            key={subIndex}
-                            href={subItem.path}
-                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                          >
-                            {subItem.title}
-                          </a>
-                        )
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Donate Button */}
@@ -317,50 +325,54 @@ const Navbar = () => {
           </button>
         </div>
         <div className="p-6">
-          {menuItems.map((item, index) => (
-            <div key={index}>
-              <a
-                href={item.path || '#'}
-                className="block text-gray-700 py-4 hover:bg-gray-100"
-                onClick={(e) => {
-                  if (item.submenu) {
-                    e.preventDefault();
-                    toggleSubMenu(item.title);
-                  }
-                }}
-              >
-                {item.title}
-                {item.submenu && (
-                  <ChevronDown className="w-4 h-4 inline-block ml-1" />
+          {menuItems.map((item, index) => {
+            const isActive = item.path && location.pathname === item.path;
+            return (
+              <div key={index}>
+                <a
+                  href={item.path || '#'}
+                  className={`block text-gray-700 py-4 hover:bg-gray-100 ${isActive ? 'font-bold text-blue-600 underline underline-offset-4' : ''}`}
+                  onClick={(e) => {
+                    if (item.submenu) {
+                      e.preventDefault();
+                      toggleSubMenu(item.title);
+                    }
+                  }}
+                >
+                  {item.title}
+                  {item.submenu && (
+                    <ChevronDown className="w-4 h-4 inline-block ml-1" />
+                  )}
+                </a>
+                {item.submenu && activeSubMenu === item.title && (
+                  <div className="ml-4">
+                    {item.submenu.map((subItem, subIndex) => {
+                      const isSubActive = subItem.path && location.pathname === subItem.path;
+                      return subItem.external ? (
+                        <a
+                          key={subIndex}
+                          href={subItem.path}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`block text-gray-600 py-2 hover:bg-gray-100 ${isSubActive ? 'font-bold text-blue-600 underline underline-offset-4' : ''}`}
+                        >
+                          {subItem.title}
+                        </a>
+                      ) : (
+                        <a
+                          key={subIndex}
+                          href={subItem.path}
+                          className={`block text-gray-600 py-2 hover:bg-gray-100 ${isSubActive ? 'font-bold text-blue-600 underline underline-offset-4' : ''}`}
+                        >
+                          {subItem.title}
+                        </a>
+                      );
+                    })}
+                  </div>
                 )}
-              </a>
-              {item.submenu && activeSubMenu === item.title && (
-                <div className="ml-4">
-                  {item.submenu.map((subItem, subIndex) => (
-                    subItem.external ? (
-                      <a
-                        key={subIndex}
-                        href={subItem.path}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-gray-600 py-2 hover:bg-gray-100"
-                      >
-                        {subItem.title}
-                      </a>
-                    ) : (
-                      <a
-                        key={subIndex}
-                        href={subItem.path}
-                        className="block text-gray-600 py-2 hover:bg-gray-100"
-                      >
-                        {subItem.title}
-                      </a>
-                    )
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

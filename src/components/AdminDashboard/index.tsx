@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { CiMenuFries } from "react-icons/ci";
 import { FaCalendarAlt, FaProjectDiagram, FaPhotoVideo, FaNewspaper, FaAddressBook, FaDonate, FaEnvelopeOpenText, FaUsers, FaImages, FaUserTie, FaUsersCog, FaUserPlus, FaInfoCircle, FaChevronRight, FaBuilding, FaUserShield } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // Import the navigate function for redirection
+import { useNavigate, useLocation } from "react-router-dom"; // Import the navigate function and location for redirection
 import Cookies from "js-cookie"; // Import Cookies to read and remove cookies
 import './index.css';
 
@@ -36,6 +36,7 @@ interface AdminDashboardProps {
 
 const AdminDashboardLayout: React.FC<AdminDashboardProps> = ({ children }) => {
   const navigate = useNavigate(); // Initialize navigate for redirection
+  const location = useLocation(); // Get current location for active tab
 
   useEffect(() => {
     const adminAuthToken = Cookies.get("adminAuthToken") || Cookies.get("adminToken");
@@ -56,19 +57,26 @@ const AdminDashboardLayout: React.FC<AdminDashboardProps> = ({ children }) => {
         <Typography variant="h6" className="text-xl font-semibold">
           Admin Menu
         </Typography>
-        {adminList.map((item) => (
-          <Box key={item.id} className="hover:bg-gray-700 rounded-lg">
-            <a href={item.route} className="py-2 px-3 text-black hover:text-gray-300 flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <span className="text-xl">{item.icon}</span>
-                <span className="text-list mr-auto">{item.text}</span>
-              </div>
-              <span className="text-sm font-medium">
-                <FaChevronRight />
-              </span>
-            </a>
-          </Box>
-        ))}
+        {adminList.map((item) => {
+          const isActive = location.pathname === item.route;
+          return (
+            <Box key={item.id} className={`rounded-lg ${isActive ? 'bg-blue-100 font-bold' : 'hover:bg-gray-700'}`}>
+              <a
+                href={item.route}
+                className={`py-2 px-3 flex items-center justify-between ${isActive ? 'text-blue-700' : 'text-black hover:text-gray-300'}`}
+                style={isActive ? { borderLeft: '4px solid #2563eb', background: '#e0e7ff' } : {}}
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="text-xl">{item.icon}</span>
+                  <span className="text-list mr-auto">{item.text}</span>
+                </div>
+                <span className="text-sm font-medium">
+                  <FaChevronRight />
+                </span>
+              </a>
+            </Box>
+          );
+        })}
       </div>
 
       {/* Main Content Area */}
