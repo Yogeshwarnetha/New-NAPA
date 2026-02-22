@@ -18,3 +18,38 @@ export const fetchUsersPaginationsData = async (page:any, limit:any) => {
         throw error;
     }
 };
+
+export const updateUser = async (id: string, userData: any) => {
+    try {
+        const { data } = await axios.post(
+            `${origin}/api/v1/users/update`,
+            { id, ...userData },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return data;
+    } catch (error) {
+        console.error("Error updating user:", error);
+        throw error;
+    }
+};
+
+export const deleteUser = async (id: string) => {
+    try {
+        const { data } = await axios.delete(
+            `${origin}/api/v1/users/${id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return data;
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        throw error;
+    }
+};

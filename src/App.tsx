@@ -1,6 +1,7 @@
 import './App.css';
 import Navbar from './navbar';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Home from './components/Home';
 import Footer from './components/footer';
 import AdminDashboardLayout from './components/AdminDashboard';
@@ -23,7 +24,6 @@ import VideoGallery from './components/media/video';
 import Registration from './components/Registration';
 import LoginPage from './components/Login';
 import UsersDashboard from './components/AdminDashboard/users';
-import AdminLogin from './components/AdminLogin';
 import Donations from './components/Donations';
 import OperationalGuidelines from './components/Aboutus/operationalGuidelines';
 import PresidentMessageMain from './components/Leadership/presidentmessage';
@@ -43,6 +43,9 @@ import HomepageDashboard from './components/AdminDashboard/HomePage';
 import ForgotPasswordPage from './components/Login/ForgotPasswordPage';
 import VerifyResetOTP from './components/Login/VerifyResetOTP';
 import ResetPassword from './components/Login/ResetPassword';
+import UserProfile from './components/Profile';
+import CreateAdmin from './components/AdminDashboard/CreateAdmin';
+import LogoLoader from './components/ui/LogoLoader';
 
 function App() {
   const location = useLocation();
@@ -67,6 +70,7 @@ function App() {
         <Route path='/video-gallery' element={<VideoGallery />} />
         <Route path='/register' element={<Registration />} />
         <Route path='/login' element={<LoginPage />} />
+        <Route path='/profile' element={<UserProfile />} />
         <Route path='/donations' element={<Donations />} />
         <Route path='/president-message' element={<PresidentMessageMain />} />
         <Route path='/members-board' element={<MembersBoardMain />} />
@@ -75,8 +79,8 @@ function App() {
         <Route path="/event/:id" element={<EventDetailPage />} />
         <Route path='/project/:id' element={<ProjectDetailPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-<Route path="/verify-reset-otp" element={<VerifyResetOTP />} />
-<Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-reset-otp" element={<VerifyResetOTP />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
 
         <Route
@@ -104,7 +108,8 @@ function App() {
         <Route path='/admin/create-chapterdirectors' element={<CreateChapterDirectorsDashboard />} />
         <Route path='/admin/gallery' element={<GalleryDashboard />} />
 
-        <Route path='/admin/login' element={<AdminLogin />} />
+        <Route path='/admin/login' element={<LoginPage />} />
+        <Route path='/admin/create-admin' element={<CreateAdmin />} />
         <Route path='/admin/about-introduction' element={<AboutPageDashboard />} />
         <Route path='/admin/home-page' element={<HomepageDashboard />} />
 
@@ -117,6 +122,23 @@ function App() {
 }
 
 export default function RootApp() {
+  const [isBootLoading, setIsBootLoading] = useState(true);
+
+  useEffect(() => {
+    if (document.readyState === 'complete') {
+      setIsBootLoading(false);
+      return;
+    }
+
+    const handleLoad = () => setIsBootLoading(false);
+    window.addEventListener('load', handleLoad);
+    return () => window.removeEventListener('load', handleLoad);
+  }, []);
+
+  if (isBootLoading) {
+    return <LogoLoader />;
+  }
+
   return (
     <BrowserRouter>
       <App />

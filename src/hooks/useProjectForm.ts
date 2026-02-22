@@ -48,9 +48,9 @@ export function useProjectForm(): UseProjectFormReturn {
         return;
       }
 
-      const maxSize = 5 * 1024 * 1024; // 5MB
+      const maxSize = 10 * 1024 * 1024; // 10MB
       if (file.size > maxSize) {
-        setErrors((prev) => ({ ...prev, imageFile: 'File size should be less than 5MB.' }));
+        setErrors((prev) => ({ ...prev, imageFile: 'File size should be less than 10MB.' }));
         return;
       }
 
@@ -63,7 +63,7 @@ export function useProjectForm(): UseProjectFormReturn {
     const newErrors: Partial<Record<keyof ProjectFormData, string>> = {};
 
     if (!formData.heading || formData.heading.length < 3 || formData.heading.length > 100) newErrors.heading = 'Heading should be between 3 and 100 characters';
-    if (!formData.description || formData.description.length < 10 || formData.description.length > 500) newErrors.description = 'Description should be between 10 and 500 characters';
+    if (!formData.description) newErrors.description = 'Description is required';
     if (!formData.imageFile) newErrors.imageFile = 'Image file is required';
 
     setErrors(newErrors);

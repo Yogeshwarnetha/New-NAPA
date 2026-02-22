@@ -116,7 +116,10 @@ const ProjectDetailPage: React.FC = () => {
                 </div>
                 <div className="p-6">
                     <h1 className="text-2xl font-bold text-gray-900 mb-2">{selectedProject.heading}</h1>
-                    <p className="text-gray-700 leading-relaxed">{selectedProject.description}</p>
+                    <div 
+                        className="text-gray-700 leading-relaxed prose prose-sm max-w-none"
+                        dangerouslySetInnerHTML={{ __html: selectedProject.description }}
+                    />
                 </div>
             </div>
 

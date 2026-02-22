@@ -282,6 +282,8 @@ const EventsDashboard = () => {
             boxShadow: 24,
             p: 4,
             borderRadius: 1,
+            maxHeight: '80vh',
+            overflowY: 'auto',
           }}
         >
           <Typography variant="h6" sx={{ mb: 2 }}>Edit Event</Typography>

@@ -7,7 +7,6 @@ import {
   FaPhotoVideo,
   FaNewspaper,
   FaAddressBook,
-  FaDonate,
   FaEnvelopeOpenText,
   FaImages,
   FaUsers,
@@ -26,7 +25,6 @@ const adminList = [
   { id: 3, text: "Media", route: "/admin/gallery", icon: <FaPhotoVideo /> },
   { id: 4, text: "News", route: "/admin/news", icon: <FaNewspaper /> },
   { id: 5, text: "Contact Details", route: "/admin/contact", icon: <FaAddressBook /> },
-  { id: 6, text: "Donations", route: "/admin/donations", icon: <FaDonate /> },
   { id: 7, text: "President Message", route: "/admin/president-message", icon: <FaEnvelopeOpenText /> },
   { id: 8, text: "Users", route: "/admin/users", icon: <FaUsers /> },
   { id: 9, text: "Banner Carousels", route: "/admin/banner-carousels", icon: <FaImages /> },
@@ -37,7 +35,6 @@ const adminList = [
   { id: 14, text: "Members Board", route: "/admin/members-board", icon: <FaUserTie /> },
   { id: 15, text: "Special Committees", route: "/admin/special-committees", icon: <FaUsersCog /> },
   { id: 16, text: "Create Admin", route: "/admin/create-admin", icon: <FaUserPlus /> },
-  { id: 17, text: "About NAPA", route: "/admin/about-napa", icon: <FaInfoCircle /> },
   { id: 18, text: "About Introduction", route: "/admin/about-introduction", icon: <FaInfoCircle /> },
   { id: 19, text: "Home Page", route: "/admin/home-page", icon: <FaInfoCircle /> },
 ];

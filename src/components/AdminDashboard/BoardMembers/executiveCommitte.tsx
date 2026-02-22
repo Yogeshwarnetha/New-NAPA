@@ -192,6 +192,8 @@ const ExecutiveCommitteeDashboard = () => {
                       padding: 2,
                       borderRadius: 1,
                       boxShadow: 3,
+                maxHeight: "80vh",
+                overflowY: "auto",
                   }}
               >
                   <Box sx={{ position: "relative" }}>
@@ -224,6 +226,8 @@ const ExecutiveCommitteeDashboard = () => {
               borderRadius: 1,
               boxShadow: 3,
               minWidth: 300,
+              maxHeight: '80vh',
+              overflowY: 'auto',
             }}>
               <Typography variant="h6">Edit Executive Committee Member</Typography>
               <form onSubmit={handleEditSubmit}>

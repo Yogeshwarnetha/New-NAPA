@@ -237,3 +237,108 @@ export const loginUser = async (data: any) => {
     throw err;
   }
 };
+
+export const loginUnified = async (data: {
+  email: string;
+  password: string;
+  role?: 'admin' | 'user';
+  emailOtp?: string;
+}) => {
+  const reqData = JSON.stringify(data);
+  try {
+    const response = await axios({
+      url: `${origin}/api/v1/auth/login-unified`,
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: reqData,
+    });
+
+    return response?.data;
+  } catch (err: any) {
+    console.error("Unified login API call error:", err?.message);
+    throw err;
+  }
+};
+
+// Function to fetch user profile
+export const getUserProfile = async () => {
+  try {
+    const token = Cookies.get("authToken");
+    
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios({
+      url: `${origin}/api/v1/auth/profile`,
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    });
+
+    return response?.data;
+  } catch (err: any) {
+    console.error("Get profile API call error:", err?.message);
+    throw err;
+  }
+};
+
+// Function to update user profile
+export const updateUserProfile = async (profileData: any) => {
+  try {
+    const token = Cookies.get("authToken");
+    
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios({
+      url: `${origin}/api/v1/auth/profile`,
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      data: profileData,
+    });
+
+    return response?.data;
+  } catch (err: any) {
+    console.error("Update profile API call error:", err?.message);
+    throw err;
+  }
+};
+
+// Function to change password
+export const changePassword = async (passwordData: {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}) => {
+  try {
+    const token = Cookies.get("authToken");
+    
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios({
+      url: `${origin}/api/v1/auth/change-password`,
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      data: passwordData,
+    });
+
+    return response?.data;
+  } catch (err: any) {
+    console.error("Change password API call error:", err?.message);
+    throw err;
+  }
+};

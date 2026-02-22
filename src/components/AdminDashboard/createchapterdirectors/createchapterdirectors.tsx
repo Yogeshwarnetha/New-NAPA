@@ -3,7 +3,7 @@ import { PlusCircle } from 'lucide-react';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Modal } from '../../ui/Modal';
-import { createChapterLeads } from '../../../apirequest/boardMember';
+import { createChapterDirector } from '../../../apirequest/chapterDirectors.api';
 
 interface FormDataType {
     name: string;
@@ -52,7 +52,7 @@ const CreateChapterDirectors = () => {
             const formDataToSend = new FormData();
             formDataToSend.append('name', formData.name);
             formDataToSend.append('image', formData.imageUrl as File);
-            await createChapterLeads(formDataToSend);
+            await createChapterDirector(formDataToSend);
             alert('Chapter Directors created successfully!');
             handleClose();
         } catch (error) {

@@ -19,7 +19,12 @@ export function Modal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className={cn("bg-white rounded-lg w-full max-w-[500px] p-6 relative", className)}>
+      <div
+        className={cn(
+          "bg-white rounded-lg w-full max-w-[500px] p-6 relative max-h-[80vh] overflow-y-auto",
+          className
+        )}
+      >
         <button
           onClick={onClose}
           className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"

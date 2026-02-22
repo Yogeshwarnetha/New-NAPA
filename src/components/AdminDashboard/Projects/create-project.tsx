@@ -2,9 +2,10 @@ import React from 'react';
 import { PlusCircle } from 'lucide-react';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
-import { Textarea } from '../../ui/Textarea';
 import { Modal } from '../../ui/Modal';
 import { useProjectForm } from '../../../hooks/useProjectForm';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const CreateProject = () => {
   const [open, setOpen] = React.useState(false);
@@ -36,8 +37,9 @@ const CreateProject = () => {
             <p className="text-gray-600 mt-1">Fill in the details below to create a new project.</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
+          <div className="max-h-[60vh] overflow-y-auto p-4 border border-gray-300 rounded-md">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-4">
               {/* Image File Upload */}
               <label className="block text-sm font-medium text-gray-700">Project Image</label>
               <input
@@ -60,25 +62,38 @@ const CreateProject = () => {
                 error={errors.heading}
               />
 
-              <Textarea
-                id="description"
-                name="description"
-                label="Project Description"
-                placeholder="Enter project description"
-                value={formData.description}
-                onChange={handleInputChange}
-                rows={4}
-                error={errors.description}
-              />
+              {/* Rich Text Editor for Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Project Description
+                </label>
+                <ReactQuill
+                  value={formData.description}
+                  onChange={(value) => handleInputChange({ target: { name: 'description', value } } as any)}
+                  className="bg-white"
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [1, 2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                      [{ 'indent': '-1'}, { 'indent': '+1' }],
+                      ['link'],
+                      ['clean']
+                    ]
+                  }}
+                />
+                {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+              </div>
             </div>
 
-            <div className="flex justify-end space-x-4 pt-4">
-              <Button type="button" variant="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button type="submit">Create Project</Button>
-            </div>
-          </form>
+              <div className="flex justify-end space-x-4 pt-4">
+                <Button type="button" variant="secondary" onClick={handleClose}>
+                  Cancel
+                </Button>
+                <Button type="submit">Create Project</Button>
+              </div>
+            </form>
+          </div>
         </div>
       </Modal>
     </>

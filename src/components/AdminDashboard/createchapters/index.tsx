@@ -46,6 +46,8 @@ const CreateChaptersDashboard = () => {
   const [chapterToDelete, setChapterToDelete] = useState<Chapter | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   // Fetch data from API
   useEffect(() => {
@@ -109,6 +111,8 @@ const CreateChaptersDashboard = () => {
 
   const handleEditClick = (chapter: Chapter) => {
     setCurrentChapter(chapter);
+    setImageFiles([]);
+    setImagePreviews([]);
     setEditModalOpen(true);
   };
 
@@ -119,6 +123,11 @@ const CreateChaptersDashboard = () => {
       const formData = new FormData();
       formData.append('title', currentChapter.title);
       formData.append('description', currentChapter.description);
+      
+      // Add new images if any
+      imageFiles.forEach((file) => {
+        formData.append('images', file);
+      });
 
       await updateChapter(currentChapter.id, formData); // Now using number ID
       const response = await fetchChaptersPagination(page, limit);
@@ -131,6 +140,8 @@ const CreateChaptersDashboard = () => {
       setCount(response.count);
       toast.success("Chapter updated successfully!");
       setEditModalOpen(false);
+      setImageFiles([]);
+      setImagePreviews([]);
     } catch (error) {
       console.error("Error updating chapter:", error);
       toast.error("Failed to update chapter");
@@ -140,6 +151,8 @@ const CreateChaptersDashboard = () => {
   const handleEditCancel = () => {
     setEditModalOpen(false);
     setCurrentChapter(null);
+    setImageFiles([]);
+    setImagePreviews([]);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,6 +161,19 @@ const CreateChaptersDashboard = () => {
       ...currentChapter,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      setImageFiles(files);
+      
+      // Create previews
+      const previews = files.map(file => {
+        return URL.createObjectURL(file);
+      });
+      setImagePreviews(previews);
+    }
   };
 
   const handleChangePage = (_event: unknown, newPage: number) => {
@@ -271,6 +297,8 @@ const CreateChaptersDashboard = () => {
               padding: 2,
               borderRadius: 1,
               boxShadow: 3,
+              maxHeight: "80vh",
+              overflowY: "auto",
             }}
           >
             <Box sx={{ position: "relative" }}>
@@ -327,6 +355,8 @@ const CreateChaptersDashboard = () => {
               boxShadow: 24,
               p: 4,
               borderRadius: 1,
+              maxHeight: '80vh',
+              overflowY: 'auto',
             }}
           >
             <Typography variant="h6" sx={{ mb: 2 }}>Edit Chapter</Typography>
@@ -350,6 +380,81 @@ const CreateChaptersDashboard = () => {
                   multiline
                   rows={4}
                 />
+                
+                {/* Image Upload Section */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                    Chapter Images
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    fullWidth
+                    sx={{ mb: 1 }}
+                  >
+                    Upload New Images
+                    <input
+                      type="file"
+                      hidden
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageChange}
+                    />
+                  </Button>
+                  
+                  {/* Current Images */}
+                  {currentChapter.images && currentChapter.images.length > 0 && (
+                    <Box sx={{ mt: 2 }}>
+                      <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+                        Current Images:
+                      </Typography>
+                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                        {currentChapter.images.map((img, idx) => (
+                          <Box
+                            key={idx}
+                            component="img"
+                            src={img}
+                            alt={`Current ${idx + 1}`}
+                            sx={{
+                              width: 100,
+                              height: 100,
+                              objectFit: 'cover',
+                              borderRadius: 1,
+                              border: '1px solid #ddd'
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
+                  )}
+                  
+                  {/* New Image Previews */}
+                  {imagePreviews.length > 0 && (
+                    <Box sx={{ mt: 2 }}>
+                      <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+                        New Images Preview:
+                      </Typography>
+                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                        {imagePreviews.map((preview, idx) => (
+                          <Box
+                            key={idx}
+                            component="img"
+                            src={preview}
+                            alt={`Preview ${idx + 1}`}
+                            sx={{
+                              width: 100,
+                              height: 100,
+                              objectFit: 'cover',
+                              borderRadius: 1,
+                              border: '2px solid #1976d2'
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
+                  )}
+                </Box>
+                
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
                   <Button onClick={handleEditCancel} sx={{ mr: 1 }}>
                     Cancel

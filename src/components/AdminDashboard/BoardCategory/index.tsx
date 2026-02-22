@@ -155,6 +155,8 @@ const BoardCategoriesDashboard = () => {
               padding: 4,
               borderRadius: 1,
               boxShadow: 3,
+              maxHeight: "80vh",
+              overflowY: "auto",
             }}
           >
             <Typography variant="h6" sx={{ mb: 2 }}>

@@ -48,6 +48,8 @@ const BannersDashboard = () => {
   const [bannerToDelete, setBannerToDelete] = useState<Banner | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentBanner, setCurrentBanner] = useState<Banner | null>(null);
+  const [newImages, setNewImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,7 +98,21 @@ const BannersDashboard = () => {
 
   const handleEditClick = (banner: Banner) => {
     setCurrentBanner(banner);
+    setNewImages([]);
+    setImagePreviews([]);
     setEditModalOpen(true);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      setNewImages(fileArray);
+
+      // Create preview URLs
+      const previews = fileArray.map(file => URL.createObjectURL(file));
+      setImagePreviews(previews);
+    }
   };
 
   const handleEditSubmit = async () => {
@@ -107,12 +123,24 @@ const BannersDashboard = () => {
       formData.append('heading', currentBanner.heading);
       formData.append('description', currentBanner.description);
 
+      // Add new images if selected
+      if (newImages.length > 0) {
+        newImages.forEach((file) => {
+          formData.append('images', file);
+        });
+      }
+
       await updateBanner(currentBanner.id, formData);
       const data = await fetchBannerPagination(page, limit);
       setBanners(data.data);
       setCount(data.count);
       toast.success("Banner updated successfully!");
       setEditModalOpen(false);
+      
+      // Clean up preview URLs
+      imagePreviews.forEach(url => URL.revokeObjectURL(url));
+      setNewImages([]);
+      setImagePreviews([]);
     } catch (error) {
       console.error("Failed to update banner:", error);
       toast.error("Failed to update banner");
@@ -122,6 +150,10 @@ const BannersDashboard = () => {
   const handleEditCancel = () => {
     setEditModalOpen(false);
     setCurrentBanner(null);
+    // Clean up preview URLs
+    imagePreviews.forEach(url => URL.revokeObjectURL(url));
+    setNewImages([]);
+    setImagePreviews([]);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -250,6 +282,8 @@ const BannersDashboard = () => {
             padding: 2,
             borderRadius: 1,
             boxShadow: 3,
+            maxHeight: '80vh',
+            overflowY: 'auto',
           }}
         >
           <Box sx={{ position: 'relative' }}>
@@ -297,7 +331,9 @@ const BannersDashboard = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            width: 600,
+            maxHeight: '90vh',
+            overflowY: 'auto',
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
@@ -325,6 +361,69 @@ const BannersDashboard = () => {
                 multiline
                 rows={4}
               />
+              
+              {/* Current Images Preview */}
+              <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                Current Images:
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+                {currentBanner.images.map((img, index) => (
+                  <Box key={index} sx={{ position: 'relative' }}>
+                    <img
+                      src={img}
+                      alt={`Current ${index + 1}`}
+                      style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '8px' }}
+                    />
+                  </Box>
+                ))}
+              </Box>
+
+              {/* Upload New Images */}
+              <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                Upload New Images (Optional):
+              </Typography>
+              <Button
+                variant="outlined"
+                component="label"
+                sx={{ mb: 2 }}
+              >
+                Choose Images
+                <input
+                  type="file"
+                  hidden
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+              </Button>
+
+              {/* New Images Preview */}
+              {imagePreviews.length > 0 && (
+                <>
+                  <Typography variant="subtitle2" sx={{ mb: 1, color: 'primary.main' }}>
+                    New Images Selected ({imagePreviews.length}):
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+                    {imagePreviews.map((preview, index) => (
+                      <Box key={index} sx={{ position: 'relative' }}>
+                        <img
+                          src={preview}
+                          alt={`Preview ${index + 1}`}
+                          style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '8px', border: '2px solid #1976d2' }}
+                        />
+                        <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', mt: 0.5 }}>
+                          {newImages[index].name}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </>
+              )}
+
+              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
+                Note: Uploading new images will replace the current images.
+              </Typography>
+
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
                 <Button onClick={handleEditCancel} sx={{ mr: 1 }}>
                   Cancel

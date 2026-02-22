@@ -18,6 +18,8 @@ import {
   DialogActions,
   TextField,
 } from "@mui/material";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { MdDelete, MdEdit } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,6 +47,8 @@ const ProjectsDashboard = () => {
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,6 +96,8 @@ const ProjectsDashboard = () => {
 
   const handleEditClick = (project: Project) => {
     setCurrentProject(project);
+    setImageFiles([]);
+    setImagePreviews([]);
     setEditModalOpen(true);
   };
 
@@ -102,6 +108,11 @@ const ProjectsDashboard = () => {
       const formData = new FormData();
       formData.append('heading', currentProject.heading);
       formData.append('description', currentProject.description);
+      
+      // Add new images if any
+      imageFiles.forEach((file) => {
+        formData.append('images', file);
+      });
 
       await updateProject(currentProject.id, formData);
       const data = await fetchProjectPagination(page, limit);
@@ -109,6 +120,8 @@ const ProjectsDashboard = () => {
       setCount(data.count);
       toast.success("Project updated successfully!");
       setEditModalOpen(false);
+      setImageFiles([]);
+      setImagePreviews([]);
     } catch (error) {
       console.error("Failed to update project:", error);
       toast.error("Failed to update project");
@@ -118,6 +131,8 @@ const ProjectsDashboard = () => {
   const handleEditCancel = () => {
     setEditModalOpen(false);
     setCurrentProject(null);
+    setImageFiles([]);
+    setImagePreviews([]);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,6 +141,19 @@ const ProjectsDashboard = () => {
       ...currentProject,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      setImageFiles(files);
+      
+      // Create previews
+      const previews = files.map(file => {
+        return URL.createObjectURL(file);
+      });
+      setImagePreviews(previews);
+    }
   };
 
   const handleChangePage = (_: unknown, newPage: number) => {
@@ -265,6 +293,8 @@ const ProjectsDashboard = () => {
             padding: 2,
             borderRadius: 1,
             boxShadow: 3,
+            maxHeight: '80vh',
+            overflowY: 'auto',
           }}
         >
           <Box sx={{ position: 'relative' }}>
@@ -317,6 +347,8 @@ const ProjectsDashboard = () => {
             boxShadow: 24,
             p: 4,
             borderRadius: 1,
+            maxHeight: '80vh',
+            overflowY: 'auto',
           }}
         >
           <Typography variant="h6" sx={{ mb: 2 }}>Edit Project</Typography>
@@ -330,16 +362,103 @@ const ProjectsDashboard = () => {
                 onChange={handleChange}
                 sx={{ mb: 2 }}
               />
-              <TextField
-                fullWidth
-                label="Description"
-                name="description"
-                value={currentProject.description}
-                onChange={handleChange}
-                sx={{ mb: 2 }}
-                multiline
-                rows={4}
-              />
+              
+              {/* Rich Text Editor for Description */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                  Description
+                </Typography>
+                <ReactQuill
+                  value={currentProject.description}
+                  onChange={(value) => setCurrentProject({ ...currentProject, description: value })}
+                  style={{ backgroundColor: 'white', borderRadius: '4px' }}
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [1, 2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                      [{ 'indent': '-1'}, { 'indent': '+1' }],
+                      ['link'],
+                      ['clean']
+                    ]
+                  }}
+                />
+              </Box>
+              
+              {/* Image Upload Section */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                  Project Images
+                </Typography>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  fullWidth
+                  sx={{ mb: 1 }}
+                >
+                  Upload New Images
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageChange}
+                  />
+                </Button>
+                
+                {/* Current Images */}
+                {currentProject.images && currentProject.images.length > 0 && (
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+                      Current Images:
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                      {currentProject.images.map((img, idx) => (
+                        <Box
+                          key={idx}
+                          component="img"
+                          src={img}
+                          alt={`Current ${idx + 1}`}
+                          sx={{
+                            width: 100,
+                            height: 100,
+                            objectFit: 'cover',
+                            borderRadius: 1,
+                            border: '1px solid #ddd'
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                )}
+                
+                {/* New Image Previews */}
+                {imagePreviews.length > 0 && (
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+                      New Images Preview:
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                      {imagePreviews.map((preview, idx) => (
+                        <Box
+                          key={idx}
+                          component="img"
+                          src={preview}
+                          alt={`Preview ${idx + 1}`}
+                          sx={{
+                            width: 100,
+                            height: 100,
+                            objectFit: 'cover',
+                            borderRadius: 1,
+                            border: '2px solid #1976d2'
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+              
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
                 <Button onClick={handleEditCancel} sx={{ mr: 1 }}>
                   Cancel

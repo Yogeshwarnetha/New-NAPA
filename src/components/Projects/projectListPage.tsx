@@ -112,7 +112,10 @@ const ProjectListPage: React.FC = () => {
                                         {new Date(project.createdAt).toLocaleDateString()}
                                     </p>
                                     <h2 className="text-lg font-semibold text-gray-800">{project.heading}</h2>
-                                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">{project.description}</p>
+                                    <div 
+                                        className="text-sm text-gray-600 mt-1 line-clamp-2"
+                                        dangerouslySetInnerHTML={{ __html: project.description }}
+                                    />
                                 </div>
                             </div>
                         ))}

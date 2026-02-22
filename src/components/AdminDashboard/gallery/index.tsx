@@ -16,6 +16,8 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    TextField,
+    CircularProgress,
 } from "@mui/material";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
@@ -23,7 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AdminDashboardLayout from "..";
 import { AiOutlineClose } from "react-icons/ai";
 import CreateGallery from "./create-gallery";
-import { fetchGalleryPagination, deleteGalleryItem } from "../../../apirequest/gallery";
+import { fetchGalleryPagination, deleteGalleryItem, updateGalleryItem } from "../../../apirequest/gallery";
 
 interface GalleryItem {
     id: string | number;
@@ -46,6 +48,11 @@ const GalleryDashboard = () => {
     const [itemToDelete, setItemToDelete] = useState<GalleryItem | null>(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [itemToEdit, setItemToEdit] = useState<GalleryItem | null>(null);
+    const [editEventName, setEditEventName] = useState("");
+    const [editGooglePhotoUrl, setEditGooglePhotoUrl] = useState("");
+    const [editImageFile, setEditImageFile] = useState<File | null>(null);
+    const [editImagePreview, setEditImagePreview] = useState<string>("");
+    const [updating, setUpdating] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,6 +77,10 @@ const GalleryDashboard = () => {
 
     const handleEditClick = (item: GalleryItem) => {
         setItemToEdit(item);
+        setEditEventName(item.event_name);
+        setEditGooglePhotoUrl(item.google_photo_url);
+        setEditImageFile(null);
+        setEditImagePreview("");
         setEditModalOpen(true);
     };
 
@@ -100,21 +111,51 @@ const GalleryDashboard = () => {
     const handleEditClose = () => {
         setEditModalOpen(false);
         setItemToEdit(null);
+        setEditEventName("");
+        setEditGooglePhotoUrl("");
+        setEditImageFile(null);
+        setEditImagePreview("");
     };
 
-    const handleEditSubmit = async (editedItem: GalleryItem) => {
+    const handleEditSubmit = async () => {
+        if (!itemToEdit) return;
+        
         try {
-            // Here you would typically call an API to update the item
-            // For now, we'll just update the local state
-            const updatedItems = galleryItems.map(item =>
-                item.id === editedItem.id ? editedItem : item
-            );
-            setGalleryItems(updatedItems);
-            toast.success("Gallery item updated successfully!");
+            setUpdating(true);
+            const formData = new FormData();
+            formData.append('event_name', editEventName);
+            formData.append('google_photo_url', editGooglePhotoUrl);
+            
+            if (editImageFile) {
+                formData.append('image', editImageFile);
+            }
+            
+            await updateGalleryItem(Number(itemToEdit.id), formData);
+            
+            // Refresh the gallery list
+            const data = await fetchGalleryPagination(page, limit);
+            setGalleryItems(data?.data);
+            setCount(data.count);
+            
             handleEditClose();
         } catch (error) {
             console.error("Failed to update gallery item:", error);
-            toast.error("Failed to update gallery item");
+        } finally {
+            setUpdating(false);
+        }
+    };
+    
+    const handleEditImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setEditImageFile(file);
+            
+            // Create preview
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setEditImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -242,6 +283,8 @@ const GalleryDashboard = () => {
                         padding: 2,
                         borderRadius: 1,
                         boxShadow: 3,
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
                     }}
                 >
                     <Box sx={{ position: 'relative' }}>
@@ -290,42 +333,99 @@ const GalleryDashboard = () => {
                 fullWidth
             >
                 <DialogTitle id="edit-dialog-title">Edit Gallery Item</DialogTitle>
-                <DialogContent>
+                <DialogContent dividers sx={{ maxHeight: '70vh' }}>
                     {itemToEdit && (
                         <Box sx={{ mt: 2 }}>
-                            {/* You can reuse your CreateGallery component here or create a separate EditGallery component */}
-                            {/* For now, I'll show a simple form - replace this with your actual edit form */}
-                            <Typography variant="h6">Editing: {itemToEdit.event_name}</Typography>
-                            <Box sx={{ my: 2 }}>
-                                <img
+                            <TextField
+                                fullWidth
+                                label="Event Name"
+                                value={editEventName}
+                                onChange={(e) => setEditEventName(e.target.value)}
+                                sx={{ mb: 2 }}
+                            />
+                            
+                            <TextField
+                                fullWidth
+                                label="Google Photos URL"
+                                value={editGooglePhotoUrl}
+                                onChange={(e) => setEditGooglePhotoUrl(e.target.value)}
+                                sx={{ mb: 2 }}
+                            />
+                            
+                            {/* Current Image */}
+                            <Box sx={{ mb: 2 }}>
+                                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                                    Current Image:
+                                </Typography>
+                                <Box
+                                    component="img"
                                     src={itemToEdit.image_url}
                                     alt={itemToEdit.event_name}
-                                    style={{ maxWidth: '100%', height: 'auto' }}
+                                    sx={{
+                                        width: '100%',
+                                        maxWidth: 400,
+                                        height: 'auto',
+                                        borderRadius: 1,
+                                        border: '1px solid #ddd'
+                                    }}
                                 />
                             </Box>
-                            {/* Add your form fields here */}
-                            {/* Example: */}
-                            {/* <TextField 
-                                label="Event Name"
-                                value={itemToEdit.event_name}
-                                onChange={(e) => setItemToEdit({...itemToEdit, event_name: e.target.value})}
-                                fullWidth
-                                sx={{ mb: 2 }}
-                            /> */}
-                            {/* Add other fields similarly */}
+                            
+                            {/* Upload New Image */}
+                            <Box sx={{ mb: 2 }}>
+                                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                                    Update Image (Optional)
+                                </Typography>
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    fullWidth
+                                    sx={{ mb: 1 }}
+                                >
+                                    Upload New Image
+                                    <input
+                                        type="file"
+                                        hidden
+                                        accept="image/*"
+                                        onChange={handleEditImageChange}
+                                    />
+                                </Button>
+                                
+                                {/* New Image Preview */}
+                                {editImagePreview && (
+                                    <Box sx={{ mt: 2 }}>
+                                        <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+                                            New Image Preview:
+                                        </Typography>
+                                        <Box
+                                            component="img"
+                                            src={editImagePreview}
+                                            alt="Preview"
+                                            sx={{
+                                                width: '100%',
+                                                maxWidth: 400,
+                                                height: 'auto',
+                                                borderRadius: 1,
+                                                border: '2px solid #1976d2'
+                                            }}
+                                        />
+                                    </Box>
+                                )}
+                            </Box>
                         </Box>
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleEditClose} color="primary">
+                    <Button onClick={handleEditClose} color="primary" disabled={updating}>
                         Cancel
                     </Button>
                     <Button
-                        onClick={() => itemToEdit && handleEditSubmit(itemToEdit)}
+                        onClick={handleEditSubmit}
                         color="primary"
                         variant="contained"
+                        disabled={updating}
                     >
-                        Save Changes
+                        {updating ? <CircularProgress size={24} /> : 'Save Changes'}
                     </Button>
                 </DialogActions>
             </Dialog>

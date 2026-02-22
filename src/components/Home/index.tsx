@@ -6,6 +6,7 @@ import Ourcompany from "./ourcompany";
 import HomeGallery from "./Gallery";
 import { useEffect, useState } from "react";
 import { fetchEvents } from "../../apirequest/events";
+import { fetchHomepageData, HomepageData } from "../../apirequest/homepage";
 import Carousel from './carousel/carousel';
 import ProjectCarousel from './carouselcards';
 
@@ -28,6 +29,7 @@ interface ContactForm {
 
 const Home = () => {
   const [eventData, setEventData] = useState<ContactForm[]>([]);
+  const [homepageData, setHomepageData] = useState<HomepageData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +43,18 @@ const Home = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        const data = await fetchHomepageData();
+        setHomepageData(data);
+      } catch (error) {
+        console.error("Failed to fetch homepage data:", error);
+      }
+    };
+    fetchHomeData();
+  }, []);
+
 
   return (
     <div>
@@ -48,7 +62,7 @@ const Home = () => {
         <Carousel />
       </div>
       <section className="py-8 bg-white">
-        <Ourcompany />
+        <Ourcompany homepageData={homepageData} />
       </section>
       <section className="py-8 px-4 bg-white">
         <div className="container mx-auto">

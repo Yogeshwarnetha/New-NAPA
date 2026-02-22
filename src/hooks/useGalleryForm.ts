@@ -51,9 +51,9 @@ export function useGalleryForm(): UseGalleryFormReturn {
                 return;
             }
 
-            const maxSize = 5 * 1024 * 1024;
+            const maxSize = 10 * 1024 * 1024;
             if (file.size > maxSize) {
-                setErrors((prev) => ({ ...prev, imageFile: "Image size should be under 5MB." }));
+                setErrors((prev) => ({ ...prev, imageFile: "Image size should be under 10MB." }));
                 return;
             }
 

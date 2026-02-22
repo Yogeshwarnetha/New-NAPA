@@ -54,10 +54,10 @@ export function useBannerForm(): UseBannerFormReturn {
         return;
       }
 
-      // Validate file size (e.g., 5MB limit)
-      const maxSize = 5 * 1024 * 1024; // 5MB
+      // Validate file size (e.g., 10MB limit)
+      const maxSize = 10 * 1024 * 1024; // 10MB
       if (file.size > maxSize) {
-        setErrors((prev) => ({ ...prev, imageFile: "Image size should be less than 5MB." }));
+        setErrors((prev) => ({ ...prev, imageFile: "Image size should be less than 10MB." }));
         setFormData((prev) => ({ ...prev, imageFile: null }));
         return;
       }

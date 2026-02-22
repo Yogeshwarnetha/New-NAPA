@@ -78,7 +78,7 @@ export const fetchNewsById = async (id: string): Promise<NewsItem> => {
         "Content-Type": "application/json",
       },
     });
-    return response.data;
+    return response.data.data;
   } catch (error: any) {
     console.error("Error fetching news by ID:", error);
     toast.error(`Failed to fetch news: ${error.response?.data?.message || error.message}`);

@@ -185,6 +185,8 @@ const BoardofDirectorsDashboard = () => {
                       padding: 2,
                       borderRadius: 1,
                       boxShadow: 3,
+                maxHeight: "80vh",
+                overflowY: "auto",
                   }}
               >
                   <Box sx={{ position: "relative" }}>
@@ -217,6 +219,8 @@ const BoardofDirectorsDashboard = () => {
               borderRadius: 1,
               boxShadow: 3,
               minWidth: 300,
+              maxHeight: '80vh',
+              overflowY: 'auto',
             }}>
               <Typography variant="h6">Edit Board of Directors Member</Typography>
               <form onSubmit={handleEditSubmit}>

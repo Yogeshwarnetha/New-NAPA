@@ -17,6 +17,8 @@ import {
 import { MdEdit } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import AdminDashboardLayout from ".."; // Adjust if needed
 import {
   fetchPresidentMessage,
@@ -185,6 +187,8 @@ const PresidentMessageDashboard = () => {
             boxShadow: 24,
             p: 4,
             borderRadius: 2,
+            maxHeight: "80vh",
+            overflowY: "auto",
           }}
         >
           <Typography variant="h6" gutterBottom>
@@ -195,18 +199,87 @@ const PresidentMessageDashboard = () => {
             component="form"
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
-            {Object.entries(formState).map(([key, value]) => (
-              <TextField
-                key={key}
-                name={key}
-                label={key.replace(/_/g, " ")}
-                value={value}
-                onChange={handleInputChange}
-                multiline={key.includes("description")}
-                rows={key.includes("description") ? 3 : 1}
-                fullWidth
+            <TextField
+              name="president_name"
+              label="President Name"
+              value={formState.president_name}
+              onChange={handleInputChange}
+              fullWidth
+            />
+            <TextField
+              name="president_period"
+              label="President Period"
+              value={formState.president_period}
+              onChange={handleInputChange}
+              fullWidth
+            />
+
+            <Box>
+              <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                President Description 1
+              </Typography>
+              <ReactQuill
+                value={formState.president_description1}
+                onChange={(value) =>
+                  setFormState((prev) => ({ ...prev, president_description1: value }))
+                }
+                style={{ backgroundColor: "white", borderRadius: "4px" }}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    ["link"],
+                    ["clean"],
+                  ],
+                }}
               />
-            ))}
+            </Box>
+            <Box>
+              <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                President Description 2
+              </Typography>
+              <ReactQuill
+                value={formState.president_description2}
+                onChange={(value) =>
+                  setFormState((prev) => ({ ...prev, president_description2: value }))
+                }
+                style={{ backgroundColor: "white", borderRadius: "4px" }}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    ["link"],
+                    ["clean"],
+                  ],
+                }}
+              />
+            </Box>
+            <Box>
+              <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                President Description 3
+              </Typography>
+              <ReactQuill
+                value={formState.president_description3}
+                onChange={(value) =>
+                  setFormState((prev) => ({ ...prev, president_description3: value }))
+                }
+                style={{ backgroundColor: "white", borderRadius: "4px" }}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    ["link"],
+                    ["clean"],
+                  ],
+                }}
+              />
+            </Box>
 
             <Button variant="outlined" component="label">
               Upload Image

@@ -195,7 +195,9 @@ const Navbar = () => {
             </a>
             {userToken ? (
               <>
-                <span className="text-sm">Welcome, {userName}</span>
+                <a href="/profile" className="text-sm hover:text-blue-400 cursor-pointer">
+                  Welcome, {userName}
+                </a>
                 <button onClick={logout} className="text-sm hover:text-blue-400">
                   Logout
                 </button>

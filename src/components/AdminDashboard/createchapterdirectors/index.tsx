@@ -142,6 +142,8 @@ const CreateChapterDirectorsDashboard = () => {
                             padding: 2,
                             borderRadius: 1,
                             boxShadow: 3,
+                            maxHeight: "80vh",
+                            overflowY: "auto",
                         }}
                     >
                         <Box sx={{ position: "relative" }}>

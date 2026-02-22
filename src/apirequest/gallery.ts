@@ -92,3 +92,19 @@ export const deleteGalleryItem = async (id: number): Promise<void> => {
         throw error;
     }
 };
+
+export const updateGalleryItem = async (id: number, data: FormData): Promise<Gallery> => {
+    try {
+        const response = await axios.put(`${origin}/api/v1/gallery/${id}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        toast.success("Gallery item updated successfully!");
+        return response.data.data;
+    } catch (error: any) {
+        console.error("Error updating gallery item:", error);
+        toast.error(`Failed to update gallery item: ${error.response?.data?.message || error.message}`);
+        throw error;
+    }
+};

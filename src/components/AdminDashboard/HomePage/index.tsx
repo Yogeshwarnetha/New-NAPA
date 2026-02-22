@@ -29,6 +29,8 @@ const HomepageDashboard = () => {
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [currentContent, setCurrentContent] = useState<HomepageData | null>(null);
     const [updating, setUpdating] = useState(false);
+    const [presidentImageFile, setPresidentImageFile] = useState<File | null>(null);
+    const [presidentImagePreview, setPresidentImagePreview] = useState<string>("");
 
     useEffect(() => {
         const loadContent = async () => {
@@ -50,6 +52,8 @@ const HomepageDashboard = () => {
     const handleEditClick = () => {
         if (content) {
             setCurrentContent({ ...content });
+            setPresidentImagePreview(content.homepresidentImage || "");
+            setPresidentImageFile(null);
             setEditModalOpen(true);
         }
     };
@@ -58,15 +62,51 @@ const HomepageDashboard = () => {
         if (!currentContent) return;
         try {
             setUpdating(true);
-            const updatedContent = await updateHomepageData(currentContent);
+            
+            let dataToSend: HomepageData | FormData;
+            
+            // If there's an image file, use FormData
+            if (presidentImageFile) {
+                const formData = new FormData();
+                formData.append("homeAboutuspara1", currentContent.homeAboutuspara1);
+                formData.append("homeAboutuspara2", currentContent.homeAboutuspara2);
+                formData.append("homeAboutuspara3", currentContent.homeAboutuspara3);
+                formData.append("homepresidentName", currentContent.homepresidentName);
+                formData.append("homepresidentpara", currentContent.homepresidentpara);
+                formData.append("homeDonateTodaytext", currentContent.homeDonateTodaytext);
+                formData.append("servicesMatrimony", currentContent.servicesMatrimony);
+                formData.append("ourgallery", currentContent.ourgallery);
+                formData.append("homepresidentImage", presidentImageFile);
+                dataToSend = formData;
+            } else {
+                dataToSend = currentContent;
+            }
+            
+            const updatedContent = await updateHomepageData(dataToSend);
             setContent(updatedContent);
             toast.success("Homepage content updated successfully!");
             setEditModalOpen(false);
+            setPresidentImageFile(null);
+            setPresidentImagePreview("");
         } catch (error) {
             toast.error("Failed to update homepage content");
             console.error(error);
         } finally {
             setUpdating(false);
+        }
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setPresidentImageFile(file);
+            
+            // Create preview
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPresidentImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -111,6 +151,37 @@ const HomepageDashboard = () => {
                             <TableBody>
                                 {Object.entries(content).map(([key, value]) => {
                                     if (key === 'id' || key === 'createdAt' || key === 'updatedAt') return null;
+                                    
+                                    // Special handling for president image
+                                    if (key === 'homepresidentImage') {
+                                        return (
+                                            <TableRow key={key}>
+                                                <TableCell sx={{ fontWeight: '600' }}>
+                                                    President Image
+                                                </TableCell>
+                                                <TableCell>
+                                                    {value ? (
+                                                        <Box
+                                                            component="img"
+                                                            src={value as string}
+                                                            alt="President"
+                                                            sx={{
+                                                                width: 150,
+                                                                height: 'auto',
+                                                                borderRadius: 1,
+                                                                border: '1px solid #ddd'
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            No image uploaded
+                                                        </Typography>
+                                                    )}
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    }
+                                    
                                     return (
                                         <TableRow key={key}>
                                             <TableCell sx={{ fontWeight: '600' }}>
@@ -186,6 +257,49 @@ const HomepageDashboard = () => {
                                 value={currentContent.homepresidentName}
                                 onChange={handleChange}
                             />
+                            
+                            {/* President Image Upload */}
+                            <Box sx={{ mb: 2 }}>
+                                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                                    President Image
+                                </Typography>
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    fullWidth
+                                    sx={{ mb: 1 }}
+                                >
+                                    Upload President Image
+                                    <input
+                                        type="file"
+                                        hidden
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                    />
+                                </Button>
+                                
+                                {/* Current Image Preview */}
+                                {presidentImagePreview && (
+                                    <Box sx={{ mt: 2 }}>
+                                        <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+                                            {presidentImageFile ? "New Image Preview:" : "Current Image:"}
+                                        </Typography>
+                                        <Box
+                                            component="img"
+                                            src={presidentImagePreview}
+                                            alt="President"
+                                            sx={{
+                                                width: "100%",
+                                                maxWidth: 300,
+                                                height: "auto",
+                                                borderRadius: 1,
+                                                border: "1px solid #ddd"
+                                            }}
+                                        />
+                                    </Box>
+                                )}
+                            </Box>
+                            
                             <TextField
                                 fullWidth
                                 label="President Paragraph"

@@ -93,15 +93,22 @@ function PresidentMessageMain() {
                 </div>
                 <div className="w-full md:w-2/3">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Dear NAPA Family,</h2>
-                  <p className="text-gray-600 leading-relaxed">
-                    {message.president_description1}
-                  </p>
+                  <div
+                    className="prose max-w-none text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: message.president_description1 }}
+                  />
                 </div>
               </div>
 
               <div className="space-y-6 text-gray-600 leading-relaxed">
-                <p>{message.president_description2}</p>
-                <p>{message.president_description3}</p>
+                <div
+                  className="prose max-w-none"
+                  dangerouslySetInnerHTML={{ __html: message.president_description2 }}
+                />
+                <div
+                  className="prose max-w-none"
+                  dangerouslySetInnerHTML={{ __html: message.president_description3 }}
+                />
               </div>
 
               {/* Committees Section */}

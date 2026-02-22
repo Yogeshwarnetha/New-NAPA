@@ -8,6 +8,7 @@ export interface HomepageData {
     homeAboutuspara2: string;
     homeAboutuspara3: string;
     homepresidentName: string;
+    homepresidentImage?: string;
     homepresidentpara: string;
     homeDonateTodaytext: string;
     servicesMatrimony: string;
@@ -36,12 +37,13 @@ export const fetchHomepageData = async (): Promise<HomepageData> => {
 
 // PUT: Update homepage content
 export const updateHomepageData = async (
-    data: HomepageData
+    data: HomepageData | FormData
 ): Promise<HomepageData> => {
     try {
+        const isFormData = data instanceof FormData;
         const response = await axios.put(`${origin}/api/v1/homepage`, data, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": isFormData ? "multipart/form-data" : "application/json",
             },
         });
         toast.success("Homepage content updated successfully!");

@@ -119,7 +119,10 @@ const NewsSection = () => {
                   </div>
                   <h1 className="text-2xl font-bold text-gray-900 mb-4">{selectedArticle.heading}</h1>
                   <p className="text-gray-700 mb-2 font-medium">Venue: {selectedArticle.venue}</p>
-                  <p className="text-gray-700 whitespace-pre-line">{selectedArticle.description}</p>
+                  <div 
+                    className="text-gray-700 prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: selectedArticle.description }}
+                  />
 
                   {selectedArticle.images.length > 1 && (
                     <div className="mt-6">
@@ -198,7 +201,10 @@ const NewsSection = () => {
                           <p className="text-sm text-indigo-600">{article.time}</p>
                         </div>
                         <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">{article.heading}</h3>
-                        <p className="text-sm text-gray-600 line-clamp-2">{article.description}</p>
+                        <div 
+                          className="text-sm text-gray-600 line-clamp-2"
+                          dangerouslySetInnerHTML={{ __html: article.description }}
+                        />
                         <p className="text-sm text-gray-500 mt-2">Venue: {article.venue}</p>
                       </div>
                     </div>
