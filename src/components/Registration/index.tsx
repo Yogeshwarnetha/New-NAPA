@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
   User, Mail, Lock, Phone, Home, MapPin, Briefcase,
-  Building2, Flag, ChevronLeft, ChevronRight, Users,
-  CheckCircle, XCircle, ArrowLeft, Eye, EyeOff
+  Building2, Flag, Users, CheckCircle, XCircle, 
+  Eye, EyeOff, ArrowLeft
 } from 'lucide-react';
 import { OTPEmailVerification, resendOTPEmailVerification, signupUser } from '../../apirequest/auth';
 
@@ -12,9 +12,6 @@ interface StateProvince {
 }
 
 function Registration() {
-  // Form steps state
-  const [step, setStep] = useState(1);
-
   // Snackbar notification
   const [snackbar, setSnackbar] = useState({
     message: '',
@@ -147,11 +144,6 @@ function Registration() {
           ]
         };
 
-        // In a real app, you would use:
-        // const response = await axios.get('/api/v1/users/states-provinces');
-        // setStatesProvinces(response.data);
-
-        // For demo purposes, we're using mock data
         setStatesProvinces(mockData);
       } catch (error) {
         console.error('Failed to fetch states/provinces:', error);
@@ -281,32 +273,8 @@ function Registration() {
     setSnackbar(prev => ({ ...prev, open: false }));
   };
 
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 3));
-  const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
-
   const inputClasses = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10 bg-white/50";
   const iconClasses = "absolute left-3 top-3.5 h-5 w-5 text-gray-400";
-
-  const StepIndicator = () => (
-    <div className="mb-8">
-      <div className="flex justify-center space-x-4">
-        {[1, 2, 3].map((num) => (
-          <div
-            key={num}
-            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${step >= num ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-gray-100 text-gray-400'
-              }`}
-          >
-            {num}
-          </div>
-        ))}
-      </div>
-      <div className="flex justify-between mt-2 px-4 text-sm text-gray-600">
-        <span>Personal</span>
-        <span>Contact</span>
-        <span>Other</span>
-      </div>
-    </div>
-  );
 
   if (verificationStep) {
     return (
@@ -375,20 +343,22 @@ function Registration() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-8">
-          <div className="text-center mb-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 md:p-8">
+          <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Join NAPA USA</h2>
             <p className="mt-2 text-sm text-gray-600">Create your account to get started</p>
           </div>
 
-          <StepIndicator />
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {step === 1 && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Scrollable Form Container */}
+          <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-2 -mr-2">
+            <form onSubmit={handleSubmit} className="space-y-6 pb-4">
+              {/* Personal Information Section */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Personal Information</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="relative">
                     <input
                       type="text"
@@ -452,9 +422,6 @@ function Registration() {
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Password must be at least 6 characters long
-                  </p>
                 </div>
 
                 <div className="relative">
@@ -477,11 +444,15 @@ function Registration() {
                     {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
+                <p className="text-xs text-gray-500 -mt-2">
+                  Password must be at least 6 characters long
+                </p>
               </div>
-            )}
 
-            {step === 2 && (
-              <div className="space-y-6">
+              {/* Contact Information Section */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Contact Information</h3>
+                
                 <div className="relative">
                   <input
                     type="email"
@@ -507,7 +478,12 @@ function Registration() {
                   />
                   <Phone className={iconClasses} />
                 </div>
+              </div>
 
+              {/* Address Information Section */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Address Information</h3>
+                
                 <div className="relative">
                   <input
                     type="text"
@@ -533,7 +509,7 @@ function Registration() {
                   <Home className={iconClasses} />
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="relative">
                     <select
                       name="country"
@@ -560,7 +536,7 @@ function Registration() {
                       required
                       disabled={isLoadingStates}
                     >
-                      <option value="">{isLoadingStates ? 'Loading states...' : 'Select State/Province *'}</option>
+                      <option value="">{isLoadingStates ? 'Loading...' : 'State *'}</option>
                       {formData.country === 'USA' && statesProvinces.usStates.map((state) => (
                         <option key={state.code} value={state.code}>
                           {state.name}
@@ -572,14 +548,14 @@ function Registration() {
                         </option>
                       ))}
                       {!['USA', 'CAN'].includes(formData.country) && (
-                        <option value="OTHER">Other (Non-US/Canada)</option>
+                        <option value="OTHER">Other</option>
                       )}
                     </select>
                     <MapPin className={iconClasses} />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="relative">
                     <input
                       type="text"
@@ -604,16 +580,16 @@ function Registration() {
                     />
                     <MapPin className={iconClasses} />
                   </div>
-
                 </div>
                 {statesError && (
-                  <p className="text-red-500 text-sm mt-1">{statesError}</p>
+                  <p className="text-red-500 text-sm">{statesError}</p>
                 )}
               </div>
-            )}
 
-            {step === 3 && (
-              <div className="space-y-6">
+              {/* Additional Information Section */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Additional Information</h3>
+                
                 <div className="relative">
                   <input
                     type="text"
@@ -663,37 +639,18 @@ function Registration() {
                   <Users className={iconClasses} />
                 </div>
               </div>
-            )}
 
-            <div className="mt-8 flex justify-between">
-              {step > 1 && (
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  <ChevronLeft className="h-5 w-5 mr-2" />
-                  Previous
-                </button>
-              )}
-              {step < 3 ? (
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="ml-auto flex items-center px-6 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Next
-                  <ChevronRight className="h-5 w-5 ml-2" />
-                </button>
-              ) : (
+              {/* Submit Button */}
+              <div className="sticky bottom-0 bg-white/80 backdrop-blur-sm pt-4 pb-2 -mb-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`ml-auto px-8 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${isSubmitting ? 'bg-green-500' : 'bg-green-600 hover:bg-green-700'
-                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
+                  className={`w-full px-8 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${
+                    isSubmitting ? 'bg-green-500' : 'bg-green-600 hover:bg-green-700'
+                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors`}
                 >
                   {isSubmitting ? (
-                    <span className="flex items-center">
+                    <span className="flex items-center justify-center">
                       <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -702,9 +659,9 @@ function Registration() {
                     </span>
                   ) : 'Complete Registration'}
                 </button>
-              )}
-            </div>
-          </form>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
