@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
   User, Mail, Lock, Phone, Home, MapPin, Briefcase,
-  Building2, Flag, ChevronLeft, ChevronRight, Users,
-  CheckCircle, XCircle, ArrowLeft, Eye, EyeOff
+  Building2, Flag, Users, CheckCircle, XCircle, ArrowLeft,
+  Eye, EyeOff, AlertCircle
 } from 'lucide-react';
 import { OTPEmailVerification, resendOTPEmailVerification, signupUser } from '../../apirequest/auth';
 
@@ -12,9 +12,6 @@ interface StateProvince {
 }
 
 function Registration() {
-  // Form steps state
-  const [step, setStep] = useState(1);
-
   // Snackbar notification
   const [snackbar, setSnackbar] = useState({
     message: '',
@@ -41,6 +38,9 @@ function Registration() {
     canadaProvinces: []
   });
 
+  // Form validation errors
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   // Form data state
   const [formData, setFormData] = useState({
     firstName: '',
@@ -60,6 +60,8 @@ function Registration() {
     occupation: '',
     companyName: '',
     gothram: '',
+    profileImage: null as File | null,
+    profileImageUrl: '',
   });
 
   // Password visibility state
@@ -79,79 +81,43 @@ function Registration() {
         // Mock data - in a real app, you would fetch this from your backend
         const mockData = {
           usStates: [
-            { code: 'AL', name: 'Alabama' },
-            { code: 'AK', name: 'Alaska' },
-            { code: 'AZ', name: 'Arizona' },
-            { code: 'AR', name: 'Arkansas' },
-            { code: 'CA', name: 'California' },
-            { code: 'CO', name: 'Colorado' },
-            { code: 'CT', name: 'Connecticut' },
-            { code: 'DE', name: 'Delaware' },
-            { code: 'FL', name: 'Florida' },
-            { code: 'GA', name: 'Georgia' },
-            { code: 'HI', name: 'Hawaii' },
-            { code: 'ID', name: 'Idaho' },
-            { code: 'IL', name: 'Illinois' },
-            { code: 'IN', name: 'Indiana' },
-            { code: 'IA', name: 'Iowa' },
-            { code: 'KS', name: 'Kansas' },
-            { code: 'KY', name: 'Kentucky' },
-            { code: 'LA', name: 'Louisiana' },
-            { code: 'ME', name: 'Maine' },
-            { code: 'MD', name: 'Maryland' },
-            { code: 'MA', name: 'Massachusetts' },
-            { code: 'MI', name: 'Michigan' },
-            { code: 'MN', name: 'Minnesota' },
-            { code: 'MS', name: 'Mississippi' },
-            { code: 'MO', name: 'Missouri' },
-            { code: 'MT', name: 'Montana' },
-            { code: 'NE', name: 'Nebraska' },
-            { code: 'NV', name: 'Nevada' },
-            { code: 'NH', name: 'New Hampshire' },
-            { code: 'NJ', name: 'New Jersey' },
-            { code: 'NM', name: 'New Mexico' },
-            { code: 'NY', name: 'New York' },
-            { code: 'NC', name: 'North Carolina' },
-            { code: 'ND', name: 'North Dakota' },
-            { code: 'OH', name: 'Ohio' },
-            { code: 'OK', name: 'Oklahoma' },
-            { code: 'OR', name: 'Oregon' },
-            { code: 'PA', name: 'Pennsylvania' },
-            { code: 'RI', name: 'Rhode Island' },
-            { code: 'SC', name: 'South Carolina' },
-            { code: 'SD', name: 'South Dakota' },
-            { code: 'TN', name: 'Tennessee' },
-            { code: 'TX', name: 'Texas' },
-            { code: 'UT', name: 'Utah' },
-            { code: 'VT', name: 'Vermont' },
-            { code: 'VA', name: 'Virginia' },
-            { code: 'WA', name: 'Washington' },
-            { code: 'WV', name: 'West Virginia' },
-            { code: 'WI', name: 'Wisconsin' },
-            { code: 'WY', name: 'Wyoming' }
+            { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' },
+            { code: 'AZ', name: 'Arizona' }, { code: 'AR', name: 'Arkansas' },
+            { code: 'CA', name: 'California' }, { code: 'CO', name: 'Colorado' },
+            { code: 'CT', name: 'Connecticut' }, { code: 'DE', name: 'Delaware' },
+            { code: 'FL', name: 'Florida' }, { code: 'GA', name: 'Georgia' },
+            { code: 'HI', name: 'Hawaii' }, { code: 'ID', name: 'Idaho' },
+            { code: 'IL', name: 'Illinois' }, { code: 'IN', name: 'Indiana' },
+            { code: 'IA', name: 'Iowa' }, { code: 'KS', name: 'Kansas' },
+            { code: 'KY', name: 'Kentucky' }, { code: 'LA', name: 'Louisiana' },
+            { code: 'ME', name: 'Maine' }, { code: 'MD', name: 'Maryland' },
+            { code: 'MA', name: 'Massachusetts' }, { code: 'MI', name: 'Michigan' },
+            { code: 'MN', name: 'Minnesota' }, { code: 'MS', name: 'Mississippi' },
+            { code: 'MO', name: 'Missouri' }, { code: 'MT', name: 'Montana' },
+            { code: 'NE', name: 'Nebraska' }, { code: 'NV', name: 'Nevada' },
+            { code: 'NH', name: 'New Hampshire' }, { code: 'NJ', name: 'New Jersey' },
+            { code: 'NM', name: 'New Mexico' }, { code: 'NY', name: 'New York' },
+            { code: 'NC', name: 'North Carolina' }, { code: 'ND', name: 'North Dakota' },
+            { code: 'OH', name: 'Ohio' }, { code: 'OK', name: 'Oklahoma' },
+            { code: 'OR', name: 'Oregon' }, { code: 'PA', name: 'Pennsylvania' },
+            { code: 'RI', name: 'Rhode Island' }, { code: 'SC', name: 'South Carolina' },
+            { code: 'SD', name: 'South Dakota' }, { code: 'TN', name: 'Tennessee' },
+            { code: 'TX', name: 'Texas' }, { code: 'UT', name: 'Utah' },
+            { code: 'VT', name: 'Vermont' }, { code: 'VA', name: 'Virginia' },
+            { code: 'WA', name: 'Washington' }, { code: 'WV', name: 'West Virginia' },
+            { code: 'WI', name: 'Wisconsin' }, { code: 'WY', name: 'Wyoming' }
           ],
           canadaProvinces: [
-            { code: 'AB', name: 'Alberta' },
-            { code: 'BC', name: 'British Columbia' },
-            { code: 'MB', name: 'Manitoba' },
-            { code: 'NB', name: 'New Brunswick' },
-            { code: 'NL', name: 'Newfoundland and Labrador' },
-            { code: 'NT', name: 'Northwest Territories' },
-            { code: 'NS', name: 'Nova Scotia' },
-            { code: 'NU', name: 'Nunavut' },
-            { code: 'ON', name: 'Ontario' },
-            { code: 'PE', name: 'Prince Edward Island' },
-            { code: 'QC', name: 'Quebec' },
-            { code: 'SK', name: 'Saskatchewan' },
+            { code: 'AB', name: 'Alberta' }, { code: 'BC', name: 'British Columbia' },
+            { code: 'MB', name: 'Manitoba' }, { code: 'NB', name: 'New Brunswick' },
+            { code: 'NL', name: 'Newfoundland and Labrador' }, { code: 'NT', name: 'Northwest Territories' },
+            { code: 'NS', name: 'Nova Scotia' }, { code: 'NU', name: 'Nunavut' },
+            { code: 'ON', name: 'Ontario' }, { code: 'PE', name: 'Prince Edward Island' },
+            { code: 'QC', name: 'Quebec' }, { code: 'SK', name: 'Saskatchewan' },
             { code: 'YT', name: 'Yukon' }
           ]
         };
 
-        // In a real app, you would use:
-        // const response = await axios.get('/api/v1/users/states-provinces');
-        // setStatesProvinces(response.data);
-
-        // For demo purposes, we're using mock data
         setStatesProvinces(mockData);
       } catch (error) {
         console.error('Failed to fetch states/provinces:', error);
@@ -165,13 +131,24 @@ function Registration() {
 
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-
-    // Reset state when country changes
-    if (name === 'country') {
-      setFormData(prev => ({ ...prev, [name]: value, state: '' }));
+    const { name, value, type, files } = e.target as HTMLInputElement;
+    if (type === 'file' && files && files[0]) {
+      setFormData(prev => ({ ...prev, profileImage: files[0], profileImageUrl: URL.createObjectURL(files[0]) }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      // Reset state when country changes
+      if (name === 'country') {
+        setFormData(prev => ({ ...prev, [name]: value, state: '' }));
+      } else {
+        setFormData(prev => ({ ...prev, [name]: value }));
+      }
+    }
+    // Clear error for this field
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
     }
   };
 
@@ -180,11 +157,56 @@ function Registration() {
     setOtp(e.target.value.replace(/\D/g, '').slice(0, 6));
   };
 
+  // Validate form before submission
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    // Personal Information
+    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+    if (!formData.gender) newErrors.gender = 'Gender is required';
+
+
+    // Strong password validation
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (!strongPasswordRegex.test(formData.password)) {
+      newErrors.password = 'Password must be at least 8 characters, include uppercase, lowercase, number, and special character';
+    }
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    // Contact Information
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    if (!formData.phoneNumber) newErrors.phoneNumber = 'Phone number is required';
+    if (!formData.address1) newErrors.address1 = 'Address is required';
+    if (!formData.city) newErrors.city = 'City is required';
+    if (!formData.state) newErrors.state = 'State/Province is required';
+    if (!formData.zip) newErrors.zip = 'ZIP code is required';
+
+    // ...existing code...
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      showSnackbar('Passwords do not match.', 'error');
+    if (!validateForm()) {
+      // Scroll to first error
+      const firstError = document.querySelector('.border-red-500');
+      firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
@@ -281,50 +303,38 @@ function Registration() {
     setSnackbar(prev => ({ ...prev, open: false }));
   };
 
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 3));
-  const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
+  const inputClasses = (fieldName: string) =>
+    `w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10 bg-white/50 ${errors[fieldName] ? 'border-red-500' : 'border-gray-300'
+    }`;
 
-  const inputClasses = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10 bg-white/50";
   const iconClasses = "absolute left-3 top-3.5 h-5 w-5 text-gray-400";
 
-  const StepIndicator = () => (
+  const FormSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="mb-8">
-      <div className="flex justify-center space-x-4">
-        {[1, 2, 3].map((num) => (
-          <div
-            key={num}
-            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${step >= num ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-gray-100 text-gray-400'
-              }`}
-          >
-            {num}
-          </div>
-        ))}
-      </div>
-      <div className="flex justify-between mt-2 px-4 text-sm text-gray-600">
-        <span>Personal</span>
-        <span>Contact</span>
-        <span>Other</span>
-      </div>
+      <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+        {title}
+      </h3>
+      {children}
     </div>
   );
 
   if (verificationStep) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md mx-auto">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 sm:p-8">
             <button
               onClick={handleBackToRegister}
-              className="flex items-center text-blue-600 hover:text-blue-800 mb-4"
+              className="flex items-center text-blue-600 hover:text-blue-800 mb-4 transition-colors"
             >
               <ArrowLeft className="h-5 w-5 mr-1" />
               Back to registration
             </button>
 
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Verify Your Email</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Verify Your Email</h2>
               <p className="mt-2 text-sm text-gray-600">
-                We've sent a 6-digit code to <span className="font-medium">{emailForVerification}</span>
+                We've sent a 6-digit code to <span className="font-medium break-all">{emailForVerification}</span>
               </p>
             </div>
 
@@ -335,7 +345,7 @@ function Registration() {
                   name="otp"
                   value={otp}
                   onChange={handleOtpChange}
-                  className={inputClasses}
+                  className={inputClasses('otp')}
                   placeholder="Enter 6-digit code"
                   required
                   inputMode="numeric"
@@ -348,7 +358,9 @@ function Registration() {
               <button
                 type="submit"
                 disabled={isVerifying || otp.length !== 6}
-                className={`w-full px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${isVerifying || otp.length !== 6 ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
+                className={`w-full px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors ${isVerifying || otp.length !== 6
+                  ? 'bg-blue-400 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700'
                   } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
               >
                 {isVerifying ? 'Verifying...' : 'Verify Email'}
@@ -360,7 +372,8 @@ function Registration() {
                   type="button"
                   onClick={handleResendOtp}
                   disabled={isResending}
-                  className={`text-blue-600 ${isResending ? 'opacity-50' : 'hover:text-blue-800'} font-medium`}
+                  className={`text-blue-600 ${isResending ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-800'
+                    } font-medium transition-colors`}
                 >
                   {isResending ? 'Sending...' : 'Resend Code'}
                 </button>
@@ -375,31 +388,51 @@ function Registration() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Join NAPA USA</h2>
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 sm:p-8">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Join NAPA USA</h2>
             <p className="mt-2 text-sm text-gray-600">Create your account to get started</p>
           </div>
 
-          <StepIndicator />
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {step === 1 && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar" encType="multipart/form-data">
+            {/* Profile Image Upload */}
+            <div className="mb-4 flex flex-col items-center">
+              <label htmlFor="profileImage" className="block text-sm font-medium text-gray-700 mb-2">Profile Image</label>
+              <input
+                id="profileImage"
+                name="profileImage"
+                type="file"
+                accept="image/*"
+                onChange={handleInputChange}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {formData.profileImageUrl && (
+                <img src={formData.profileImageUrl} alt="Profile Preview" className="mt-2 w-24 h-24 rounded-full object-cover border" />
+              )}
+            </div>
+            {/* Personal Information Section */}
+            <FormSection title="Personal Information">
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="relative">
                     <input
                       type="text"
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className={inputClasses}
+                      className={inputClasses('firstName')}
                       placeholder="First Name *"
                       required
                     />
                     <User className={iconClasses} />
+                    {errors.firstName && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.firstName}
+                      </p>
+                    )}
                   </div>
                   <div className="relative">
                     <input
@@ -407,139 +440,183 @@ function Registration() {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className={inputClasses}
+                      className={inputClasses('lastName')}
                       placeholder="Last Name *"
                       required
                     />
                     <User className={iconClasses} />
+                    {errors.lastName && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.lastName}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <select
+                      name="gender"
+                      value={formData.gender}
+                      onChange={handleInputChange}
+                      className={inputClasses('gender')}
+                      required
+                    >
+                      <option value="">Select Gender *</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                      <option value="prefer-not-to-say">Prefer not to say</option>
+                    </select>
+                    <Users className={iconClasses} />
+                    {errors.gender && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.gender}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className={inputClasses('email')}
+                      placeholder="Email Address *"
+                      required
+                    />
+                    <Mail className={iconClasses} />
+                    {errors.email && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
                 </div>
 
-                <div className="relative">
-                  <select
-                    name="gender"
-                    value={formData.gender}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    required
-                  >
-                    <option value="">Select Gender *</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                    <option value="prefer-not-to-say">Prefer not to say</option>
-                  </select>
-                  <Users className={iconClasses} />
-                </div>
-
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Password *"
-                    required
-                    minLength={6}
-                  />
-                  <Lock className={iconClasses} />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3 top-3.5 text-gray-400"
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Password must be at least 6 characters long
-                  </p>
-                </div>
-
-                <div className="relative">
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Confirm Password *"
-                    required
-                  />
-                  <Lock className={iconClasses} />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    className="absolute right-3 top-3.5 text-gray-400"
-                    tabIndex={-1}
-                  >
-                    {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className={inputClasses('password')}
+                      placeholder="Password *"
+                      required
+                      minLength={8}
+                    />
+                    <Lock className={iconClasses} />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                    {errors.password ? (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.password}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-gray-500 mt-1">
+                        Password must be at least 8 characters, include uppercase, lowercase, number, and special character
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
+                      className={inputClasses('confirmPassword')}
+                      placeholder="Confirm Password *"
+                      required
+                    />
+                    <Lock className={iconClasses} />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword((prev) => !prev)}
+                      className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                      tabIndex={-1}
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                    {errors.confirmPassword && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.confirmPassword}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
-            )}
+            </FormSection>
 
-            {step === 2 && (
-              <div className="space-y-6">
-                <div className="relative">
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Email Address *"
-                    required
-                  />
-                  <Mail className={iconClasses} />
+            {/* Contact Information Section */}
+            <FormSection title="Contact Information">
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <input
+                      type="tel"
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
+                      onChange={handleInputChange}
+                      className={inputClasses('phoneNumber')}
+                      placeholder="Phone Number *"
+                      required
+                    />
+                    <Phone className={iconClasses} />
+                    {errors.phoneNumber && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.phoneNumber}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="address1"
+                      value={formData.address1}
+                      onChange={handleInputChange}
+                      className={inputClasses('address1')}
+                      placeholder="Address 1 *"
+                      required
+                    />
+                    <Home className={iconClasses} />
+                    {errors.address1 && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.address1}
+                      </p>
+                    )}
+                  </div>
                 </div>
-
-                <div className="relative">
-                  <input
-                    type="tel"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Phone Number *"
-                    required
-                  />
-                  <Phone className={iconClasses} />
-                </div>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="address1"
-                    value={formData.address1}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Address Line 1 *"
-                    required
-                  />
-                  <Home className={iconClasses} />
-                </div>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="address2"
-                    value={formData.address2}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Address Line 2"
-                  />
-                  <Home className={iconClasses} />
-                </div>
-
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="address2"
+                      value={formData.address2}
+                      onChange={handleInputChange}
+                      className={inputClasses('address2')}
+                      placeholder="Address 2"
+                    />
+                    <Home className={iconClasses} />
+                  </div>
                   <div className="relative">
                     <select
                       name="country"
                       value={formData.country}
                       onChange={handleInputChange}
-                      className={inputClasses}
+                      className={inputClasses('country')}
                       required
                     >
                       <option value="USA">United States</option>
@@ -550,17 +627,20 @@ function Registration() {
                     </select>
                     <Flag className={iconClasses} />
                   </div>
-
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="relative">
                     <select
                       name="state"
                       value={formData.state}
                       onChange={handleInputChange}
-                      className={inputClasses}
+                      className={inputClasses('state')}
                       required
                       disabled={isLoadingStates}
                     >
-                      <option value="">{isLoadingStates ? 'Loading states...' : 'Select State/Province *'}</option>
+                      <option value="">
+                        {isLoadingStates ? 'Loading states...' : 'Select State/Province *'}
+                      </option>
                       {formData.country === 'USA' && statesProvinces.usStates.map((state) => (
                         <option key={state.code} value={state.code}>
                           {state.name}
@@ -576,151 +656,115 @@ function Registration() {
                       )}
                     </select>
                     <MapPin className={iconClasses} />
+                    {errors.state && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.state}
+                      </p>
+                    )}
                   </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-6">
                   <div className="relative">
                     <input
                       type="text"
                       name="city"
                       value={formData.city}
                       onChange={handleInputChange}
-                      className={inputClasses}
+                      className={inputClasses('city')}
                       placeholder="City *"
                       required
                     />
                     <MapPin className={iconClasses} />
+                    {errors.city && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.city}
+                      </p>
+                    )}
                   </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="relative">
                     <input
                       type="text"
                       name="zip"
                       value={formData.zip}
                       onChange={handleInputChange}
-                      className={inputClasses}
+                      className={inputClasses('zip')}
                       placeholder="ZIP Code *"
                       required
                     />
                     <MapPin className={iconClasses} />
+                    {errors.zip && (
+                      <p className="text-red-500 text-xs mt-1 flex items-center">
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                        {errors.zip}
+                      </p>
+                    )}
                   </div>
-
                 </div>
                 {statesError && (
-                  <p className="text-red-500 text-sm mt-1">{statesError}</p>
+                  <p className="text-red-500 text-sm flex items-center">
+                    <AlertCircle className="h-4 w-4 mr-1" />
+                    {statesError}
+                  </p>
                 )}
               </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-6">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="occupation"
-                    value={formData.occupation}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Occupation *"
-                    required
-                  />
-                  <Briefcase className={iconClasses} />
-                </div>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="companyName"
-                    value={formData.companyName}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Company Name"
-                  />
-                  <Building2 className={iconClasses} />
-                </div>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="gothram"
-                    value={formData.gothram}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Gothram"
-                  />
-                  <Users className={iconClasses} />
-                </div>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="referredBy"
-                    value={formData.referredBy}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Referred By (if any)"
-                  />
-                  <Users className={iconClasses} />
-                </div>
-              </div>
-            )}
-
-            <div className="mt-8 flex justify-between">
-              {step > 1 && (
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  <ChevronLeft className="h-5 w-5 mr-2" />
-                  Previous
-                </button>
-              )}
-              {step < 3 ? (
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="ml-auto flex items-center px-6 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Next
-                  <ChevronRight className="h-5 w-5 ml-2" />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`ml-auto px-8 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${isSubmitting ? 'bg-green-500' : 'bg-green-600 hover:bg-green-700'
-                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Processing...
-                    </span>
-                  ) : 'Complete Registration'}
-                </button>
-              )}
+            </FormSection>
+            {/* Submit Button */}
+            <div className="sticky bottom-0 pt-4 bg-white/80 backdrop-blur-sm -mx-2 px-2 pb-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full px-8 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors ${isSubmitting
+                  ? 'bg-green-500 cursor-not-allowed'
+                  : 'bg-green-600 hover:bg-green-700'
+                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Processing...
+                  </span>
+                ) : 'Complete Registration'}
+              </button>
             </div>
           </form>
         </div>
       </div>
-
       {/* Button to go to login */}
       <div className="mt-6 text-center">
         <button
           type="button"
           onClick={handleGoToLogin}
-          className="text-indigo-600 hover:text-indigo-700 font-medium underline"
+          className="text-indigo-600 hover:text-indigo-700 font-medium underline transition-colors"
         >
           Already have an account? Login
         </button>
       </div>
 
       <Snackbar {...snackbar} onClose={closeSnackbar} />
-    </div>
+
+      {/* Custom scrollbar styles */}
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+      `}</style>
+    </div >
   );
 }
 
@@ -745,17 +789,18 @@ const Snackbar = ({
 
   const icon = {
     info: null,
-    success: <CheckCircle className="h-5 w-5 mr-2" />,
-    error: <XCircle className="h-5 w-5 mr-2" />
+    success: <CheckCircle className="h-5 w-5 mr-2 flex-shrink-0" />,
+    error: <XCircle className="h-5 w-5 mr-2 flex-shrink-0" />
   }[type];
 
   return (
     <div
-      className={`fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 p-4 ${bgColor} text-white rounded-lg shadow-lg flex items-center max-w-md mx-auto sm:mx-0 z-50`}
+      className={`fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 p-4 ${bgColor} text-white rounded-lg shadow-lg flex items-center max-w-md mx-auto sm:mx-0 z-50 cursor-pointer transition-all duration-300`}
       onClick={onClose}
+      role="alert"
     >
       {icon}
-      {message}
+      <span className="flex-1">{message}</span>
     </div>
   );
 };

@@ -4,7 +4,7 @@ export const resetPassword = async (
   resetToken: string,
   newPassword: string,
   confirmPassword: string
-) : Promise<{ success: boolean; message?: string }> => {
+): Promise<{ success: boolean; message?: string }> => {
   try {
     const response = await axios.post(
       `${origin}/api/v1/auth/reset-password`,
@@ -100,15 +100,22 @@ import Cookies from "js-cookie";
 
 // Function to handle user signup
 export const signupUser = async (data: any) => {
-  const reqData = JSON.stringify(data);
+  const formData = new FormData();
+  Object.keys(data).forEach((key) => {
+    if (key === 'profileImage' && data.profileImage) {
+      formData.append('profileImage', data.profileImage);
+    } else if (key !== 'profileImageUrl') {
+      formData.append(key, data[key]);
+    }
+  });
   try {
     const response = await axios({
       url: `${origin}/api/v1/auth/signup`,
       method: "post",
       headers: {
-        "Content-Type": "application/json",
+        // 'Content-Type' will be set automatically by axios for FormData
       },
-      data: reqData,
+      data: formData,
     });
 
     const responseData = response?.data;
@@ -266,7 +273,7 @@ export const loginUnified = async (data: {
 export const getUserProfile = async () => {
   try {
     const token = Cookies.get("authToken");
-    
+
     if (!token) {
       throw new Error("No authentication token found");
     }
@@ -291,7 +298,7 @@ export const getUserProfile = async () => {
 export const updateUserProfile = async (profileData: any) => {
   try {
     const token = Cookies.get("authToken");
-    
+
     if (!token) {
       throw new Error("No authentication token found");
     }
@@ -321,7 +328,7 @@ export const changePassword = async (passwordData: {
 }) => {
   try {
     const token = Cookies.get("authToken");
-    
+
     if (!token) {
       throw new Error("No authentication token found");
     }

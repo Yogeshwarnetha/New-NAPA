@@ -6,6 +6,7 @@ import {
   Edit, ArrowLeft, Eye, EyeOff, Lock, X
 } from 'lucide-react';
 import { getUserProfile, updateUserProfile, changePassword } from '../../apirequest/auth';
+import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -35,7 +36,8 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
-  const [editFormData, setEditFormData] = useState<Partial<UserProfileData>>({});
+  const [editFormData, setEditFormData] = useState<Partial<UserProfileData> & { profileImageFile?: File | null, profileImageUrl?: string }>({});
+  const [removingImage, setRemovingImage] = useState(false);
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -75,17 +77,39 @@ const UserProfile = () => {
     setEditModalOpen(true);
   };
 
+
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setEditFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, files } = e.target as HTMLInputElement;
+    if (type === 'file' && files && files[0]) {
+      setEditFormData(prev => ({
+        ...prev,
+        profileImageFile: files[0],
+        profileImageUrl: URL.createObjectURL(files[0])
+      }));
+    } else {
+      setEditFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setSubmitting(true);
-      const response = await updateUserProfile(editFormData);
-      setProfileData(response.data);
+      const formData = new FormData();
+      Object.entries(editFormData).forEach(([key, value]) => {
+        if (key === 'profileImageFile' && value) {
+          formData.append('profileImage', value as File);
+        } else if (key !== 'profileImageUrl' && value !== undefined && value !== null) {
+          formData.append(key, value as string);
+        }
+      });
+      const token = localStorage.getItem('authToken') || (document.cookie.match(/authToken=([^;]+)/)?.[1] ?? '');
+      const response = await axios.put('/api/v1/auth/profile', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setProfileData(response.data.data);
       toast.success('Profile updated successfully!');
       setEditModalOpen(false);
     } catch (error: any) {
@@ -93,6 +117,24 @@ const UserProfile = () => {
       toast.error(error?.response?.data?.message || 'Failed to update profile');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleRemoveProfileImage = async () => {
+    if (!profileData?.profileImage) return;
+    setRemovingImage(true);
+    try {
+      const token = localStorage.getItem('authToken') || (document.cookie.match(/authToken=([^;]+)/)?.[1] ?? '');
+      await axios.delete('/api/v1/auth/profile/image', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      setProfileData(prev => prev ? { ...prev, profileImage: undefined } : prev);
+      setEditFormData(prev => ({ ...prev, profileImageFile: null, profileImageUrl: undefined }));
+      toast.success('Profile image removed');
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || 'Failed to remove image');
+    } finally {
+      setRemovingImage(false);
     }
   };
 
@@ -401,6 +443,38 @@ const UserProfile = () => {
             </div>
             
             <form onSubmit={handleEditSubmit} className="p-6">
+              {/* Profile Image Upload */}
+              <div className="mb-4 flex flex-col items-center md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Profile Image</label>
+                {(editFormData.profileImageUrl || profileData?.profileImage) ? (
+                  <div className="relative mb-2">
+                    <img
+                      src={editFormData.profileImageUrl || `/api/v1/uploads/profile/${profileData?.profileImage}`}
+                      alt="Profile Preview"
+                      className="w-24 h-24 rounded-full object-cover border"
+                    />
+                    {profileData?.profileImage && !editFormData.profileImageUrl && (
+                      <button
+                        type="button"
+                        onClick={handleRemoveProfileImage}
+                        disabled={removingImage}
+                        className="absolute top-0 right-0 bg-white rounded-full p-1 shadow hover:bg-red-100"
+                        title="Remove profile image"
+                      >
+                        <X className="w-5 h-5 text-red-500" />
+                      </button>
+                    )}
+                  </div>
+                ) : null}
+                <input
+                  type="file"
+                  name="profileImage"
+                  accept="image/*"
+                  onChange={handleEditChange}
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* First Name */}
                 <div>
