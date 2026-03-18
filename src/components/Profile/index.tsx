@@ -5,7 +5,7 @@ import {
   Building2, Flag, Calendar, Shield, CheckCircle,
   Edit, ArrowLeft, Eye, EyeOff, Lock, X
 } from 'lucide-react';
-import { getUserProfile, updateUserProfile, changePassword } from '../../apirequest/auth';
+import { getUserProfile, changePassword } from '../../apirequest/auth';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,6 +29,7 @@ interface UserProfileData {
   referredBy: string;
   isVerified: boolean;
   createdAt: string;
+  profileImage?: string;
 }
 
 const UserProfile = () => {

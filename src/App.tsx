@@ -43,7 +43,9 @@ import HomepageDashboard from './components/AdminDashboard/HomePage';
 import ForgotPasswordPage from './components/Login/ForgotPasswordPage';
 import VerifyResetOTP from './components/Login/VerifyResetOTP';
 import ResetPassword from './components/Login/ResetPassword';
+import OAuthSuccess from './components/Login/OAuthSuccess';
 import UserProfile from './components/Profile';
+import UserProfilePage from './components/Profile/ProfilePage';
 import CreateAdmin from './components/AdminDashboard/CreateAdmin';
 import LogoLoader from './components/ui/LogoLoader';
 
@@ -70,7 +72,9 @@ function App() {
         <Route path='/video-gallery' element={<VideoGallery />} />
         <Route path='/register' element={<Registration />} />
         <Route path='/login' element={<LoginPage />} />
-        <Route path='/profile' element={<UserProfile />} />
+        <Route path='/oauth/success' element={<OAuthSuccess />} />
+        <Route path='/profile' element={<UserProfilePage />} />
+        <Route path='/profile-old' element={<UserProfile />} />
         <Route path='/donations' element={<Donations />} />
         <Route path='/president-message' element={<PresidentMessageMain />} />
         <Route path='/members-board' element={<MembersBoardMain />} />

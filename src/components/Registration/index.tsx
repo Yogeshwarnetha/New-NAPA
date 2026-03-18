@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  User, Mail, Lock, Phone, Home, MapPin, Briefcase,
-  Building2, Flag, Users, CheckCircle, XCircle, ArrowLeft,
-  Eye, EyeOff, AlertCircle
-} from 'lucide-react';
+import { User, Mail, Lock, Phone, Home, MapPin, Flag, Users, CheckCircle, XCircle, ArrowLeft, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { OTPEmailVerification, resendOTPEmailVerification, signupUser } from '../../apirequest/auth';
 
 interface StateProvince {
@@ -17,6 +13,7 @@ function Registration() {
     message: '',
     open: false,
     type: 'info' as 'info' | 'success' | 'error'
+    
   });
 
   // Verification state
@@ -555,6 +552,9 @@ function Registration() {
                     )}
                   </div>
                 </div>
+                <p className="text-xs text-gray-500 -mt-2">
+                  Password must be at least 6 characters long
+                </p>
               </div>
             </FormSection>
 
@@ -652,7 +652,7 @@ function Registration() {
                         </option>
                       ))}
                       {!['USA', 'CAN'].includes(formData.country) && (
-                        <option value="OTHER">Other (Non-US/Canada)</option>
+                        <option value="OTHER">Other</option>
                       )}
                     </select>
                     <MapPin className={iconClasses} />
