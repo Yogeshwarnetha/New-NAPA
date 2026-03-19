@@ -5,10 +5,12 @@ import TeamCarousel from "./team-carousel";
 import Ourcompany from "./ourcompany";
 import HomeGallery from "./Gallery";
 import { useEffect, useState } from "react";
+import { fetchBannerData } from "../../apirequest/banner";
 import { fetchEvents } from "../../apirequest/events";
 import { fetchHomepageData, HomepageData } from "../../apirequest/homepage";
 import Carousel from './carousel/carousel';
 import ProjectCarousel from './carouselcards';
+import mainlogo from '../../Images/logo-main.png';
 
 
 const services = [
@@ -26,40 +28,74 @@ interface ContactForm {
   description: string;
 }
 
+interface CarouselImage {
+  url: string;
+  title: string;
+}
+
 
 const Home = () => {
   const [eventData, setEventData] = useState<ContactForm[]>([]);
   const [homepageData, setHomepageData] = useState<HomepageData | null>(null);
+  const [bannerImages, setBannerImages] = useState<CarouselImage[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAllData = async () => {
       try {
-        const data = await fetchEvents();
-        setEventData(data.data);
+        const [eventsResult, homepageResult, bannersResult] = await Promise.allSettled([
+          fetchEvents(),
+          fetchHomepageData(),
+          fetchBannerData(),
+        ]);
+
+        if (eventsResult.status === 'fulfilled') {
+          setEventData(eventsResult.value.data);
+        }
+        if (homepageResult.status === 'fulfilled') {
+          setHomepageData(homepageResult.value);
+        }
+        if (bannersResult.status === 'fulfilled') {
+          const activeBanners = bannersResult.value.filter((banner: any) => !banner.is_deleted);
+          const formattedImages = activeBanners.flatMap((banner: any) =>
+            banner.images.map((image: string) => ({
+              url: image,
+              title: banner.heading || 'Untitled',
+            }))
+          );
+          setBannerImages(formattedImages);
+        }
       } catch (error) {
-        console.error("Failed to fetch banners:", error);
+        console.error('Failed to fetch homepage data:', error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchData();
+    fetchAllData();
   }, []);
 
-  useEffect(() => {
-    const fetchHomeData = async () => {
-      try {
-        const data = await fetchHomepageData();
-        setHomepageData(data);
-      } catch (error) {
-        console.error("Failed to fetch homepage data:", error);
-      }
-    };
-    fetchHomeData();
-  }, []);
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <img
+          src={mainlogo}
+          alt="NAPA Logo"
+          className="w-40 md:w-52 mb-6 animate-pulse"
+        />
+        <div className="flex space-x-2">
+          <span className="w-3 h-3 rounded-full bg-[#43529C] animate-bounce" style={{ animationDelay: '0ms' }}></span>
+          <span className="w-3 h-3 rounded-full bg-[#43529C] animate-bounce" style={{ animationDelay: '150ms' }}></span>
+          <span className="w-3 h-3 rounded-full bg-[#43529C] animate-bounce" style={{ animationDelay: '300ms' }}></span>
+        </div>
+      </div>
+    );
+  }
 
 
   return (
     <div>
       <div className="carousel-main-container">
-        <Carousel />
+        <Carousel images={bannerImages} />
       </div>
       <section className="py-8 bg-white">
         <Ourcompany homepageData={homepageData} />

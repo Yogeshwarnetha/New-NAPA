@@ -32,9 +32,25 @@ export const getUserProfile = async (token: string) => {
 // Update user profile
 export const updateUserProfile = async (token: string, data: any) => {
     try {
-        const response = await axios.put(`${origin}/api/v1/user/profile`, data, {
+        let payload: FormData | any = data;
+        let contentType = 'application/json';
+
+        if (data.profileImageFile instanceof File) {
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => {
+                if (key === 'profileImageFile') {
+                    formData.append('profileImage', data.profileImageFile);
+                } else if (data[key] !== undefined && data[key] !== null) {
+                    formData.append(key, data[key]);
+                }
+            });
+            payload = formData;
+            contentType = 'multipart/form-data';
+        }
+
+        const response = await axios.put(`${origin}/api/v1/user/profile`, payload, {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': contentType,
                 Authorization: `Bearer ${token}`,
             },
             timeout: 10000,
@@ -155,4 +171,9 @@ export const deleteAccount = async (token: string) => {
 // Initiate Google OAuth
 export const loginWithGoogle = () => {
     window.location.href = `${origin}/api/v1/oauth/google`;
+};
+
+// Initiate Microsoft OAuth
+export const loginWithMicrosoft = () => {
+    window.location.href = `${origin}/api/v1/oauth/microsoft`;
 };

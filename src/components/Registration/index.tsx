@@ -7,6 +7,15 @@ interface StateProvince {
   name: string;
 }
 
+const FormSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="mb-8">
+    <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+      {title}
+    </h3>
+    {children}
+  </div>
+);
+
 function Registration() {
   // Snackbar notification
   const [snackbar, setSnackbar] = useState({
@@ -232,6 +241,18 @@ function Registration() {
     }
   };
 
+  const handleRegistrationFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      const target = e.target as HTMLElement;
+      const tag = target.tagName.toLowerCase();
+
+      // Avoid accidental submit while users are still typing in inputs.
+      if (tag === 'input' || tag === 'select') {
+        e.preventDefault();
+      }
+    }
+  };
+
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -305,15 +326,6 @@ function Registration() {
     }`;
 
   const iconClasses = "absolute left-3 top-3.5 h-5 w-5 text-gray-400";
-
-  const FormSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="mb-8">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
-        {title}
-      </h3>
-      {children}
-    </div>
-  );
 
   if (verificationStep) {
     return (
@@ -393,7 +405,7 @@ function Registration() {
             <p className="mt-2 text-sm text-gray-600">Create your account to get started</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar" encType="multipart/form-data">
+          <form onSubmit={handleSubmit} onKeyDown={handleRegistrationFormKeyDown} className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar" encType="multipart/form-data">
             {/* Profile Image Upload */}
             <div className="mb-4 flex flex-col items-center">
               <label htmlFor="profileImage" className="block text-sm font-medium text-gray-700 mb-2">Profile Image</label>
@@ -479,6 +491,7 @@ function Registration() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
+                      autoComplete="email"
                       className={inputClasses('email')}
                       placeholder="Email Address *"
                       required

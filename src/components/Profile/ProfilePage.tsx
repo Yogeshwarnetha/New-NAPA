@@ -10,6 +10,7 @@ import {
   updateUserProfile,
   updatePassword
 } from '../../apirequest/userProfile';
+import { origin } from '../../apirequest/config';
 import { Alert, Snackbar } from '@mui/material';
 import Cookies from 'js-cookie';
 
@@ -33,6 +34,7 @@ interface UserProfileData {
   isVerified: boolean;
   authProvider?: string;
   profilePicture?: string;
+  profileImage?: string;
   createdAt: string;
 }
 
@@ -56,6 +58,8 @@ const UserProfilePage = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const fetchProfile = async () => {
@@ -98,12 +102,22 @@ const UserProfilePage = () => {
 
   const handleEditClick = () => {
     setEditFormData(profileData || {});
+    setProfileImageFile(null);
+    setProfileImagePreview(null);
     setEditModalOpen(true);
   };
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setEditFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target as HTMLInputElement;
+    if (type === 'file') {
+      const files = (e.target as HTMLInputElement).files;
+      if (files && files[0]) {
+        setProfileImageFile(files[0]);
+        setProfileImagePreview(URL.createObjectURL(files[0]));
+      }
+    } else {
+      setEditFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleEditSubmit = async (e: React.FormEvent) => {
@@ -118,7 +132,10 @@ const UserProfilePage = () => {
         return;
       }
 
-      const response = await updateUserProfile(token, editFormData);
+      const response = await updateUserProfile(token, {
+        ...editFormData,
+        ...(profileImageFile ? { profileImageFile } : {}),
+      });
       
       if (response.success) {
         setProfileData(response.user);
@@ -254,7 +271,27 @@ const UserProfilePage = () => {
         {/* Profile Information */}
         <div className="bg-white rounded-2xl shadow-xl p-6">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Profile Information</h1>
+            <div className="flex items-center space-x-4">
+              {/* Profile avatar */}
+              {(profileData.profilePicture || profileData.profileImage) ? (
+                <img
+                  src={
+                    profileData.profilePicture
+                      ? profileData.profilePicture
+                      : `${origin}/uploads/profile/${profileData.profileImage}`
+                  }
+                  alt="Profile"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-indigo-200"
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center border-2 border-indigo-200">
+                  <span className="text-2xl font-bold text-indigo-600">
+                    {profileData.firstName?.charAt(0)}{profileData.lastName?.charAt(0)}
+                  </span>
+                </div>
+              )}
+              <h1 className="text-3xl font-bold text-gray-900">Profile Information</h1>
+            </div>
             <button
               onClick={handleEditClick}
               className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
@@ -410,6 +447,8 @@ const UserProfilePage = () => {
               <button
                 onClick={() => {
                   setEditModalOpen(false);
+                  setProfileImageFile(null);
+                  setProfileImagePreview(null);
                   if (!needsProfileCompletion) setEditFormData(profileData);
                 }}
                 className="text-gray-400 hover:text-gray-600"
@@ -419,6 +458,38 @@ const UserProfilePage = () => {
             </div>
 
             <form onSubmit={handleEditSubmit} className="space-y-4">
+              {/* Profile Image Upload */}
+              <div className="flex flex-col items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Profile Photo</label>
+                <div className="flex items-center space-x-4">
+                  {(profileImagePreview || profileData?.profilePicture || profileData?.profileImage) ? (
+                    <img
+                      src={
+                        profileImagePreview ||
+                        (profileData?.profilePicture
+                          ? profileData.profilePicture
+                          : `${origin}/uploads/profile/${profileData?.profileImage}`)
+                      }
+                      alt="Profile preview"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-indigo-200"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center border-2 border-indigo-200">
+                      <span className="text-2xl font-bold text-indigo-600">
+                        {editFormData.firstName?.charAt(0)}{editFormData.lastName?.charAt(0)}
+                      </span>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    name="profileImageFile"
+                    accept="image/*"
+                    onChange={handleEditChange}
+                    className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                  />
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
@@ -594,6 +665,8 @@ const UserProfilePage = () => {
                   type="button"
                   onClick={() => {
                     setEditModalOpen(false);
+                    setProfileImageFile(null);
+                    setProfileImagePreview(null);
                     if (!needsProfileCompletion) setEditFormData(profileData);
                   }}
                   disabled={submitting}

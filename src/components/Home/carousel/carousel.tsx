@@ -2,51 +2,20 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { fetchBannerData } from '../../../apirequest/banner';
 
 interface CarouselImage {
   url: string;
   title: string;
 }
 
-const Carousel = () => {
-  const [images, setImages] = useState<CarouselImage[]>([]);
+interface CarouselProps {
+  images: CarouselImage[];
+}
+
+const Carousel = ({ images }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Fetch and transform banner data
-  useEffect(() => {
-    const getBanners = async () => {
-      try {
-        setLoading(true);
-        const banners = await fetchBannerData();
-
-        // No need to access .data here since fetchBannerData returns Banner[] directly
-        const activeBanners = banners.filter(banner => !banner.is_deleted);
-
-        // Transform banner data to carousel images
-        const formattedImages = activeBanners.flatMap(banner =>
-          banner.images.map(image => ({
-            url: image,
-            title: banner.heading || "Untitled",
-          }))
-        );
-
-        setImages(formattedImages);
-        setError(null);
-      } catch (err) {
-        setError('Failed to load banners');
-        console.error('Error fetching banner data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getBanners();
-  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex(prevIndex =>
@@ -87,14 +56,6 @@ const Carousel = () => {
       if (intervalId) clearInterval(intervalId);
     };
   }, [isAutoPlaying, nextSlide, isMobile, images.length]);
-
-  if (loading) {
-    return <div className="text-center py-10 text-gray-500">Loading banners...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>;
-  }
 
   if (images.length === 0) {
     return <div className="text-center py-10 text-gray-500">No banners available</div>;

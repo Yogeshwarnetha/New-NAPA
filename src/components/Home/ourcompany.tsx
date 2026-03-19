@@ -65,7 +65,7 @@ const Ourcompany = ({ homepageData }: OurcompanyProps) => {
               </div>
               <div className="text-center sm:text-left mt-4 sm:mt-0">
                 <h3 className="font-semibold text-lg sm:text-xl text-gray-800">
-                  {homepageData?.homepresidentName || "Srinivas Sayini"}
+                  {homepageData?.homepresidentName}
                 </h3>
                 <p className="text-indigo-600 font-medium text-sm sm:text-base">President, NAPA</p>
               </div>
