@@ -1,5 +1,4 @@
 // import { useState } from 'react';
-import DonationsMainImage from '../../Images/donations.jpg';
 
 const Donations = () => {
   // FAQ and Updates removed
