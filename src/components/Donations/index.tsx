@@ -1,9 +1,79 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 
 const Donations = () => {
-  // FAQ and Updates removed
+  // State for each cause's donation amount
+  const [general, setGeneral] = useState(0);
+  const [weavers, setWeavers] = useState(0);
+  const [women, setWomen] = useState(0);
+  const [convention, setConvention] = useState(0);
+  const [scholarships, setScholarships] = useState(0);
+
+  // Calculate total
+  const total = general + weavers + women + convention + scholarships;
+
+  // Handle amount change for a specific cause
+  const handleAmountChange = (cause: string, value: string | number) => {
+    const numValue = value === '' ? 0 : parseFloat(typeof value === 'string' ? value : value.toString());
+    if (isNaN(numValue)) return;
+    
+    switch(cause) {
+      case 'general': setGeneral(numValue); break;
+      case 'weavers': setWeavers(numValue); break;
+      case 'women': setWomen(numValue); break;
+      case 'convention': setConvention(numValue); break;
+      case 'scholarships': setScholarships(numValue); break;
+      default: break;
+    }
+  };
+
+  // Handle donation submission - redirect to Square with total amount
+  const handleDonate = () => {
+    if (total === 0) {
+      alert('Please enter a donation amount for at least one cause.');
+      return;
+    }
+
+    // Square checkout URL with amount parameter
+    // Square accepts 'amount' as a query parameter to pre-fill the amount
+    const squareUrl = `https://checkout.square.site/merchant/XQQYWZ0XCSB8B/checkout/DT7LDQF2CO5RPLHPRXHDHYIH?amount=${total.toFixed(2)}`;
+    
+    // Open in same tab (or use '_blank' for new tab)
+    window.location.href = squareUrl;
+  };
+
+  // Individual cause card component
+  interface CauseCardProps {
+    title: string;
+    description: string;
+    amount: number;
+    onAmountChange: (value: string | number) => void;
+  }
+
+  const CauseCard = ({ title, description, amount, onAmountChange }: CauseCardProps) => (
+    <div className="border border-gray-200 rounded-lg p-4 mb-4 hover:shadow-md transition-shadow">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+          <p className="text-gray-600 text-sm mt-1">{description}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-gray-700 font-medium">$</span>
+          <input
+            type="number"
+            min="0"
+            step="1"
+            value={amount === 0 ? '' : amount}
+            onChange={(e) => onAmountChange(e.target.value)}
+            placeholder="0"
+            className="w-24 p-2 border border-gray-300 rounded-md text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
   const renderCommentForm = () => (
-    <div className="max-w-2xl mx-auto py-8">
+    <div className="max-w-2xl mx-auto py-8 border-t border-gray-200 mt-8">
       <h2 className="text-2xl font-bold mb-8">LEAVE A REPLY</h2>
       <form className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -25,7 +95,6 @@ const Donations = () => {
           className="w-full p-2 border rounded-md"
           rows={4}
         />
-        
         <button
           type="submit"
           className="bg-blue-600 text-white px-8 py-2 font-medium hover:bg-[#364291] transition-colors w-full sm:w-auto inline-block"
@@ -38,59 +107,96 @@ const Donations = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {/* Main Content */}
       <div className="space-y-6">
-        {/* Header Image and Donation Info */}
+        {/* Header Section */}
         <div className="bg-white rounded-lg overflow-hidden shadow-sm">
-          <div className="relative">
-            {/* <img 
-              src={DonationsMainImage} 
-              alt="Happy children" 
-              className="w-full h-72 object-cover"
-            /> */}
-          </div>
-          {/* Donation Stats Removed: Progress, Goal, Donors, Donated */}
           <div className="p-6">
-            {/* <h1 className="text-2xl font-semibold mb-2">Donate</h1> */}
-            {/* <p className="text-gray-600 mb-6">Help fund educational programs and provide essential aid to children across countries</p> */}
-            {/* Social Links */}
-            {/* <div className="flex gap-4 mb-6">
-              <button className="p-2 hover:bg-gray-100 rounded">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
-                </svg>
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-3.5 7.5h-3v3h3v3h-3v3h-3v-3h-3v-3h3v-3h-3v-3h3v-3h3v3h3v3z"/>
-                </svg>
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-6 1c7 4 13 1 13-7a7.35 7.35 0 001.88-5C21.3 6.26 22.5 4 23 3z"/>
-                </svg>
-              </button>
-            </div> */}
+            <div className="bg-white py-4">
+              <div className="max-w-2xl mx-auto text-center px-4">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4 font-jost">
+                  Donate Today
+                </h2>
+                <p className="text-gray-600 mb-8 donation-description">
+                  Support NAPA's mission to uplift our community! Your donation funds cultural programs, 
+                  scholarships, and welfare initiatives. Every gift makes a difference—join us in empowering 
+                  our future!
+                </p>
+              </div>
+            </div>
 
-            <div className="bg-white py-8">
-      <div className="max-w-2xl mx-auto text-center px-4">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4 font-jost leading-2">Donate Today</h2>
-        <p className="text-gray-600 mb-8 donation-description">
-        Support NAPA’s mission to uplift our community! Your donation funds cultural programs, scholarships, and welfare initiatives. Every gift makes a difference—join us in empowering our future!
-        </p>
-        <a
-          href="https://checkout.square.site/merchant/XQQYWZ0XCSB8B/checkout/DT7LDQF2CO5RPLHPRXHDHYIH"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-blue-600 text-white px-8 py-2 font-medium hover:bg-[#364291] transition-colors w-full sm:w-auto inline-block"
-        >
-          DONATE NOW
-        </a>
-      </div>
-    </div>
+            {/* Multi-Cause Donation Form */}
+            <div className="max-w-2xl mx-auto mt-4">
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  Distribute your contribution across the causes below.
+                </h3>
+                
+                <CauseCard
+                  title="General Donations"
+                  description="For immediate emergency support"
+                  amount={general}
+                  onAmountChange={(val: string | number) => handleAmountChange('general', val)}
+                />
+                
+                <CauseCard
+                  title="Save the Weavers"
+                  description="Because every weaver's life matters — your donation restores livelihoods and preserves tradition."
+                  amount={weavers}
+                  onAmountChange={(val: string | number) => handleAmountChange('weavers', val)}
+                />
+                
+                <CauseCard
+                  title="Women Empowerment"
+                  description="Providing sewing machines ($100 each) helps weaver women gain skills, opportunity, and long-term self-reliance."
+                  amount={women}
+                  onAmountChange={(val: string | number) => handleAmountChange('women', val)}
+                />
+                
+                <CauseCard
+                  title="Convention 2026"
+                  description="Annual Convention 2026 unites voices—bringing leaders and communities together to inspire action and create lasting change."
+                  amount={convention}
+                  onAmountChange={(val: string | number) => handleAmountChange('convention', val)}
+                />
+                
+                <CauseCard
+                  title="Student Scholarships"
+                  description="Empowering deserving students with financial support to pursue their education and dreams."
+                  amount={scholarships}
+                  onAmountChange={(val: string | number) => handleAmountChange('scholarships', val)}
+                />
+
+                {/* Important note about Square checkout limitations */}
+                <div className="mt-2 mb-4 p-3 bg-blue-50 rounded-md border border-blue-200">
+                  <p className="text-sm text-blue-700">
+                    ℹ️ Your total will be sent to our secure checkout. After payment, please email us at <strong>donations@napausa.org</strong> with your cause preferences.
+                  </p>
+                </div>
+
+                {/* Total and Donate Button */}
+                <div className="mt-6 pt-4 border-t border-gray-300">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-lg font-bold text-gray-900">Total:</span>
+                    <span className="text-2xl font-bold text-blue-600">
+                      ${total.toFixed(2)}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleDonate}
+                    className="w-full bg-blue-600 text-white px-8 py-3 font-medium hover:bg-[#364291] transition-colors rounded-md text-lg"
+                  >
+                    PROCEED TO CHECKOUT
+                  </button>
+                  <p className="text-xs text-gray-500 text-center mt-3">
+                    Unallocated: $0.00
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        {/* Only Comment Form remains */}
+        
+        {/* Comment Form */}
         {renderCommentForm()}
       </div>
     </div>

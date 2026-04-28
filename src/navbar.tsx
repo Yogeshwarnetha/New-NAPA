@@ -70,7 +70,7 @@ const menuItems: MenuItemType[] = [
     icon: <BookOpen className="w-5 h-5" />,
     submenu: [
       { title: 'Matrimony', path: 'https://matrimony.napausa.org/', external: true },
-      { title: 'Donations', path: 'https://checkout.square.site/merchant/XQQYWZ0XCSB8B/checkout/DT7LDQF2CO5RPLHPRXHDHYIH', external: true },
+      { title: 'Donations', path: 'https://donations.napausa.org/', external: true },
     ],
   },
   {
@@ -286,7 +286,7 @@ const Navbar = () => {
 
             {/* Donate Button */}
             <div className="hidden lg:flex items-center justify-center w-1/6 lg:w-[15%]">
-              <a href='/donations'>
+              <a href="https://donations.napausa.org/" target="_blank" rel="noopener noreferrer">
                 <button className="px-4 py-2 bg-indigo-600 text-white hover:bg-purple-700 transition-colors">
                   Donate
                 </button>
