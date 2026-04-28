@@ -46,10 +46,10 @@ const Donations = () => {
             <div className="bg-white py-4">
               <div className="max-w-2xl mx-auto text-center px-4">
                  <a href="https://donations.napausa.org/" target="_blank" rel="noopener noreferrer">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4 font-jost">
-                  Donate Today
-                </h2>
-                 </a>
+          <button className="bg-blue-600 text-white px-8 py-2 font-medium hover:bg-[#364291] transition-colors w-full sm:w-auto">
+            DONATE NOW
+          </button>
+        </a>
                
                 <p className="text-gray-600 mb-8 donation-description">
                   Support NAPA's mission to uplift our community! Your donation funds cultural programs, 

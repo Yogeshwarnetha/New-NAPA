@@ -190,7 +190,7 @@ const Navbar = () => {
           </div>
           {/* Login & Register */}
           <div className="flex space-x-4 border-l border-gray-600 pl-4">
-            <a href='https://checkout.square.site/merchant/XQQYWZ0XCSB8B/checkout/DT7LDQF2CO5RPLHPRXHDHYIH' className="text-sm hover:text-blue-400" target="_blank" rel="noopener noreferrer">
+            <a href='https://donations.napausa.org/' className="text-sm hover:text-blue-400" target="_blank" rel="noopener noreferrer">
               Donations
             </a>
             {userToken ? (
