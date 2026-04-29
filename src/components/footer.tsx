@@ -1,4 +1,5 @@
 import { Facebook, Linkedin, Instagram, Phone, Mail } from 'lucide-react';
+import { FaTwitter } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -12,14 +13,17 @@ const Footer = () => {
               Padmashalis are a Telugu speaking community with roots tracing back to Markandeya Maharishi. We are the third largest community and form 12% of the population of Andhra Pradesh and Telangana.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://www.facebook.com/groups/1701318680098993?_rdr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Linkedin className="w-5 h-5" />
+              <a href="https://x.com/napapadmashali" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                <FaTwitter className="w-5 h-5" />
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Linkedin className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -48,12 +52,12 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-6">QUICK LINKS</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="/introduction" className="text-gray-400 hover:text-white transition-colors">
                   About Our Organization
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="/register" className="text-gray-400 hover:text-white transition-colors">
                   Become a Volunteer
                 </a>
               </li>

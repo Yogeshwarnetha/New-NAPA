@@ -175,10 +175,10 @@ const Navbar = () => {
           </div>
           {/* Social Media Icons */}
           <div className="hidden md:flex items-center space-x-4">
-            <a href="#" className="hover:text-blue-400">
+            <a href="https://www.facebook.com/groups/1701318680098993?_rdr" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
               <Facebook className="w-4 h-4" />
             </a>
-            <a href="#" className="hover:text-blue-400">
+            <a href="https://x.com/napapadmashali" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
               <Twitter className="w-4 h-4" />
             </a>
             <a href="#" className="hover:text-blue-400">
