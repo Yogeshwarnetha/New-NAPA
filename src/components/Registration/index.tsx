@@ -737,7 +737,7 @@ function Registration() {
             {/* reCAPTCHA - moved to just above the submit button */}
             <div className="mb-4 flex flex-col items-center">
               <ReCAPTCHA
-                sitekey='6LfRgNIsAAAAAG8EdNa1SfMdIm_L4KRB7OD-rsWr'
+                sitekey="6LfRgNIsAAAAAG8EdNa1SfMdIm_L4KRB7OD-rsWr"
                 onChange={(token: string | null) => setRecaptchaToken(token)}
                 onExpired={() => setRecaptchaToken(null)}
               />
