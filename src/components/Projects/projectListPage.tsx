@@ -54,7 +54,7 @@ const ProjectListPage: React.FC = () => {
 
     if (error) {
         return (
-            <div className="py-16 px-6 lg:px-8">
+            <div className="py-10 md:py-16 px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto text-center">
                     <p className="text-red-500">{error}</p>
                     <button
@@ -69,7 +69,7 @@ const ProjectListPage: React.FC = () => {
     }
 
     return (
-        <div className="py-16 px-6 lg:px-8">
+        <div className="py-10 md:py-16 px-6 lg:px-8">
             {/* Banner Section */}
             {/* <div
                 className="relative h-[400px] md:h-[500px] bg-cover bg-center mb-12"
@@ -90,7 +90,7 @@ const ProjectListPage: React.FC = () => {
                 {projects.length === 0 ? (
                     <p className="text-center text-gray-500">No projects found.</p>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                         {projects.map((project) => (
                             <div
                                 key={project.id}

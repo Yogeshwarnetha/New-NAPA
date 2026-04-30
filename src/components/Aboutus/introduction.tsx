@@ -27,7 +27,7 @@ function AboutusIntroduction() {
     getData();
   }, []);
 
-  if (!data) return <div className="text-center py-20">Loading content...</div>;
+  if (!data) return <div className="text-center py-12 md:py-20">Loading content...</div>;
 
   return (
     <div className="min-h-screen bg-white">
@@ -48,7 +48,7 @@ function AboutusIntroduction() {
       </div>
 
       {/* Heritage Section */}
-      <section className="py-10 bg-gray-50">
+      <section className="py-8 md:py-10 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="md:max-w-7xl mx-auto px-2 md:px-6 lg:px-8">
             <h2 className="text-2xl md:text-4xl font-bold mb-8 text-center">{data.introduction_mainHeading}</h2>
@@ -68,7 +68,7 @@ function AboutusIntroduction() {
       <section className="pb-10">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">Our Global Presence</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {[
               { icon: Globe, title: 'Global Reach', desc: 'Strong presence across India, USA, and Canada' },
               { icon: Users, title: 'Growing Community', desc: 'Vibrant diaspora across North America' },
@@ -86,7 +86,7 @@ function AboutusIntroduction() {
       </section>
 
       {/* NAPA Story */}
-      <section className="py-10 bg-indigo-600 text-white">
+      <section className="py-8 md:py-10 bg-indigo-600 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-xl md:text-3xl font-bold mb-8">The NAPA Story</h2>
@@ -101,9 +101,9 @@ function AboutusIntroduction() {
       </section>
 
       {/* Community Stats */}
-      <section className="py-10">
+      <section className="py-8 md:py-10">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-4 md:gap-8">
             {[
               { number: '12%', label: 'Population in AP & Telangana' },
               { number: '1000+', label: 'Families in North America' },

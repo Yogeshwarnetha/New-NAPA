@@ -20,7 +20,6 @@ interface UserProfileData {
   lastName: string;
   email: string;
   phoneNumber: string;
-  gender: string;
   address1: string;
   address2: string;
   city: string;
@@ -325,8 +324,6 @@ const UserProfilePage = () => {
               <div className="flex items-start">
                 <User className="h-5 w-5 text-gray-400 mr-3 mt-0.5" />
                 <div>
-                  <p className="text-sm text-gray-500">Gender</p>
-                  <p className="text-gray-900 font-medium">{profileData.gender || 'Not specified'}</p>
                 </div>
               </div>
 
@@ -516,15 +513,11 @@ const UserProfilePage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Gender *</label>
                   <select
-                    name="gender"
-                    value={editFormData.gender || ''}
                     onChange={handleEditChange}
                     required
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   >
-                    <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>

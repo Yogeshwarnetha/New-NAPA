@@ -40,11 +40,11 @@ function PresidentMessageMain() {
     loadMessage();
   }, []);
   if (loading) {
-    return <div className="text-center py-20 text-blue-600 font-semibold">Loading President Message...</div>;
+    return <div className="text-center py-12 md:py-20 text-blue-600 font-semibold">Loading President Message...</div>;
   }
 
   if (!message) {
-    return <div className="text-center py-20 text-red-600 font-semibold">Failed to load president message.</div>;
+    return <div className="text-center py-12 md:py-20 text-red-600 font-semibold">Failed to load president message.</div>;
   }
 
   return (
@@ -70,12 +70,12 @@ function PresidentMessageMain() {
       </div>
 
       {/* Message Content */}
-      <div className="py-16 bg-gray-50">
+      <div className="py-10 md:py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
               {/* President's Image and Introduction */}
-              <div className="flex flex-col md:flex-row gap-8 mb-8">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-8 mb-8">
                 <div className="w-full md:w-1/3">
                   <div className="relative">
                     <div className="aspect-[3/4] rounded-lg overflow-hidden">

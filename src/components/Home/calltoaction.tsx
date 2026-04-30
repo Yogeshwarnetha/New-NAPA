@@ -2,8 +2,8 @@ import LogoMain from '../../Images/logo-main.png'
 
 const CallToAction = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 md:py-24">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4 md:p-12">
         <div className="flex-1 max-w-xl">
           <h4 className="text-sm uppercase tracking-wider text-indigo-600 font-semibold mb-2">
             HELP US STOP THE PROBLEM

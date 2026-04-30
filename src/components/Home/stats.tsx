@@ -8,7 +8,7 @@ const Stats = () => {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       {stats.map((stat, index) => (
         <div key={index} className="text-center">
           <h3 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2 stat-text-font">{stat.number}</h3>

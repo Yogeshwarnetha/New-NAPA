@@ -47,7 +47,7 @@ function Visionandmission() {
       </div>
 
       {/* Vision Section */}
-      <section className="py-10">
+      <section className="py-8 md:py-10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
@@ -59,7 +59,7 @@ function Visionandmission() {
                 {content.vision_para2}
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-4 md:gap-8">
               {[
                 { icon: Globe2, title: 'Global Unity', desc: 'Connecting Padmashalis worldwide' },
                 { icon: Users, title: 'Community Integration', desc: 'Fostering stronger bonds' },
@@ -77,7 +77,7 @@ function Visionandmission() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-10 bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
+      <section className="py-8 md:py-10 bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-xl md:text-3xl font-bold mb-6">{content.mission_mainHeading}</h2>
@@ -92,10 +92,10 @@ function Visionandmission() {
       </section>
 
       {/* Community Development Programs */}
-      <section className="py-10">
+      <section className="py-8 md:py-10">
         <div className="container mx-auto px-4">
           <h2 className="text-lg md:text-3xl font-bold text-center mb-8 md:mb-12">Community Development Programs</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto">
             {[
               { icon: Heart, title: 'Marriage Support', desc: 'Assistance for wedding arrangements and ceremonies' },
               { icon: GraduationCap, title: 'Educational Support', desc: 'Scholarships and academic guidance' },
@@ -113,7 +113,7 @@ function Visionandmission() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-10 bg-gray-50">
+      <section className="py-8 md:py-10 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-xl md:text-3xl font-bold mb-6">Join Our Community</h2>

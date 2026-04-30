@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global Mobile Optimizations */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply text-gray-900 antialiased;
+  touch-action: manipulation; /* Improves touch responsiveness by disabling double-tap to zoom on buttons/links */
+}
+
+/* Ensure minimum touch target size for interactive elements */
+button, 
+a, 
+input, 
+select, 
+textarea {
+  @apply min-h-[44px] min-w-[44px]; /* Minimum recommended touch target size */
+}
+
 /* Rich Text Content Styling */
 .prose {
   color: #374151;

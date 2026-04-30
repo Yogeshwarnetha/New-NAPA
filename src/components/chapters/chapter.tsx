@@ -147,7 +147,7 @@ export function ChapterDetail() {
                         return (
                           <div key={leadId} className="flex items-start">
                             {director ? (
-                              <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-[250px]">
+                              <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-full sm:w-[250px]">
                                 <img
                                   src={director.imageUrl}
                                   alt={director.name}
@@ -174,7 +174,7 @@ export function ChapterDetail() {
                         return (
                           <div key={leadId} className="flex items-start">
                             {lead ? (
-                              <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-[250px]">
+                              <div className="flex flex-col justify-center items-center p-4 border-2 border-black-800 bg-white w-full sm:w-[250px]">
                                 <img
                                   src={lead.imageUrl}
                                   alt={lead.name}

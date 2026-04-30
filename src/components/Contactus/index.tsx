@@ -41,10 +41,10 @@ export function Contact() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
-            <div className="py-12 sm:py-16 lg:py-20">
+            <div className="py-8 md:py-12 sm:py-10 md:py-16 lg:py-12 md:py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
-                    <div className="text-center py-12">
+                    <div className="text-center py-8 md:py-12">
                         <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl lg:text-6xl">
                             Join Our Mission
                         </h1>
@@ -54,7 +54,7 @@ export function Contact() {
                     </div>
                 
 
-                    <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+                    <div className="mt-8 grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-3">
                         {/* Contact Form */}
                         <div className="lg:col-span-2">
                             <div className="bg-white rounded-lg shadow-xl p-6 sm:p-8">

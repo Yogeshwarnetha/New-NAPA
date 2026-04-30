@@ -118,7 +118,7 @@ const ProjectCarousel: React.FC = () => {
 
         <div className="text-center mt-8 sm:mt-12">
           <a href='/projects'>
-            <button className="w-full sm:w-auto bg-indigo-600 text-white px-6 sm:px-8 py-3 font-medium hover:bg-indigo-700 transition-colors">
+            <button className="w-full sm:w-auto bg-indigo-600 text-white px-6 sm:px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 hover:shadow-md transition-all duration-200">
               VIEW ALL PROJECTS
             </button>
           </a>

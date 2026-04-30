@@ -4,8 +4,8 @@ import { FaTwitter } from 'react-icons/fa';
 const Footer = () => {
   return (
     <footer className="bg-[#1C1F26] text-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="container mx-auto px-4 py-10 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 md:p-12">
           {/* Company Info */}
           <div>
 

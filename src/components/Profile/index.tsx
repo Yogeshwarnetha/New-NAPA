@@ -16,7 +16,6 @@ interface UserProfileData {
   lastName: string;
   email: string;
   phoneNumber: string;
-  gender: string;
   address1: string;
   address2: string;
   city: string;
@@ -196,7 +195,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 md:py-12 px-4 sm:px-6 lg:px-8">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -221,7 +220,7 @@ const UserProfile = () => {
 
         {/* Profile Header */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-6">
-          <div className="bg-gradient-to-r from-indigo-600 to-blue-600 px-8 py-12">
+          <div className="bg-gradient-to-r from-indigo-600 to-blue-600 px-8 py-8 md:py-12">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className="bg-white rounded-full p-4 mr-6">
@@ -279,8 +278,6 @@ const UserProfile = () => {
               <div className="flex items-start">
                 <User className="w-5 h-5 text-indigo-600 mr-3 mt-1" />
                 <div>
-                  <p className="text-sm text-gray-500">Gender</p>
-                  <p className="text-gray-800 font-medium">{profileData.gender}</p>
                 </div>
               </div>
 
@@ -521,18 +518,13 @@ const UserProfile = () => {
                   />
                 </div>
 
-                {/* Gender */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Gender
                   </label>
                   <select
-                    name="gender"
-                    value={editFormData.gender || ''}
                     onChange={handleEditChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   >
-                    <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>

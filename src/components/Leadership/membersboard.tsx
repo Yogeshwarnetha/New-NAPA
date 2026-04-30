@@ -179,7 +179,7 @@ function MembersBoardMain() {
 
   if (loading.advisory && loading.executive && loading.directors) {
     return (
-      <div className="min-h-screen bg-white py-20 flex items-center justify-center">
+      <div className="min-h-screen bg-white py-12 md:py-20 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block relative">
             <div className="w-12 h-12 border-2 border-gray-300 rounded-full"></div>
@@ -192,7 +192,7 @@ function MembersBoardMain() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-16 md:py-20">
+    <div className="min-h-screen bg-white py-10 md:py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
         <motion.div
@@ -222,7 +222,7 @@ function MembersBoardMain() {
               title="Advisory Council"
             />
             {error.advisory ? (
-              <div className="text-center py-12 bg-gray-50 rounded-lg">
+              <div className="text-center py-8 md:py-12 bg-gray-50 rounded-lg">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-200 rounded-full mb-4">
                   <Award className="w-6 h-6 text-gray-600" />
                 </div>
@@ -231,7 +231,7 @@ function MembersBoardMain() {
             ) : (
               <motion.div
                 variants={staggerContainer}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8"
               >
                 {advisoryCouncil.length > 0 ? (
                   advisoryCouncil.map((member) => (
@@ -239,7 +239,7 @@ function MembersBoardMain() {
                   ))
                 ) : (
                   !loading.advisory && (
-                    <div className="col-span-full text-center py-12">
+                    <div className="col-span-full text-center py-8 md:py-12">
                       <p className="text-gray-500">No advisory council members available</p>
                     </div>
                   )
@@ -254,7 +254,7 @@ function MembersBoardMain() {
               title="Executive Committee"
             />
             {error.executive ? (
-              <div className="text-center py-12 bg-gray-50 rounded-lg">
+              <div className="text-center py-8 md:py-12 bg-gray-50 rounded-lg">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-200 rounded-full mb-4">
                   <Briefcase className="w-6 h-6 text-gray-600" />
                 </div>
@@ -263,7 +263,7 @@ function MembersBoardMain() {
             ) : (
               <motion.div
                 variants={staggerContainer}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8"
               >
                 {executiveCommittee.length > 0 ? (
                   executiveCommittee.map((member) => (
@@ -271,7 +271,7 @@ function MembersBoardMain() {
                   ))
                 ) : (
                   !loading.executive && (
-                    <div className="col-span-full text-center py-12">
+                    <div className="col-span-full text-center py-8 md:py-12">
                       <p className="text-gray-500">No executive committee members available</p>
                     </div>
                   )
@@ -286,7 +286,7 @@ function MembersBoardMain() {
               title="Board of Directors"
             />
             {error.directors ? (
-              <div className="text-center py-12 bg-gray-50 rounded-lg">
+              <div className="text-center py-8 md:py-12 bg-gray-50 rounded-lg">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-200 rounded-full mb-4">
                   <Shield className="w-6 h-6 text-gray-600" />
                 </div>
@@ -295,7 +295,7 @@ function MembersBoardMain() {
             ) : (
               <motion.div
                 variants={staggerContainer}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8"
               >
                 {boardDirectors.length > 0 ? (
                   boardDirectors.map((member) => (
@@ -303,7 +303,7 @@ function MembersBoardMain() {
                   ))
                 ) : (
                   !loading.directors && (
-                    <div className="col-span-full text-center py-12">
+                    <div className="col-span-full text-center py-8 md:py-12">
                       <p className="text-gray-500">No board of directors available</p>
                     </div>
                   )

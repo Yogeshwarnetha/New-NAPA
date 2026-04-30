@@ -32,8 +32,8 @@ const EventsList = () => {
         backgroundImage: `url('https://res.cloudinary.com/dfhisjy9w/image/upload/v1730445422/Image1_hnarmc.png')`,
       }}
     >
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-8 items-start max-w-6xl mx-auto">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="grid lg:grid-cols-2 gap-4 md:gap-8 items-start max-w-6xl mx-auto">
           {/* Left side - Image */}
           <div className="relative h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden">
             <img 

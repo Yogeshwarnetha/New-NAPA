@@ -99,7 +99,7 @@ function OperationalGuidelines() {
       </div>
 
       {/* Introduction */}
-      <section className="py-12 bg-blue-50">
+      <section className="py-8 md:py-12 bg-blue-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white p-8 rounded-lg shadow-lg">
@@ -117,7 +117,7 @@ function OperationalGuidelines() {
       </section>
 
       {/* Guidelines Content */}
-      <section className="py-16">
+      <section className="py-10 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {guidelines.map((section, index) => (
@@ -152,7 +152,7 @@ function OperationalGuidelines() {
       </section>
 
       {/* Contact Section */}
-      {/* <section className="py-12 bg-gray-50">
+      {/* <section className="py-8 md:py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl font-bold mb-6">Need Clarification?</h2>

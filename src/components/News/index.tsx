@@ -60,16 +60,16 @@ const NewsSection = () => {
 
   if (loading && !selectedArticle) {
     return (
-      <div className="min-h-screen bg-[#f9fafb] py-16 px-6 lg:px-8">
+      <div className="min-h-screen bg-[#f9fafb] py-10 md:py-16 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Latest News</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {[...Array(6)].map((_, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden animate-pulse">
                 <div className="h-48 bg-gray-200"></div>
                 <div className="p-4">
-                  <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-                  <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-full md:w-1/4 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-full lg:w-3/4 mb-2"></div>
                   <div className="h-4 bg-gray-200 rounded w-full"></div>
                 </div>
               </div>
@@ -83,7 +83,7 @@ const NewsSection = () => {
   return (
     <div className="min-h-screen bg-[#f9fafb]">
       {selectedArticle ? (
-        <div className="flex flex-col lg:flex-row lg:gap-0 py-16 px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:gap-0 py-10 md:py-16 px-6 lg:px-8">
           <div className="lg:w-3/4 bg-white rounded-lg overflow-hidden shadow-lg">
             <button
               onClick={handleBackClick}
@@ -97,10 +97,10 @@ const NewsSection = () => {
               <div className="animate-pulse p-6">
                 <div className="h-72 lg:h-[450px] bg-gray-200 rounded"></div>
                 <div className="mt-4 space-y-4">
-                  <div className="h-6 bg-gray-200 rounded w-1/4"></div>
-                  <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-6 bg-gray-200 rounded w-full md:w-1/4"></div>
+                  <div className="h-8 bg-gray-200 rounded w-full lg:w-3/4"></div>
                   <div className="h-4 bg-gray-200 rounded w-full"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  <div className="h-4 bg-gray-200 rounded w-full md:w-2/3"></div>
                 </div>
               </div>
             ) : (
@@ -127,7 +127,7 @@ const NewsSection = () => {
                   {selectedArticle.images.length > 1 && (
                     <div className="mt-6">
                       <h3 className="text-lg font-semibold mb-3">More Images</h3>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                         {selectedArticle.images.slice(1).map((image, index) => (
                           <img
                             key={index}
@@ -170,17 +170,17 @@ const NewsSection = () => {
           </div>
         </div>
       ) : (
-        <div className="py-16 px-6 lg:px-8">
+        <div className="py-10 md:py-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Latest News</h1>
 
             {newsArticles.length === 0 && !loading ? (
-              <div className="text-center py-12">
+              <div className="text-center py-8 md:py-12">
                 <p className="text-gray-500 text-lg">No news articles found</p>
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                   {newsArticles?.map((article) => (
                     <div
                       key={article.id}

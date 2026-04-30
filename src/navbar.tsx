@@ -151,8 +151,8 @@ const Navbar = () => {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-[#43529C] text-white py-4">
-        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
+      <div className="bg-[#43529C] text-white py-2 md:py-4">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
           {/* Contact Info */}
           <div className="flex items-center space-x-4">
             {/* Hide Mobile Number on Mobile Screens */}
@@ -165,8 +165,8 @@ const Navbar = () => {
               </span>
             </a>
             <a
-              href="mailto:info@example.com"
-              className="flex items-center text-sm hover:text-blue-400"
+              href="mailto:info@napausa.org"
+              className="flex items-center text-xs sm:text-sm hover:text-blue-400"
             >
               <Mail className="w-4 h-4 mr-1" />
               <span>  info@napausa.org
@@ -189,25 +189,26 @@ const Navbar = () => {
             </a>
           </div>
           {/* Login & Register */}
-          <div className="flex space-x-4 border-l border-gray-600 pl-4">
-            <a href='https://donations.napausa.org/' className="text-sm hover:text-blue-400" target="_blank" rel="noopener noreferrer">
+          <div className="flex space-x-3 sm:space-x-4 sm:border-l border-gray-600 sm:pl-4 justify-center w-full sm:w-auto">
+            <a href='https://donations.napausa.org/' className="text-xs sm:text-sm hover:text-blue-400 font-medium" target="_blank" rel="noopener noreferrer">
               Donations
             </a>
             {userToken ? (
               <>
-                <a href="/profile" className="text-sm hover:text-blue-400 cursor-pointer">
+                <a href="/profile" className="text-xs sm:text-sm hover:text-blue-400 cursor-pointer font-medium">
                   Welcome, {userName}
                 </a>
-                <button onClick={logout} className="text-sm hover:text-blue-400">
+                <button onClick={logout} className="text-xs sm:text-sm hover:text-blue-400 font-medium">
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <a href="/login" className="text-sm hover:text-blue-400">
+                <a href="/login" className="text-xs sm:text-sm hover:text-blue-400 font-medium">
                   Login
                 </a>
-                <a href="/register" className="text-sm hover:text-blue-400">
+                <span className="text-gray-400 hidden sm:inline">|</span>
+                <a href="/register" className="text-xs sm:text-sm hover:text-blue-400 font-medium">
                   Register
                 </a>
               </>
@@ -219,12 +220,15 @@ const Navbar = () => {
       {/* Main Navbar */}
       <nav className="bg-white shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center justify-center w-1/2 lg:w-[15%] mx-auto lg:mx-0">
+          <div className="flex justify-between items-center h-20 md:h-24">
+            {/* Mobile Spacer to center logo */}
+            <div className="w-10 lg:hidden"></div>
+
+            <div className="flex items-center justify-center w-auto lg:w-[15%]">
               <a href="/">
                 <img
                   src={mainlogo}
-                  className="w-56 md:w-40 lg:w-56"
+                  className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain py-2"
                   alt="Logo"
                 />
               </a>
@@ -314,7 +318,7 @@ const Navbar = () => {
         />
       )}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white transform ${isOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed top-0 right-0 h-full w-80 max-w-full bg-white transform ${isOpen ? 'translate-x-0' : 'translate-x-full'
           } transition-transform duration-300 ease-in-out z-50 lg:hidden`}
       >
         <div className="flex justify-between items-center p-4 border-b">

@@ -16,7 +16,7 @@ const Ourcompany = ({ homepageData }: OurcompanyProps) => {
           </span>
         </h1>
 
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-4 md:gap-8">
           {/* About Us Section */}
           <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 transform hover:scale-[1.02] transition-transform bg-gradient-to-br from-white to-indigo-50">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 border-b border-indigo-100 pb-2 sm:pb-4">
@@ -40,11 +40,11 @@ const Ourcompany = ({ homepageData }: OurcompanyProps) => {
               )}
             </div>
             <div className="mt-6 sm:mt-8">
-              <a href='/introduction'>
-              <button className="inline-flex items-center bg-[#43529C] text-white px-3 sm:px-4 py-2 text-sm font-medium hover:bg-[#32408f] transition-colors">
-                Learn More
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              <a href='/introduction' className="block w-full sm:inline-block">
+                <button className="w-full sm:w-auto inline-flex justify-center items-center bg-[#43529C] text-white px-4 sm:px-6 py-3 sm:py-2 text-sm font-medium rounded-lg hover:bg-[#32408f] hover:shadow-md transition-all duration-200 group">
+                  Learn More
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
               </a>
             </div>
           </div>
@@ -87,11 +87,11 @@ const Ourcompany = ({ homepageData }: OurcompanyProps) => {
             </div>
 
             <div className="text-left">
-              <a href='/president-message'>
-              <button className="inline-flex items-center bg-[#43529C] text-white px-3 sm:px-4 py-2 text-sm font-medium hover:bg-[#32408f] transition-colors">
-                Read More
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              <a href='/president-message' className="block w-full sm:inline-block">
+                <button className="w-full sm:w-auto inline-flex justify-center items-center bg-[#43529C] text-white px-4 sm:px-6 py-3 sm:py-2 text-sm font-medium rounded-lg hover:bg-[#32408f] hover:shadow-md transition-all duration-200 group">
+                  Read More
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
               </a>
             </div>
           </div>

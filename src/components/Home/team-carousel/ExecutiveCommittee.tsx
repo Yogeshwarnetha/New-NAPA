@@ -106,7 +106,7 @@ const ExecutiveCommittee = () => {
 
   return (
     <div 
-      className="relative w-full bg-cover bg-center bg-no-repeat bg-fixed py-12"
+      className="relative w-full bg-cover bg-center bg-no-repeat bg-fixed py-8 md:py-12"
       style={{
         backgroundImage: `url('https://res.cloudinary.com/dfhisjy9w/image/upload/v1730444616/image_s1trmd.png')`,
       }}
@@ -121,7 +121,7 @@ const ExecutiveCommittee = () => {
           </h2>
         </div>
 
-        <div className="relative px-12">
+        <div className="relative px-4 md:px-12">
           
           <button 
             onClick={prevSlide}
@@ -131,7 +131,7 @@ const ExecutiveCommittee = () => {
             <ChevronLeft className="w-6 h-6 text-[#2f327d]" />
           </button>
 
-          <div className="flex justify-center gap-8">
+          <div className="flex justify-center gap-4 md:gap-8">
             {getVisibleMembers().map((member) => (
               <TeamCard
                 key={member.id}

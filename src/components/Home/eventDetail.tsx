@@ -46,7 +46,7 @@ export const EventDetailPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gray-100 py-8 md:py-12 px-4 sm:px-6 lg:px-8">
             <div className="container mx-auto">
                 <Link to="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
                     <ArrowLeft className="w-4 h-4 mr-2" />

@@ -83,7 +83,7 @@ function ByLaws() {
       </div>
 
       {/* Introduction */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-8 md:py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Scroll className="w-12 h-12 mx-auto mb-6 text-gray-700" />
@@ -96,7 +96,7 @@ function ByLaws() {
       </section>
 
       {/* Bylaws Content */}
-      <section className="py-16">
+      <section className="py-10 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {bylawSections.map((section, index) => (
@@ -131,7 +131,7 @@ function ByLaws() {
       </section>
 
       {/* Footer Note */}
-      {/* <section className="py-12 bg-gray-50">
+      {/* <section className="py-8 md:py-12 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <p className="text-gray-600 mb-4">

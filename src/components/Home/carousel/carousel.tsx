@@ -29,9 +29,6 @@ const Carousel = ({ images }: CarouselProps) => {
     );
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
 
   // Handle responsive behavior
   useEffect(() => {
@@ -46,10 +43,10 @@ const Carousel = ({ images }: CarouselProps) => {
 
   // Auto-play functionality
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    let intervalId: number;
 
     if (isAutoPlaying && images.length > 1) {
-      intervalId = setInterval(nextSlide, isMobile ? 7000 : 5000);
+      intervalId = window.setInterval(nextSlide, isMobile ? 7000 : 5000);
     }
 
     return () => {
@@ -58,36 +55,54 @@ const Carousel = ({ images }: CarouselProps) => {
   }, [isAutoPlaying, nextSlide, isMobile, images.length]);
 
   if (images.length === 0) {
-    return <div className="text-center py-10 text-gray-500">No banners available</div>;
+    return <div className="text-center py-8 md:py-10 text-gray-500">No banners available</div>;
   }
 
   return (
-    <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8 mx-4 sm:mx-6 lg:mx-8 my-4 sm:my-6">
+    <div className="w-full max-w-none p-0 m-0">
       <div
-        className={`relative w-full max-w-[1800px] rounded-xl overflow-hidden ${isMobile ? "h-[300px]" : "h-[500px] sm:h-[600px] md:h-[800px]"
-          } group shadow-lg`}
+        className={`relative w-full overflow-hidden group shadow-lg ${isMobile ? '' : 'min-h-screen'}`}
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
         {/* Slides */}
         <div
-          className="w-full h-full flex transition-transform duration-700 ease-in-out"
+          className={`w-full flex transition-transform duration-700 ease-in-out ${isMobile ? '' : 'h-screen'}`}
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {images.map((banner, index) => (
-            <div key={`${banner.url}-${index}`} className="min-w-full h-full relative">
-              <div
-                className="absolute inset-0 bg-center bg-cover bg-no-repeat"
-                style={{ backgroundImage: `url(${banner.url})` }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-              <div className={`absolute bottom-0 left-0 right-0 ${isMobile ? "p-4" : "p-6 md:p-8"
-                } text-white`}
-              >
-                <h2 className="text-md md:text-2xl lg:text-4xl font-light sm:font-semibold md:font-bold mb-2 md:mb-3 opacity-90 line-clamp-2">
-                  {banner.title}
-                </h2>
-              </div>
+            <div
+              key={`${banner.url}-${index}`}
+              className={`min-w-full relative flex items-center justify-center ${isMobile ? '' : 'h-screen'}`}
+            >
+              {isMobile ? (
+                <>
+                  <img
+                    src={banner.url}
+                    alt={banner.title}
+                    className="w-full h-auto block object-contain bg-black"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <h2 className="text-md font-semibold mb-2 opacity-90 line-clamp-2">
+                      {banner.title}
+                    </h2>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="absolute inset-0 w-full h-full bg-center bg-cover bg-no-repeat"
+                    style={{ backgroundImage: `url(${banner.url})` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+                    <h2 className="text-md md:text-2xl lg:text-4xl font-light sm:font-semibold md:font-bold mb-2 md:mb-3 opacity-90 line-clamp-2">
+                      {banner.title}
+                    </h2>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>
@@ -111,25 +126,6 @@ const Carousel = ({ images }: CarouselProps) => {
               <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </button>
           </>
-        )}
-
-        {/* Progress Indicators */}
-        {images.length > 1 && (
-          <div className={`absolute bottom-3 ${isMobile ? "gap-1" : "bottom-6 gap-2"
-            } left-1/2 -translate-x-1/2 flex`}
-          >
-            {images.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${currentIndex === index
-                  ? 'w-6 bg-white'
-                  : 'w-1.5 bg-white/50 hover:bg-white/70'
-                  }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
         )}
 
         {/* Auto-play Indicator */}

@@ -1,5 +1,30 @@
+// TODO: Replace with your actual site key
+const RECAPTCHA_SITE_KEY = '6LfRgNIsAAAAAG8EdNa1SfMdIm_L4KRB7OD-rsWr';
+import React from 'react';
+
+// Simple modal component for registration success
+const RegistrationSuccessModal = ({ open, onLogin }: { open: boolean; onLogin: () => void }) => {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
+        <CheckCircle className="mx-auto text-green-500 mb-4" size={48} />
+        <h2 className="text-2xl font-bold mb-2">Thanks for Registering!</h2>
+        <p className="mb-6 text-gray-700">Your registration was successful. You can now log in to your account.</p>
+        <button
+          onClick={onLogin}
+          className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors"
+        >
+          Login
+        </button>
+      </div>
+    </div>
+  );
+};
 import { useEffect, useState } from 'react';
-import { User, Mail, Lock, Phone, Home, MapPin, Flag, Users, CheckCircle, XCircle, ArrowLeft, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import ReCAPTCHA from 'react-google-recaptcha';
+// TODO: Replace with your actual site key
+import { User, Mail, Lock, Phone, Home, MapPin, Flag, CheckCircle, XCircle, ArrowLeft, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { OTPEmailVerification, resendOTPEmailVerification, signupUser } from '../../apirequest/auth';
 
 interface StateProvince {
@@ -17,6 +42,10 @@ const FormSection = ({ title, children }: { title: string; children: React.React
 );
 
 function Registration() {
+  // Handler for login button in modal (must be top-level)
+  const handleSuccessLogin = () => {
+    window.location.href = '/login';
+  };
   // Snackbar notification
   const [snackbar, setSnackbar] = useState({
     message: '',
@@ -25,12 +54,17 @@ function Registration() {
     
   });
 
+
   // Verification state
   const [verificationStep, setVerificationStep] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [emailForVerification, setEmailForVerification] = useState('');
   const [otp, setOtp] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
+
+  // reCAPTCHA state
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingStates, setIsLoadingStates] = useState(true);
@@ -51,17 +85,17 @@ function Registration() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    gender: '',
     password: '',
     confirmPassword: '',
     email: '',
     phoneNumber: '',
+    zip: '',
+    // Optional fields below
     address1: '',
     address2: '',
     country: 'USA',
     state: '',
     city: '',
-    zip: '',
     referredBy: '',
     occupation: '',
     companyName: '',
@@ -170,8 +204,6 @@ function Registration() {
     // Personal Information
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    if (!formData.gender) newErrors.gender = 'Gender is required';
-
 
     // Strong password validation
     const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
@@ -195,12 +227,13 @@ function Registration() {
     }
 
     if (!formData.phoneNumber) newErrors.phoneNumber = 'Phone number is required';
-    if (!formData.address1) newErrors.address1 = 'Address is required';
-    if (!formData.city) newErrors.city = 'City is required';
-    if (!formData.state) newErrors.state = 'State/Province is required';
     if (!formData.zip) newErrors.zip = 'ZIP code is required';
+    // Address is now optional, so no validation here
 
-    // ...existing code...
+    // reCAPTCHA validation
+    if (!recaptchaToken) {
+      newErrors.recaptcha = 'Please verify that you are not a robot.';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -218,7 +251,8 @@ function Registration() {
 
     try {
       setIsSubmitting(true);
-      const response = await signupUser(formData);
+      // Pass recaptchaToken along with formData
+      const response = await signupUser({ ...formData, recaptchaToken });
 
       if (response.message?.includes('success') || response.data?.requiresVerification) {
         setEmailForVerification(formData.email);
@@ -266,10 +300,7 @@ function Registration() {
       const response = await OTPEmailVerification(emailForVerification, otp);
 
       if (response.success || response.message?.includes('success')) {
-        showSnackbar('Email verified successfully! Redirecting to login...', 'success');
-        setTimeout(() => {
-          window.location.href = '/login';
-        }, 2000);
+        setShowSuccessModal(true);
       } else {
         showSnackbar(response.message || 'Verification failed. Please try again.', 'error');
       }
@@ -329,70 +360,73 @@ function Registration() {
 
   if (verificationStep) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md mx-auto">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 sm:p-8">
-            <button
-              onClick={handleBackToRegister}
-              className="flex items-center text-blue-600 hover:text-blue-800 mb-4 transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5 mr-1" />
-              Back to registration
-            </button>
-
-            <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Verify Your Email</h2>
-              <p className="mt-2 text-sm text-gray-600">
-                We've sent a 6-digit code to <span className="font-medium break-all">{emailForVerification}</span>
-              </p>
-            </div>
-
-            <form onSubmit={handleVerify} className="space-y-6">
-              <div className="relative">
-                <input
-                  type="text"
-                  name="otp"
-                  value={otp}
-                  onChange={handleOtpChange}
-                  className={inputClasses('otp')}
-                  placeholder="Enter 6-digit code"
-                  required
-                  inputMode="numeric"
-                  pattern="\d{6}"
-                  maxLength={6}
-                />
-                <Lock className={iconClasses} />
-              </div>
-
+      <>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-md mx-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 sm:p-8">
               <button
-                type="submit"
-                disabled={isVerifying || otp.length !== 6}
-                className={`w-full px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors ${isVerifying || otp.length !== 6
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700'
-                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+                onClick={handleBackToRegister}
+                className="flex items-center text-blue-600 hover:text-blue-800 mb-4 transition-colors"
               >
-                {isVerifying ? 'Verifying...' : 'Verify Email'}
+                <ArrowLeft className="h-5 w-5 mr-1" />
+                Back to registration
               </button>
 
-              <div className="text-center text-sm text-gray-600">
-                <p>Didn't receive the code?</p>
-                <button
-                  type="button"
-                  onClick={handleResendOtp}
-                  disabled={isResending}
-                  className={`text-blue-600 ${isResending ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-800'
-                    } font-medium transition-colors`}
-                >
-                  {isResending ? 'Sending...' : 'Resend Code'}
-                </button>
+              <div className="text-center mb-8">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Verify Your Email</h2>
+                <p className="mt-2 text-sm text-gray-600">
+                  We've sent a 6-digit code to <span className="font-medium break-all">{emailForVerification}</span>
+                </p>
               </div>
-            </form>
-          </div>
-        </div>
 
-        <Snackbar {...snackbar} onClose={closeSnackbar} />
-      </div>
+              <form onSubmit={handleVerify} className="space-y-6">
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="otp"
+                    value={otp}
+                    onChange={handleOtpChange}
+                    className={inputClasses('otp')}
+                    placeholder="Enter 6-digit code"
+                    required
+                    inputMode="numeric"
+                    pattern="\d{6}"
+                    maxLength={6}
+                  />
+                  <Lock className={iconClasses} />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isVerifying || otp.length !== 6}
+                  className={`w-full px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors ${isVerifying || otp.length !== 6
+                    ? 'bg-blue-400 cursor-not-allowed'
+                    : 'bg-blue-600 hover:bg-blue-700'
+                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+                >
+                  {isVerifying ? 'Verifying...' : 'Verify Email'}
+                </button>
+
+                <div className="text-center text-sm text-gray-600">
+                  <p>Didn't receive the code?</p>
+                  <button
+                    type="button"
+                    onClick={handleResendOtp}
+                    disabled={isResending}
+                    className={`text-blue-600 ${isResending ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-800'
+                      } font-medium transition-colors`}
+                  >
+                    {isResending ? 'Sending...' : 'Resend Code'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <Snackbar {...snackbar} onClose={closeSnackbar} />
+        </div>
+        <RegistrationSuccessModal open={showSuccessModal} onLogin={handleSuccessLogin} />
+      </>
     );
   }
 
@@ -406,6 +440,7 @@ function Registration() {
           </div>
 
           <form onSubmit={handleSubmit} onKeyDown={handleRegistrationFormKeyDown} className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar" encType="multipart/form-data">
+            {/* ...existing code... */}
             {/* Profile Image Upload */}
             <div className="mb-4 flex flex-col items-center">
               <label htmlFor="profileImage" className="block text-sm font-medium text-gray-700 mb-2">Profile Image</label>
@@ -463,28 +498,6 @@ function Registration() {
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="relative">
-                    <select
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleInputChange}
-                      className={inputClasses('gender')}
-                      required
-                    >
-                      <option value="">Select Gender *</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                      <option value="prefer-not-to-say">Prefer not to say</option>
-                    </select>
-                    <Users className={iconClasses} />
-                    {errors.gender && (
-                      <p className="text-red-500 text-xs mt-1 flex items-center">
-                        <AlertCircle className="h-3 w-3 mr-1" />
-                        {errors.gender}
-                      </p>
-                    )}
-                  </div>
                   <div className="relative">
                     <input
                       type="email"
@@ -600,8 +613,7 @@ function Registration() {
                       value={formData.address1}
                       onChange={handleInputChange}
                       className={inputClasses('address1')}
-                      placeholder="Address 1 *"
-                      required
+                      placeholder="Address 1 (optional)"
                     />
                     <Home className={iconClasses} />
                     {errors.address1 && (
@@ -723,12 +735,23 @@ function Registration() {
                 )}
               </div>
             </FormSection>
+            {/* reCAPTCHA - moved to just above the submit button */}
+            <div className="mb-4 flex flex-col items-center">
+              <ReCAPTCHA
+                sitekey={RECAPTCHA_SITE_KEY}
+                onChange={(token: string | null) => setRecaptchaToken(token)}
+                onExpired={() => setRecaptchaToken(null)}
+              />
+              {errors.recaptcha && (
+                <p className="text-red-500 text-xs mt-1">{errors.recaptcha}</p>
+              )}
+            </div>
             {/* Submit Button */}
-            <div className="sticky bottom-0 pt-4 bg-white/80 backdrop-blur-sm -mx-2 px-2 pb-2">
+            <div className="pt-4 bg-white/80 backdrop-blur-sm pb-2">
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className={`w-full px-8 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors ${isSubmitting
+                disabled={isSubmitting || !recaptchaToken}
+                className={`w-full px-8 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors ${(isSubmitting || !recaptchaToken)
                   ? 'bg-green-500 cursor-not-allowed'
                   : 'bg-green-600 hover:bg-green-700'
                   } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}

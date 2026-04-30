@@ -63,7 +63,7 @@ const ProjectDetailPage: React.FC = () => {
 
     if (error) {
         return (
-            <div className="py-16 px-6 lg:px-8">
+            <div className="py-10 md:py-16 px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto text-center">
                     <p className="text-red-500">{error}</p>
                     <button
@@ -79,7 +79,7 @@ const ProjectDetailPage: React.FC = () => {
 
     if (!selectedProject) {
         return (
-            <div className="py-16 px-6 lg:px-8">
+            <div className="py-10 md:py-16 px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto text-center">
                     <p className="text-gray-500">Project not found</p>
                     <button
@@ -94,7 +94,7 @@ const ProjectDetailPage: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col lg:flex-row py-16 px-6 lg:px-8 gap-6">
+        <div className="flex flex-col lg:flex-row py-10 md:py-16 px-6 lg:px-8 gap-6">
             {/* Main Project Info */}
             <div className="lg:w-3/4 bg-white rounded-lg shadow-md overflow-hidden">
                 <button

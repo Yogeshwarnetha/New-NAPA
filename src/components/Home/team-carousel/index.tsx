@@ -85,7 +85,7 @@ const TeamCarousel = () => {
           backgroundImage: `url('https://res.cloudinary.com/dfhisjy9w/image/upload/v1730444616/image_s1trmd.png')`,
         }}
       >
-        <div className="relative px-4 py-16 mx-auto max-w-7xl">
+        <div className="relative px-4 py-10 md:py-16 mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="mt-2 text-4xl font-bold text-[#ffffff]">
               Advisory Council
@@ -107,7 +107,7 @@ const TeamCarousel = () => {
           backgroundImage: `url('https://res.cloudinary.com/dfhisjy9w/image/upload/v1730444616/image_s1trmd.png')`,
         }}
       >
-        <div className="relative px-4 py-16 mx-auto max-w-7xl">
+        <div className="relative px-4 py-10 md:py-16 mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="mt-2 text-4xl font-bold text-[#ffffff]">
               Advisory Council
@@ -128,7 +128,7 @@ const TeamCarousel = () => {
         backgroundImage: `url('https://res.cloudinary.com/dfhisjy9w/image/upload/v1730444616/image_s1trmd.png')`,
       }}
     >
-      <div className="relative px-4 py-16 mx-auto max-w-7xl">
+      <div className="relative px-4 py-10 md:py-16 mx-auto max-w-7xl">
         <div className="text-center mb-12">
           <h2 className="mt-2 text-4xl font-bold text-[#ffffff]">
             Advisory Council
@@ -136,7 +136,7 @@ const TeamCarousel = () => {
 
         </div>
 
-        <div className="relative px-4 sm:px-12">
+        <div className="relative px-4 sm:px-4 md:px-12">
           {shouldShowButtons && (
             <button
               onClick={prevSlide}
@@ -149,7 +149,7 @@ const TeamCarousel = () => {
             </button>
           )}
 
-          <div className="flex justify-center gap-8">
+          <div className="flex justify-center gap-4 md:gap-8">
             {getVisibleMembers().map((member) => (
               <TeamCard
                 key={member.id}

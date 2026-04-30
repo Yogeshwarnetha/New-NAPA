@@ -97,22 +97,27 @@ const Home = () => {
       <div className="carousel-main-container">
         <Carousel images={bannerImages} />
       </div>
-      <section className="py-8 bg-white">
+      <section className="py-4 md:py-8 bg-white">
         <Ourcompany homepageData={homepageData} />
       </section>
-      <section className="py-8 px-4 bg-white">
+      <section className="py-4 md:py-8 px-4 bg-white">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Events</h2>
 
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 px-4 md:px-8">
             {eventData?.map((x: any) => (
-              <div className="flex items-start gap-4 font-sans">
-                <div>
-                  <h3 className="font-semibold text-xl text-gray-800 mb-2">{x?.name}</h3>
-                  <p className="text-gray-600 text-sm mb-2">{x?.description}</p>
-                  <a href={`/event/${x?.id}`}>
-                    <button className="text-sm text-indigo-600 hover:text-purple-700 font-medium">
+              <div className="flex flex-col bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 font-sans h-full">
+                <div className="flex-grow">
+                  <h3 className="font-bold text-xl text-gray-800 mb-3 line-clamp-2">{x?.name}</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">{x?.description}</p>
+                </div>
+                <div className="mt-auto pt-4 border-t border-gray-200">
+                  <a href={`/event/${x?.id}`} className="inline-block">
+                    <button className="flex items-center text-sm text-[#43529C] hover:text-[#32408f] font-semibold group transition-colors">
                       Read More
+                      <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </button>
                   </a>
                 </div>
@@ -122,11 +127,11 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-8 px-4 bg-white">
+      <section className="py-4 md:py-8 px-4 bg-white">
         <DonationSection />
       </section>
 
-      <section className="py-10 px-4 max-w-6xl mx-auto">
+      <section className="py-4 md:py-10 px-4 max-w-6xl mx-auto">
         <p className="text-3xl md:text-3xl font-bold text-center text-gray-800 mb-16 services-card-main-heading">Our Services</p>
         <div className="space-y-12">
           {services.map((service: any, index) => (
@@ -149,7 +154,7 @@ const Home = () => {
         <TeamCarousel />
         {/* <ExecutiveCommittee /> */}
       </section>
-      {/* <section className="py-12 px-4 ">
+      {/* <section className="py-8 md:py-12 px-4 ">
     <EventsList />
 
     </section> */}
