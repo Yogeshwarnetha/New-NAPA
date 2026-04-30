@@ -1,5 +1,4 @@
 // TODO: Replace with your actual site key
-const RECAPTCHA_SITE_KEY = '6LfRgNIsAAAAAG8EdNa1SfMdIm_L4KRB7OD-rsWr';
 import React from 'react';
 
 // Simple modal component for registration success
@@ -738,7 +737,7 @@ function Registration() {
             {/* reCAPTCHA - moved to just above the submit button */}
             <div className="mb-4 flex flex-col items-center">
               <ReCAPTCHA
-                sitekey={RECAPTCHA_SITE_KEY}
+                sitekey='6LfRgNIsAAAAAG8EdNa1SfMdIm_L4KRB7OD-rsWr'
                 onChange={(token: string | null) => setRecaptchaToken(token)}
                 onExpired={() => setRecaptchaToken(null)}
               />
