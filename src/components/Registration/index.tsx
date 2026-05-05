@@ -344,7 +344,6 @@ function Registration() {
 
   const showSnackbar = (message: string, type: 'info' | 'success' | 'error') => {
     setSnackbar({ message, open: true, type });
-    setTimeout(() => setSnackbar(prev => ({ ...prev, open: false })), 5000);
   };
 
   const closeSnackbar = () => {
@@ -830,12 +829,19 @@ const Snackbar = ({
 
   return (
     <div
-      className={`fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 p-4 ${bgColor} text-white rounded-lg shadow-lg flex items-center max-w-md mx-auto sm:mx-0 z-50 cursor-pointer transition-all duration-300`}
-      onClick={onClose}
+      className={`fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 p-4 ${bgColor} text-white rounded-lg shadow-lg flex items-center max-w-md mx-auto sm:mx-0 z-50 transition-all duration-300`}
       role="alert"
     >
       {icon}
       <span className="flex-1">{message}</span>
+      <button
+        type="button"
+        onClick={onClose}
+        className="ml-3 flex-shrink-0 text-white hover:text-gray-200 focus:outline-none"
+        aria-label="Close"
+      >
+        <XCircle className="h-5 w-5" />
+      </button>
     </div>
   );
 };

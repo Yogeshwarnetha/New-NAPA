@@ -377,7 +377,6 @@ const LoginPage = () => {
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
         onClose={handleCloseSnackbar}
       >
         <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
