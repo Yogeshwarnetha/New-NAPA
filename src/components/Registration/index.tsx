@@ -23,8 +23,9 @@ const RegistrationSuccessModal = ({ open, onLogin }: { open: boolean; onLogin: (
 import { useEffect, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 // TODO: Replace with your actual site key
-import { User, Mail, Lock, Phone, Home, MapPin, Flag, CheckCircle, XCircle, ArrowLeft, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { User, Mail, Lock, Phone, Home, MapPin, Flag, CheckCircle,  ArrowLeft, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { OTPEmailVerification, resendOTPEmailVerification, signupUser } from '../../apirequest/auth';
+import NotificationModal from '../ui/NotificationModal';
 
 interface StateProvince {
   code: string;
@@ -421,7 +422,7 @@ function Registration() {
             </div>
           </div>
 
-          <Snackbar {...snackbar} onClose={closeSnackbar} />
+          <NotificationModal {...snackbar} onClose={closeSnackbar} />
         </div>
         <RegistrationSuccessModal open={showSuccessModal} onLogin={handleSuccessLogin} />
       </>
@@ -779,7 +780,7 @@ function Registration() {
         </button>
       </div>
 
-      <Snackbar {...snackbar} onClose={closeSnackbar} />
+      <NotificationModal {...snackbar} onClose={closeSnackbar} />
 
       {/* Custom scrollbar styles */}
       <style>{`
@@ -802,48 +803,6 @@ function Registration() {
   );
 }
 
-const Snackbar = ({
-  message,
-  open,
-  type,
-  onClose
-}: {
-  message: string;
-  open: boolean;
-  type: 'info' | 'success' | 'error';
-  onClose: () => void
-}) => {
-  if (!open) return null;
 
-  const bgColor = {
-    info: 'bg-blue-600',
-    success: 'bg-green-600',
-    error: 'bg-red-600'
-  }[type];
-
-  const icon = {
-    info: null,
-    success: <CheckCircle className="h-5 w-5 mr-2 flex-shrink-0" />,
-    error: <XCircle className="h-5 w-5 mr-2 flex-shrink-0" />
-  }[type];
-
-  return (
-    <div
-      className={`fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 p-4 ${bgColor} text-white rounded-lg shadow-lg flex items-center max-w-md mx-auto sm:mx-0 z-50 transition-all duration-300`}
-      role="alert"
-    >
-      {icon}
-      <span className="flex-1">{message}</span>
-      <button
-        type="button"
-        onClick={onClose}
-        className="ml-3 flex-shrink-0 text-white hover:text-gray-200 focus:outline-none"
-        aria-label="Close"
-      >
-        <XCircle className="h-5 w-5" />
-      </button>
-    </div>
-  );
-};
 
 export default Registration;

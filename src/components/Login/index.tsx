@@ -5,7 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { loginUnified } from '../../apirequest/auth';
 import { resendEmailOtp } from '../../apirequest/adminAuth';
 import { loginWithGoogle } from '../../apirequest/userProfile';
-import { Alert, Snackbar, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import NotificationModal from '../ui/NotificationModal';
 import Cookies from 'js-cookie';
 
 
@@ -375,14 +376,12 @@ const LoginPage = () => {
         </p>
       </div>
 
-      <Snackbar
+      <NotificationModal
         open={snackbarOpen}
+        message={snackbarMessage}
+        type={snackbarSeverity}
         onClose={handleCloseSnackbar}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      />
 
       <Dialog open={showRoleModal} onClose={() => setShowRoleModal(false)}>
         <DialogTitle>Select Login Type</DialogTitle>
