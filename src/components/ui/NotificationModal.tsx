@@ -6,9 +6,11 @@ interface NotificationModalProps {
   message: string;
   type: 'success' | 'error' | 'info';
   onClose: () => void;
+  autoClose?: boolean;
+  autoCloseDelay?: number;
 }
 
-const NotificationModal: React.FC<NotificationModalProps> = ({ open, message, type, onClose }) => {
+const NotificationModal: React.FC<NotificationModalProps> = ({ open, message, type, onClose, autoClose = true, autoCloseDelay = 4000 }) => {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
 
@@ -23,6 +25,16 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ open, message, ty
       return () => clearTimeout(t);
     }
   }, [open]);
+
+  // Auto-close timer
+  useEffect(() => {
+    if (open && autoClose) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, autoCloseDelay);
+      return () => clearTimeout(timer);
+    }
+  }, [open, autoClose, autoCloseDelay, onClose]);
 
   useEffect(() => {
     if (!mounted) return;
