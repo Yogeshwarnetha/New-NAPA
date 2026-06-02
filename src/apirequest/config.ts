@@ -1,4 +1,4 @@
-const env: any = "dev";
+const env: any = "Production";
 
 export const origin = env == "Production" ? "https://api.napausa.org" : "http://localhost:3000";
 
