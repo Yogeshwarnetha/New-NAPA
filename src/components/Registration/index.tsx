@@ -264,12 +264,19 @@ function Registration() {
       }
     } catch (error: any) {
       console.error('Registration error:', error);
-      showSnackbar(
-        error.response?.data?.message ||
-        error.message ||
-        'Registration failed. Please try again.',
-        'error'
-      );
+      const respData = error?.response?.data;
+      if (respData?.needsVerification) {
+        setEmailForVerification(formData.email);
+        setVerificationStep(true);
+        showSnackbar(respData.message || 'Account requires verification. OTP sent to your email.', 'info');
+      } else {
+        showSnackbar(
+          respData?.message ||
+          error.message ||
+          'Registration failed. Please try again.',
+          'error'
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }

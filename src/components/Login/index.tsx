@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
 import loginImage from '../../Images/logo-main.png'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { loginUnified } from '../../apirequest/auth';
+import { loginUnified, resendOTPEmailVerification } from '../../apirequest/auth';
 import { resendEmailOtp } from '../../apirequest/adminAuth';
 import { loginWithGoogle } from '../../apirequest/userProfile';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
@@ -17,6 +17,7 @@ const LoginPage = () => {
   const [step, setStep] = useState<1 | 2>(1);
   const [roleOptions, setRoleOptions] = useState<Array<'admin' | 'user'>>([]);
   const [showRoleModal, setShowRoleModal] = useState(false);
+  const [loginRole, setLoginRole] = useState<'admin' | 'user'>('user');
   const [isLoading, setIsLoading] = useState(false);
   const [resendStatus, setResendStatus] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -87,9 +88,11 @@ const LoginPage = () => {
         return;
       }
 
-      if (response?.needsEmailOtpVerification) {
+      if (response?.needsEmailOtpVerification || response?.needsVerification) {
+        const nextRole = response.role || (response.needsEmailOtpVerification ? 'admin' : 'user');
+        setLoginRole(nextRole);
         setStep(2);
-        setSnackbarMessage('OTP sent to your email');
+        setSnackbarMessage(response.message || 'OTP sent to your email');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
         return;
@@ -117,9 +120,10 @@ const LoginPage = () => {
     try {
       const response = await loginUnified({ email, password, role });
 
-      if (response?.needsEmailOtpVerification) {
+      if (response?.needsEmailOtpVerification || response?.needsVerification) {
+        setLoginRole(role);
         setStep(2);
-        setSnackbarMessage('OTP sent to your email');
+        setSnackbarMessage(response.message || 'OTP sent to your email');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
         return;
@@ -147,15 +151,24 @@ const LoginPage = () => {
       const response = await loginUnified({
         email,
         password,
-        role: 'admin',
+        role: loginRole,
         emailOtp,
       });
+
+      if (response?.verificationSuccess) {
+        setStep(1);
+        setSnackbarMessage('Email verified. Please log in again.');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+        setEmailOtp('');
+        return;
+      }
 
       if (response?.token) {
         setSnackbarMessage('Successfully logged in');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
-        handleLoginSuccess('admin', response.token);
+        handleLoginSuccess(loginRole, response.token);
       } else {
         setSnackbarMessage('Invalid OTP. Please try again.');
         setSnackbarSeverity('error');
@@ -173,7 +186,11 @@ const LoginPage = () => {
   const handleResendOtp = async () => {
     try {
       setResendStatus('');
-      await resendEmailOtp(email);
+      if (loginRole === 'admin') {
+        await resendEmailOtp(email);
+      } else {
+        await resendOTPEmailVerification(email);
+      }
       setResendStatus('OTP resent successfully.');
     } catch (error) {
       setResendStatus('Failed to resend OTP. Try again.');
