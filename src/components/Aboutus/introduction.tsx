@@ -31,9 +31,16 @@ function AboutusIntroduction() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
+      {/* Hero Section - Mobile: text only */}
+      <div className="block md:hidden bg-indigo-700 py-8 px-4">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-xl font-bold text-white mb-2">{data.introduction_heading}</h1>
+          <p className="text-sm text-indigo-100">{data.introduction_description}</p>
+        </div>
+      </div>
+      {/* Hero Section - Desktop: full banner */}
       <div
-        className="relative h-[300px] md:h-[500px] bg-cover bg-center"
+        className="relative hidden md:block h-[500px] bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/About%20Introduction.png")',
         }}
@@ -41,8 +48,8 @@ function AboutusIntroduction() {
         <div className="absolute inset-0 bg-black/30" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
-            <h1 className="text-xl md:text-5xl font-bold mb-4">{data.introduction_heading}</h1>
-            <p className="text-md md:text-xl opacity-90">{data.introduction_description}</p>
+            <h1 className="text-5xl font-bold mb-4">{data.introduction_heading}</h1>
+            <p className="text-xl opacity-90">{data.introduction_description}</p>
           </div>
         </div>
       </div>

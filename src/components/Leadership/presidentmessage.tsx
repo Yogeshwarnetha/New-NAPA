@@ -49,9 +49,20 @@ function PresidentMessageMain() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
+      {/* Hero Section - Mobile: text only */}
+      <div className="block md:hidden bg-blue-800 py-8 px-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-700/30 rounded-full mb-3">
+            <User2 className="w-3 h-3 text-white" />
+            <span className="text-xs font-medium text-white">President's Message</span>
+          </div>
+          <h1 className="text-xl font-bold text-white mb-1">{message.president_name}</h1>
+          <p className="text-sm font-medium text-blue-200">President ({message.president_period})</p>
+        </div>
+      </div>
+      {/* Hero Section - Desktop: full banner */}
       <div
-        className="relative h-[400px] md:h-[500px] bg-cover bg-center"
+        className="relative hidden md:block h-[500px] bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/President%20message.png")',
         }}

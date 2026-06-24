@@ -50,7 +50,7 @@ const GalleryMediaSection: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-32">
+    <div className="container mx-auto px-4 py-10 md:py-32">
       <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
         Our Gallery
       </h2>

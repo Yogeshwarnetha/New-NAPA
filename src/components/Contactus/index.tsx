@@ -41,14 +41,14 @@ export function Contact() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
-            <div className="py-8 md:py-12 sm:py-10 md:py-16 lg:py-12 md:py-20">
+            <div className="py-6 sm:py-10 md:py-16 lg:py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="text-center py-8 md:py-12">
-                        <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl lg:text-6xl">
+                        <h1 className="text-2xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
                             Join Our Mission
                         </h1>
-                        <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+                        <p className="mt-4 text-base md:text-xl text-gray-600 max-w-2xl mx-auto">
                             Together, we can make a lasting impact. Reach out to learn how you can contribute to our cause.
                         </p>
                     </div>

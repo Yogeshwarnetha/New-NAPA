@@ -80,9 +80,16 @@ function OperationalGuidelines() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
+      {/* Hero Section - Mobile: text only */}
+      <div className="block md:hidden bg-blue-700 py-8 px-4">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-xl font-bold text-white mb-2">Operational Guidelines</h1>
+          <p className="text-sm text-blue-100">Standard Operating Procedures for NAPA</p>
+        </div>
+      </div>
+      {/* Hero Section - Desktop: full banner */}
       <div 
-        className="relative h-[400px] md:h-[500px] bg-cover bg-center"
+        className="relative hidden md:block h-[500px] bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/Operational%20Guidelines.png")',
         }}

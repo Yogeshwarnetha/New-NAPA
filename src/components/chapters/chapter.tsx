@@ -97,7 +97,15 @@ export function ChapterDetail() {
 
   return (
     <>
-      <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] w-full bg-cover">
+      {/* Hero Section - Mobile: text only */}
+      <div className="block md:hidden bg-indigo-700 py-8 px-4">
+        <div className="text-center">
+          <h1 className="text-lg font-bold text-white mb-1">Welcome to</h1>
+          <h1 className="text-xl font-bold text-yellow-300">{chapter.title}</h1>
+        </div>
+      </div>
+      {/* Hero Section - Desktop: full banner */}
+      <div className="relative hidden md:block h-[400px] md:h-[500px] lg:h-[600px] w-full bg-cover">
         <img
           src={ChapterBackgroundImg}
           alt="chapter-background"
@@ -105,8 +113,8 @@ export function ChapterDetail() {
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center px-4 sm:px-0">
-            <h1 className="banner-title-heading1 text-lg sm:text-xl md:text-2xl lg:text-3xl">Welcome to</h1>
-            <h1 className="banner-title-heading2 text-xl sm:text-2xl md:text-3xl lg:text-4xl">{chapter.title}</h1>
+            <h1 className="banner-title-heading1 text-xl md:text-2xl lg:text-3xl">Welcome to</h1>
+            <h1 className="banner-title-heading2 text-2xl md:text-3xl lg:text-4xl">{chapter.title}</h1>
           </div>
         </div>
       </div>

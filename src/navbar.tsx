@@ -189,7 +189,7 @@ const Navbar = () => {
             </a>
           </div>
           {/* Login & Register */}
-          <div className="flex space-x-3 sm:space-x-4 sm:border-l border-gray-600 sm:pl-4 justify-center w-full sm:w-auto">
+          <div className="flex items-center space-x-3 sm:space-x-4 sm:border-l border-gray-600 sm:pl-4 justify-center w-full sm:w-auto">
             <a href='https://donations.napausa.org/' className="text-xs sm:text-sm hover:text-blue-400 font-medium" target="_blank" rel="noopener noreferrer">
               Donations
             </a>
@@ -198,7 +198,7 @@ const Navbar = () => {
                 <a href="/profile" className="text-xs sm:text-sm hover:text-blue-400 cursor-pointer font-medium">
                   Welcome, {userName}
                 </a>
-                <button onClick={logout} className="text-xs sm:text-sm hover:text-blue-400 font-medium">
+                <button onClick={logout} className="text-xs sm:text-sm hover:text-blue-400 font-medium min-h-0">
                   Logout
                 </button>
               </>

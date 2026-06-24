@@ -2,6 +2,7 @@ import { Globe2, Users, GraduationCap, Heart, Building, Handshake } from 'lucide
 import { useEffect, useState } from 'react';
 import { fetchAboutMissionVision } from '../../apirequest/aboutmissionvision'; // adjust the path as needed
 import { AboutMissionVision } from '../../apirequest/aboutmissionvision';
+import Cookies from 'js-cookie';
 
 
 function Visionandmission() {
@@ -30,9 +31,16 @@ function Visionandmission() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
+      {/* Hero Section - Mobile: text only */}
+      <div className="block md:hidden bg-indigo-700 py-8 px-4">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-xl font-bold text-white mb-2">{content.missionvision_heading}</h1>
+          <p className="text-sm text-indigo-100">{content.missionvision_description}</p>
+        </div>
+      </div>
+      {/* Hero Section - Desktop: full banner */}
       <div
-        className="relative h-[400px] md:h-[500px] bg-cover bg-center"
+        className="relative hidden md:block h-[500px] bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/Mission%20and%20vision.png")',
         }}
@@ -40,8 +48,8 @@ function Visionandmission() {
         <div className="absolute inset-0 bg-black/30" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-3xl text-white">
-            <h1 className="text-xl md:text-5xl font-bold mb-4">{content.missionvision_heading}</h1>
-            <p className="text-md md:text-xl opacity-90">{content.missionvision_description}</p>
+            <h1 className="text-5xl font-bold mb-4">{content.missionvision_heading}</h1>
+            <p className="text-xl opacity-90">{content.missionvision_description}</p>
           </div>
         </div>
       </div>
@@ -112,22 +120,24 @@ function Visionandmission() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-8 md:py-10 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-xl md:text-3xl font-bold mb-6">Join Our Community</h2>
-            <p className="text-md md:text-lg text-gray-600 mb-8">
-              {content.joinourcommunity}            </p>
+      {/* Call to Action - hidden for logged-in users */}
+      {!Cookies.get('authToken') && (
+        <section className="py-8 md:py-10 bg-gray-50">
+          <div className="container mx-auto px-4 text-center">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-xl md:text-3xl font-bold mb-6">Join Our Community</h2>
+              <p className="text-md md:text-lg text-gray-600 mb-8">
+                {content.joinourcommunity}            </p>
 
-            <a href='/register'>
-              <button className="px-8 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
-                Get Involved
-              </button>
-            </a>
+              <a href='/register'>
+                <button className="px-8 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                  Get Involved
+                </button>
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

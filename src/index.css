@@ -15,11 +15,10 @@ body {
 
 /* Ensure minimum touch target size for interactive elements */
 button, 
-a, 
 input, 
 select, 
 textarea {
-  @apply min-h-[44px] min-w-[44px]; /* Minimum recommended touch target size */
+  @apply min-h-[44px]; /* Minimum recommended touch target size */
 }
 
 /* Rich Text Content Styling */

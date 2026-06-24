@@ -198,7 +198,7 @@ function MembersBoardMain() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-20"
+          className="text-center mb-10 md:mb-20"
         >
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
             Our Leadership Team
@@ -214,7 +214,7 @@ function MembersBoardMain() {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="space-y-20"
+          className="space-y-12 md:space-y-20"
         >
           {/* Advisory Council Section */}
           <section className="scroll-mt-20">
@@ -318,7 +318,7 @@ function MembersBoardMain() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-24 pt-8 border-t border-gray-200"
+          className="mt-12 md:mt-24 pt-8 border-t border-gray-200"
         >
           <p className="text-center text-gray-500 text-sm">
             Our leadership team represents decades of combined experience and dedication to our mission.
