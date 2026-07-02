@@ -197,3 +197,25 @@ textarea {
   background: linear-gradient(90deg, transparent, #9ca3af, transparent);
   animation: logo-loader-bar 1.2s infinite linear;
 }
+
+/* Announcement Marquee Styles */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee-content {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee-scroll 35s linear infinite;
+  padding-left: 10px;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+

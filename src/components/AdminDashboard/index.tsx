@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { CiMenuFries } from "react-icons/ci";
-import { FaCalendarAlt, FaProjectDiagram, FaPhotoVideo, FaNewspaper, FaAddressBook, FaEnvelopeOpenText, FaUsers, FaImages, FaUserTie, FaUsersCog, FaUserPlus, FaInfoCircle, FaChevronRight, FaBuilding, FaUserShield } from "react-icons/fa";
+import { FaCalendarAlt, FaProjectDiagram, FaPhotoVideo, FaNewspaper, FaAddressBook, FaEnvelopeOpenText, FaUsers, FaImages, FaUserTie, FaUsersCog, FaUserPlus, FaInfoCircle, FaChevronRight, FaBuilding, FaUserShield, FaBullhorn } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom"; // Import the navigate function and location for redirection
 import Cookies from "js-cookie"; // Import Cookies to read and remove cookies
 import './index.css';
@@ -25,7 +25,7 @@ const adminList = [
   { id: 16, text: "Create Admin", route: "/admin/create-admin", icon: <FaUserPlus /> },
   { id: 18, text: "About Introduction", route: "/admin/about-introduction", icon: <FaInfoCircle /> },
   { id: 19, text: "Home Page", route: "/admin/home-page", icon: <FaInfoCircle /> },
-
+  { id: 20, text: "Announcements", route: "/admin/announcements", icon: <FaBullhorn /> },
 ];
 
 interface AdminDashboardProps {

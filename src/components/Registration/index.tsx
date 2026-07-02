@@ -22,7 +22,6 @@ const RegistrationSuccessModal = ({ open, onLogin }: { open: boolean; onLogin: (
 };
 import { useEffect, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-// TODO: Replace with your actual site key
 import { User, Mail, Lock, Phone, Home, MapPin, Flag, CheckCircle,  ArrowLeft, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { OTPEmailVerification, resendOTPEmailVerification, signupUser } from '../../apirequest/auth';
 import NotificationModal from '../ui/NotificationModal';

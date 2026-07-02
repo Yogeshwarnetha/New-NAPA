@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'; // Import jwt-decode
 import mainlogo from './Images/logo.jpg';
 import Cookies from 'js-cookie';
+import { fetchAnnouncementData, Announcement } from './apirequest/announcement';
 
 import {
   Menu,
@@ -82,6 +83,11 @@ const menuItems: MenuItemType[] = [
     ],
   },
   {
+    title: 'Convention',
+    icon: <BookOpen className="w-5 h-5" />,
+    path: 'https://napaconvention.org/',
+  },
+  {
     title: 'Projects',
     icon: <Phone className="w-5 h-5" />,
     path: '/projects',
@@ -104,6 +110,8 @@ const Navbar = () => {
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [userToken, setUserToken] = useState<string | null>(null);
+
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   const getTokenFromCookies = () => {
     const token = Cookies.get('authToken');
@@ -132,9 +140,19 @@ const Navbar = () => {
     }
   };
 
-  // Use Effect Hook to check token when the component mounts
+  // Use Effect Hook to check token and load announcements when the component mounts
   useEffect(() => {
     getTokenFromCookies();
+
+    const loadAnnouncements = async () => {
+      try {
+        const data = await fetchAnnouncementData();
+        setAnnouncements(data);
+      } catch (error) {
+        console.error("Failed to load announcements:", error);
+      }
+    };
+    loadAnnouncements();
   }, []);
 
   const logout = () => {
@@ -150,6 +168,36 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Announcement Marquee */}
+      {announcements.length > 0 && (
+        <div className="bg-[#1e1b4b] text-white flex items-center h-11 md:h-12 overflow-hidden font-sans border-b border-indigo-950 relative z-50 text-base md:text-lg">
+          {/* <div className="bg-[#ef4444] text-white font-bold px-3 py-1 flex items-center h-full z-10 shadow-lg relative shrink-0">
+            <span className="animate-pulse">Announcements</span>
+          </div> */}
+          <div className="flex-1 overflow-hidden relative flex items-center h-full">
+            <div className="marquee-content gap-12 flex items-center">
+              {announcements.map((ann, idx) => (
+                <span key={ann.id || idx} className="flex items-center gap-3">
+                  {idx > 0 && <span className="text-[#818cf8]">✦</span>}
+                  {ann.link ? (
+                    <a
+                      href={ann.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#fde047] hover:text-white hover:underline transition-colors font-bold"
+                    >
+                      {ann.text}
+                    </a>
+                  ) : (
+                    <span className="text-gray-100 font-bold">{ann.text}</span>
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Top Bar */}
       <div className="bg-[#43529C] text-white py-2 md:py-4">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">

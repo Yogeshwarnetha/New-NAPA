@@ -48,6 +48,7 @@ import UserProfile from './components/Profile';
 import UserProfilePage from './components/Profile/ProfilePage';
 import CreateAdmin from './components/AdminDashboard/CreateAdmin';
 import LogoLoader from './components/ui/LogoLoader';
+import AnnouncementsDashboard from './components/AdminDashboard/Announcements';
 
 function App() {
   const location = useLocation();
@@ -116,6 +117,7 @@ function App() {
         <Route path='/admin/create-admin' element={<CreateAdmin />} />
         <Route path='/admin/about-introduction' element={<AboutPageDashboard />} />
         <Route path='/admin/home-page' element={<HomepageDashboard />} />
+        <Route path='/admin/announcements' element={<AnnouncementsDashboard />} />
 
       </Routes >
 

@@ -10,7 +10,7 @@ const Footer = () => {
           <div>
 
             <p className="text-gray-400 mb-6">
-              Padmashalis are a Telugu speaking community with roots tracing back to Markandeya Maharishi. We are the third largest community and form 12% of the population of Andhra Pradesh and Telangana.
+              We are a Telugu-speaking community dedicated to preserving our rich cultural heritage, traditions, and values among the Telugu diaspora living across North America.
             </p>
             <div className="flex space-x-4">
               <a href="https://www.facebook.com/groups/1701318680098993?_rdr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">

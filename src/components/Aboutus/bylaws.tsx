@@ -72,7 +72,7 @@ function ByLaws() {
         </div>
       </div>
       {/* Hero Section - Desktop: full banner */}
-      <div 
+      <div
         className="relative hidden md:block h-[500px] bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/By%20Laws.png")',
@@ -95,7 +95,7 @@ function ByLaws() {
           <div className="max-w-4xl mx-auto text-center">
             <Scroll className="w-12 h-12 mx-auto mb-6 text-gray-700" />
             <p className="text-lg text-gray-600 leading-relaxed">
-              These bylaws serve as the fundamental governing document of the North American Padmashali Association (NAPA), 
+              These bylaws serve as the fundamental governing document of the North American Padmashali Association (NAPA),
               establishing the structure, rules, and procedures that guide our organization's operations and decision-making processes.
             </p>
           </div>

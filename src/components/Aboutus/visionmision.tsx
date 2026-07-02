@@ -69,7 +69,7 @@ function Visionandmission() {
             </div>
             <div className="grid md:grid-cols-3 gap-4 md:gap-8">
               {[
-                { icon: Globe2, title: 'Global Unity', desc: 'Connecting Padmashalis worldwide' },
+                { icon: Globe2, title: 'Global Unity', desc: 'Connecting community members worldwide' },
                 { icon: Users, title: 'Community Integration', desc: 'Fostering stronger bonds' },
                 { icon: Building, title: 'Digital Platform', desc: 'Leveraging technology for connection' },
               ].map((item, index) => (

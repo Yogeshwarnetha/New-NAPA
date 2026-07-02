@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { Users, Calendar, DollarSign, Globe, Building2, ChevronDown, ChevronUp, Briefcase } from 'lucide-react';
 
 function OperationalGuidelines() {
@@ -88,7 +88,7 @@ function OperationalGuidelines() {
         </div>
       </div>
       {/* Hero Section - Desktop: full banner */}
-      <div 
+      <div
         className="relative hidden md:block h-[500px] bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://pub-574f17e68e8b4496895a0c5ef79b3096.r2.dev/Operational%20Guidelines.png")',
@@ -113,9 +113,9 @@ function OperationalGuidelines() {
               <Briefcase className="w-12 h-12 mx-auto mb-6 text-blue-600" />
               <h2 className="text-2xl font-bold text-center mb-4">Purpose & Scope</h2>
               <p className="text-gray-600 text-center leading-relaxed">
-                These operational guidelines establish standardized procedures for NAPA's day-to-day operations, 
-                ensuring consistency, efficiency, and transparency across all organizational activities. They serve 
-                as a comprehensive reference for board members, volunteers, and staff to maintain high standards of 
+                These operational guidelines establish standardized procedures for NAPA's day-to-day operations,
+                ensuring consistency, efficiency, and transparency across all organizational activities. They serve
+                as a comprehensive reference for board members, volunteers, and staff to maintain high standards of
                 service to our community.
               </p>
             </div>
